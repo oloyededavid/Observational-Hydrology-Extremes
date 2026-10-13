@@ -12,21 +12,24 @@
 ---
 
 ## Overview
-Across West Africa, ground-based hydrometric gauge networks are rapidly declining just as hydro-climatic extremes are intensifying. This repository addresses this observational gap through a two-part, cloud-native Earth Observation portfolio that models opposite ends of the regional water cycle across transboundary, data-sparse river basins:
 
-* **Part A — Flood Hydrodynamics (Lower Niger-Benue Basin):** Uses cloud-penetrating Sentinel-1 Synthetic Aperture Radar (SAR) and MERIT DEM topography to bypass monsoonal cloud cover, mapping seasonal flood-pulse propagation, 5-year inundation frequency, and hydro-geomorphic vulnerability hotspots.
+Across West Africa, ground-based weather and river monitoring stations are rapidly disappearing just as climate extremes are intensifying. This repository addresses that observational gap through a two-part, cloud-native Earth Observation portfolio that models opposite ends of the regional water cycle across transboundary, data-sparse river basins:
+
+* **Part A — Flood Hydrodynamics (Lower Niger-Benue Basin):** Uses cloud-penetrating Sentinel-1 Synthetic Aperture Radar (SAR) and MERIT DEM topography to bypass heavy monsoon cloud cover, mapping seasonal flood-pulse propagation, 5-year inundation frequency, and floodplain vulnerability hotspots.
+
 * **Part B — Drought & Eco-Hydrological Coupling (Sokoto-Rima Basin):** Integrates over four decades of CHIRPS precipitation and MODIS NDVI time-series across the semi-arid Sudano-Sahelian zone to quantify rainfall volatility (CV), Standardized Precipitation Index (SPI) drought regimes, and vegetation-climate coupling ($r = 0.594, p = 0.0014$).
 
 ---
 
 ## Complete Portfolio Documentation
 
-* **Full Written Report (Part A & Part B Combined):** [View Complete PDF](documents/Observational%20Hydrology%20in%20Data-Sparse%20Catchments%20A%20AND%20B.pdf) 
+* **Full Written Report (Part A & Part B Combined):** [View Complete PDF](documents/Observational%20Hydrology%20in%20Data-Sparse%20Catchments%20A%20AND%20B.pdf)
 
 ---
 
 ## Module-by-Module Code Execution (Google Colab)
-The analytical pipelines for this research are hosted in interactive Colab environments.
+
+The analytical pipelines for this research are hosted in interactive Google Colab environments for direct, browser-based reproduction.
 
 * **Part A (Lower Niger-Benue Basin):** Sentinel-1 SAR flood pulse extraction, inundation frequency, and hydro-geomorphic vulnerability.  
   [Open Part A Colab Notebook](https://colab.research.google.com/drive/1-j9tGSStRQJyD_uylA_-HPH7nATFKGX8#scrollTo=kYW3s4lnvw7a)
@@ -37,6 +40,7 @@ The analytical pipelines for this research are hosted in interactive Colab envir
 ---
 
 ## Selected Visual Synthesis
+
 *Below is a curated preview showing 4 of the 14 cartographic maps and statistical plots produced in this study. The complete figure sets are embedded in the full PDF report and archived in the [Part A Figures (6 outputs)](part_a/figures/) and [Part B Figures (8 outputs)](part_b/figures/) folders.*
 
 | Part A: Niger-Benue Flood Hydrodynamics | Part B: Sokoto-Rima Drought Dynamics |
@@ -50,13 +54,15 @@ The analytical pipelines for this research are hosted in interactive Colab envir
 
 | Pipeline Stage | Core Analytical Process | Technologies & Sensor Archives |
 | :--- | :--- | :--- |
-| **01 / Cloud Ingestion** | Server-side spatial/temporal reduction, SAR thermal-noise and speckle filtering, and bitwise quality masking. | `Google Earth Engine API` · `Sentinel-1 SAR` · `CHIRPS` · `MODIS MOD13Q1` |
-| **02 / Terrain & Array Modeling** | Bimodal backscatter water thresholding, HAND drainage normalization, and floodplain cross-sectional profiling. | `Rasterio` · `GeoPandas` · `Shapely` · `MERIT DEM` · `WWF HydroSHEDS` |
-| **03 / Statistical Diagnostics** | Standardized anomaly indexing (`SPI` and `NDVI` Z-scores), spatial `CV` surfaces, and bivariate Pearson coupling ($r, p$). | `SciPy` · `NumPy` · `Pandas` |
-| **04 / Cartographic Synthesis** | Multi-panel planar projection rendering, seasonal hydrograph curves, and composite vulnerability mapping. | `Cartopy` · `Matplotlib` · `QGIS` · `ArcGIS Pro` |
+| **01 / Cloud Ingestion** | Server-side spatial and temporal reduction, radar speckle filtering, and optical cloud masking. | `Google Earth Engine API` · `Sentinel-1 SAR` · `CHIRPS` · `MODIS MOD13Q1` |
+| **02 / Terrain & Array Modeling** | Backscatter water thresholding, drainage height normalization, and floodplain cross-section profiling. | `Rasterio` · `GeoPandas` · `Shapely` · `MERIT DEM` · `WWF HydroSHEDS` |
+| **03 / Statistical Diagnostics** | Standardized anomaly indexing (`SPI` and `NDVI` Z-scores), spatial `CV` surfaces, and correlation modeling. | `SciPy` · `NumPy` · `Pandas` |
+| **04 / Cartographic Synthesis** | Multi-panel planar projection rendering, seasonal flood-pulse curves, and vulnerability mapping. | `Cartopy` · `Matplotlib` · `QGIS` · `ArcGIS Pro` |
 
 ---
 
 ## Research Reflection
 
-> *Building both halves of this portfolio revealed that catastrophic floods in the Niger-Benue confluence and creeping droughts in the Sokoto-Rima drylands are not isolated hazards—they are two expressions of a single, volatile hydro-climatic pulse. Developing these workflows from raw orbital archives reinforced a core conviction of my work: in regions where physical gauge stations are disappearing, open-source cloud computing and satellite physics are more than just analytical tools—they are instruments of environmental equity for communities on the frontlines of climate change.*
+> *When I started this project, the hardest part was not writing the code—it was realizing how invisible these landscapes are on the ground. Every year across West Africa, we see the human and ecological cost of a changing water cycle: communities displaced by sudden floodwaters along the Niger and Benue rivers, and farmers in the northern drylands watching the land dry out while waiting for rains that arrive too late. Yet, when you look for continuous ground records to study these crises, the data is often missing.*
+>
+> *Building this work taught me that satellites can act as eyes for the places the world has forgotten to measure. Watching radar images cut straight through heavy monsoon clouds to reveal where a river is spilling its banks, or tracing forty years of satellite records to see how closely northern grasslands breathe with every drop of rain, changed how I view my role as a researcher. Behind every pixel on these maps is a living ecosystem and a community trying to adapt to a rapidly shifting climate. For me, turning raw data from space into open, reproducible science is about making sure the regions hit hardest by global environmental change are never left in the dark.*
