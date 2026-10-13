@@ -13,9 +13,11 @@
 
 ## Overview
 
-Across West Africa, ground-based weather and river monitoring stations are sparse just as climate extremes are intensifying. This repository addresses that data gap through a two-part, cloud-native Earth Observation portfolio modeling opposite ends of the regional water cycle across transboundary river basins:
+Across West Africa, ground-based weather and river monitoring stations are sparse just as climate extremes are intensifying. This project addresses that data gap through a two-part, cloud-native Earth Observation portfolio modeling opposite ends of the regional water cycle across transboundary river basins:
+
 
 * **Part A — Flood Hydrodynamics (Lower Niger-Benue Basin):** Uses Sentinel-1 Synthetic Aperture Radar (SAR) and MERIT DEM topography to bypass heavy monsoon cloud cover, mapping seasonal flood-pulse propagation, 5-year inundation frequency, and floodplain vulnerability hotspots.
+
 
 * **Part B — Drought & Eco-Hydrological Coupling (Sokoto-Rima Basin):** Integrates over four decades of CHIRPS precipitation and MODIS NDVI time-series across the semi-arid Sudano-Sahelian zone to quantify rainfall volatility (CV), Standardized Precipitation Index (SPI) drought regimes, and vegetation-climate coupling ($r = 0.594, p = 0.0014$).
 
