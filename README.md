@@ -1,4 +1,11 @@
 # Cloud-Native Observational Hydrology in Data-Sparse Catchments
+
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
+![Google Earth Engine](https://img.shields.io/badge/Google%20Earth%20Engine-Cloud%20API-4285F4?logo=googleearth&logoColor=white)
+![Geospatial Stack](https://img.shields.io/badge/GIS-Rasterio%20%7C%20GeoPandas%20%7C%20SciPy-success)
+![Platform](https://img.shields.io/badge/Execution-Google%20Colab-F9AB00?logo=googlecolab&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
 **Author:** David Oloyede  
 **Specialization:** Environmental Remote Sensing & Geospatial Information Systems  
 
@@ -14,7 +21,7 @@ Across West Africa, ground-based hydrometric gauge networks are rapidly declinin
 
 ## Complete Portfolio Documentation
 
-* **Full Written Report (Part A & Part B Combined):** [Download Complete PDF](documents/Observational%20Hydrology%20in%20Data-Sparse%20Catchments%20A%20AND%20B.pdf) 
+* **Full Written Report (Part A & Part B Combined):** [View Complete PDF](documents/Observational%20Hydrology%20in%20Data-Sparse%20Catchments%20A%20AND%20B.pdf) 
 
 ---
 
@@ -40,7 +47,16 @@ The analytical pipelines for this research are hosted in interactive Colab envir
 ---
 
 ## Methodological Architecture & Technical Stack
-* **Cloud Ingestion & Preprocessing:** Server-side spatial and temporal reduction, SAR thermal-noise/speckle filtering, and MODIS bitwise quality masking via the **Google Earth Engine (GEE) Python API**.
-* **Spatial Analysis & Hydro-Geomorphic Modeling:** Local raster array processing, bimodal SAR water thresholding, and topographic flow conditioning using **GeoPandas, Rasterio, Shapely, Cartopy, and QGIS / ArcGIS Pro**.
-* **Numerical & Statistical Modeling:** Standardized anomaly indexing (SPI and NDVI Z-scores), spatial Coefficient of Variation (CV) surfaces, and bivariate Pearson correlation modeling in **NumPy, SciPy, and Pandas**.
-* **Primary Satellite Datasets:** Sentinel-1 SAR, CHIRPS Precipitation, MODIS MOD13Q1 NDVI, MERIT DEM, WWF HydroSHEDS.
+
+| Pipeline Stage | Core Analytical Process | Technologies & Sensor Archives |
+| :--- | :--- | :--- |
+| **01 / Cloud Ingestion** | Server-side spatial/temporal reduction, SAR thermal-noise and speckle filtering, and bitwise quality masking. | `Google Earth Engine API` · `Sentinel-1 SAR` · `CHIRPS` · `MODIS MOD13Q1` |
+| **02 / Terrain & Array Modeling** | Bimodal backscatter water thresholding, HAND drainage normalization, and floodplain cross-sectional profiling. | `Rasterio` · `GeoPandas` · `Shapely` · `MERIT DEM` · `WWF HydroSHEDS` |
+| **03 / Statistical Diagnostics** | Standardized anomaly indexing (`SPI` and `NDVI` Z-scores), spatial `CV` surfaces, and bivariate Pearson coupling ($r, p$). | `SciPy` · `NumPy` · `Pandas` |
+| **04 / Cartographic Synthesis** | Multi-panel planar projection rendering, seasonal hydrograph curves, and composite vulnerability mapping. | `Cartopy` · `Matplotlib` · `QGIS` · `ArcGIS Pro` |
+
+---
+
+## Research Reflection
+
+> *Building both halves of this portfolio revealed that catastrophic floods in the Niger-Benue confluence and creeping droughts in the Sokoto-Rima drylands are not isolated hazards—they are two expressions of a single, volatile hydro-climatic pulse. Developing these workflows from raw orbital archives reinforced a core conviction of my work: in regions where physical gauge stations are disappearing, open-source cloud computing and satellite physics are more than just analytical tools—they are instruments of environmental equity for communities on the frontlines of climate change.*
