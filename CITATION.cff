@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software or workflow, please cite it using these metadata."
+type: software
+title: "Observational Hydrology Extremes: Flood Inundation Dynamics and Drought Monitoring in West African Catchments"
+authors:
+  - family-names: "Oloyede"
+    given-names: "David Oluwayinka"
+    email: "oloyededavid10@gmail.com"
+repository-code: "https://github.com/oloyededavid/Observational-Hydrology-Extremes"
+url: "https://oloyededavid.github.io/geospatial-rs-portfolio/"
+license: MIT
+version: "0.1.0"
+date-released: "2026-10-19"
