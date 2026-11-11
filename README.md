@@ -21,7 +21,7 @@ Across West Africa, ground-based weather and river monitoring stations are spars
 * **Part A — Flood Hydrodynamics (Lower Niger-Benue Basin):** Uses Sentinel-1 Synthetic Aperture Radar (SAR) and MERIT DEM topography to bypass heavy monsoon cloud cover, mapping seasonal flood-pulse propagation, 5-year inundation frequency, and floodplain vulnerability hotspots.
 
 
-* **Part B — Drought & Eco-Hydrological Coupling (Sokoto-Rima Basin):** Integrates over four decades of CHIRPS precipitation and MODIS NDVI time-series across the semi-arid Sudano-Sahelian zone to quantify rainfall volatility (CV), Standardized Precipitation Index (SPI) drought regimes, and vegetation-climate coupling ($r = 0.594, p = 0.0014$).
+* **Part B — Drought & Eco-Hydrological Coupling (Sokoto-Rima Basin):** Integrates 25 years (2000–2025) of CHIRPS precipitation and MODIS NDVI time-series across the semi-arid Sudano-Sahelian zone to quantify rainfall volatility (CV), a z-score of annual rainfall totals (an approximation of the Standardized Precipitation Index), and the correlation between annual NDVI and rainfall ($r = 0.594, p = 0.0014$; both series are undetrended and share the Sahel recovery trend, so the correlation may partly reflect that trend).
 
 ---
 
