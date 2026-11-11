@@ -11,6 +11,8 @@
 
 ---
 
+> **Status, 11 November 2026: parts of this repository present typed-in or unsupported numbers as results.** An audit of the notebooks and the report found the following. The "empirical" seasonal flood-pulse curve in Part A is a hard-coded list of twelve numbers in the notebook, not computed from the imagery. The JRC Global Surface Water comparison quoted in the report (99.36% recall, 2,497.44 km² of extra inundation) has no code in either notebook. The flood threshold is a fixed -18 dB on the VH band, not adaptive, and the 5-year frequency covers six seasons (2018 to 2023). The Part B "SPI" is a z-score of annual totals, not a gamma-fitted index, and its annual NDVI is the mean of all 16-day composites, not the annual peak. There is no comparison with gauge, discharge or flood records anywhere. See `AUDIT-2026-11-11.md`.
+
 ## Overview
 
 Across West Africa, ground-based weather and river monitoring stations are sparse just as climate extremes are intensifying. This project addresses that data gap through a two-part, cloud-native Earth Observation portfolio modeling opposite ends of the regional water cycle across transboundary river basins:
