@@ -38,7 +38,7 @@ The analytical pipelines for this research are hosted in interactive Google Cola
 * **Part A (Lower Niger-Benue Basin):** Sentinel-1 SAR flood pulse extraction, inundation frequency, and hydro-geomorphic vulnerability.  
   [Open Part A Colab Notebook](https://colab.research.google.com/drive/1-j9tGSStRQJyD_uylA_-HPH7nATFKGX8#scrollTo=kYW3s4lnvw7a)
 
-* **Part B (Sokoto-Rima Basin):** Multi-decadal precipitation CV vulnerability, SPI meteorological drought classification, and MODIS NDVI eco-hydrological coupling ($r = 0.594, p = 0.0014$).  
+* **Part B (Sokoto-Rima Basin):** Multi-decadal precipitation CV vulnerability, z-score drought classification of annual rainfall, and the correlation of annual NDVI with rainfall ($r = 0.594, p = 0.0014$; undetrended, so it may reflect a shared trend).  
   [Open Part B Colab Notebook](https://colab.research.google.com/drive/1_Em3EWTjQ9zbgQWf3ppezo_V_6Vpfbyt)
 
 ---
@@ -60,7 +60,7 @@ Below is a curated preview showing 4 of the 14 cartographic maps and statistical
 | :--- | :--- | :--- |
 | **01 / Cloud Ingestion** | Server-side spatial and temporal reduction, radar speckle filtering, and optical cloud masking. | `Google Earth Engine API` · `Sentinel-1 SAR` · `CHIRPS` · `MODIS MOD13Q1` |
 | **02 / Terrain & Array Modeling** | Backscatter water thresholding, drainage height normalization, and floodplain cross-section profiling. | `Rasterio` · `GeoPandas` · `Shapely` · `MERIT DEM` · `WWF HydroSHEDS` |
-| **03 / Statistical Diagnostics** | Standardized anomaly indexing (`SPI` and `NDVI` Z-scores), spatial `CV` surfaces, and correlation modeling. | `SciPy` · `NumPy` · `Pandas` |
+| **03 / Statistical Diagnostics** | Standardized anomaly indexing (z-scores of annual rainfall and annual mean NDVI; this is not a gamma-fitted SPI), spatial `CV` surfaces, and correlation modeling. | `SciPy` · `NumPy` · `Pandas` |
 | **04 / Cartographic Synthesis** | Multi-panel planar projection rendering, seasonal flood-pulse curves, and vulnerability mapping. | `Cartopy` · `Matplotlib` · `QGIS` · `ArcGIS Pro` |
 
 ---
