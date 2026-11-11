@@ -18,7 +18,7 @@
 Across West Africa, ground-based weather and river monitoring stations are sparse just as climate extremes are intensifying. This project addresses that data gap through a two-part, cloud-native Earth Observation portfolio modeling opposite ends of the regional water cycle across transboundary river basins:
 
 
-* **Part A — Flood Hydrodynamics (Lower Niger-Benue Basin):** Uses Sentinel-1 Synthetic Aperture Radar (SAR) and MERIT DEM topography to bypass heavy monsoon cloud cover, mapping seasonal flood-pulse propagation, 5-year inundation frequency, and floodplain vulnerability hotspots.
+* **Part A — Flood Hydrodynamics (Lower Niger-Benue Basin):** Uses Sentinel-1 Synthetic Aperture Radar (SAR) and MERIT DEM topography to bypass heavy monsoon cloud cover, mapping inundation frequency over six seasons (2018–2023) with a fixed -18 dB VH threshold, and a floodplain vulnerability index that multiplies that frequency by a low-elevation term; the seasonal flood-pulse curve is typed in, not computed, and nothing is validated against flood records.
 
 
 * **Part B — Drought & Eco-Hydrological Coupling (Sokoto-Rima Basin):** Integrates 25 years (2000–2025) of CHIRPS precipitation and MODIS NDVI time-series across the semi-arid Sudano-Sahelian zone to quantify rainfall volatility (CV), a z-score of annual rainfall totals (an approximation of the Standardized Precipitation Index), and the correlation between annual NDVI and rainfall ($r = 0.594, p = 0.0014$; both series are undetrended and share the Sahel recovery trend, so the correlation may partly reflect that trend).
