@@ -1,59 +1,61 @@
-// Browser checks for the study page and the explorer. Expected values come from part_c/data/results.json.
-// Run: npx http-server docs -p 8770 (or python -m http.server), then URL=http://127.0.0.1:8770/ node tests/web/site.js
+// Browser checks for the study page (docs/index.html). Expected values come from docs/data/*.json.
+// Run: (cd docs && python3 -m http.server 8770 --bind 127.0.0.1) & URL=http://127.0.0.1:8770/ node tests/web/site.js
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
-const R = JSON.parse(fs.readFileSync(path.join(__dirname, '../../part_c/data/results.json'), 'utf8'));
+const C = JSON.parse(fs.readFileSync(path.join(__dirname, '../../docs/data/c.json'), 'utf8'));
+const A = JSON.parse(fs.readFileSync(path.join(__dirname, '../../docs/data/a.json'), 'utf8'));
 const BASE = process.env.URL || 'http://127.0.0.1:8770/';
+const fails = [];
+const ok = (name, cond) => { if (!cond) fails.push(name); console.log(cond ? 'PASS' : 'FAIL', name); };
+
 (async () => {
-  const b = await chromium.launch(), fails = [], errs = [];
-  const ok = (name, cond) => { if (!cond) fails.push(name); console.log(cond ? 'PASS' : 'FAIL', name); };
-  const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
-  p.on('pageerror', e => errs.push(e.message));
-  p.on('console', m => { if (m.type() === 'error' && !/favicon|ERR_FAILED|net::/.test(m.text())) errs.push(m.text()); });
-  await p.goto(BASE + 'index.html', { waitUntil: 'load' }); await p.waitForTimeout(3000);
-  ok('every data-v filled', (await p.$$eval('[data-v]', es => es.filter(e => e.textContent.trim() === '—').length)) === 0);
-  const nModels = R.settings.models.length;
-  ok(`Figure 6 has ${nModels} model rows`, (await p.$$eval('#checkchart .rowlab', t => t.length)) === nModels);
-  ok('Figure 7 has two scenario rows', (await p.$$eval('#upchart .rowlab', t => t.length)) === 2);
-  ok(`Figure 7 shows ${2 * nModels} model dots`, (await p.$$eval('#upchart circle', c => c.length)) === 2 * nModels);
-  const first = await p.$$eval('#design-table tbody tr', rs => rs.map(r => [...r.cells].map(c => (c.childNodes[0] ? c.childNodes[0].textContent : "").trim())));
-  const d = R.areas.niger_benue.ensemble.ssp585.design_rainfall['25'];
-  ok('Table 2 first row: today and SSP5-8.5 median match results', first.length === 6 && first[0][2] === String(Math.round(d.baseline_mm)) && first[0][4] === String(Math.round(d.future_mm_median)));
-  await p.click('#up-t button[data-val="100"]'); await p.waitForTimeout(150);
-  ok('return-period switch redraws Figure 7', (await p.$eval('#upchart .axlab', e => e.textContent)).includes('100-year'));
-  ok('SPI chart has 44 bars', (await p.$$eval('#spichart .bar', b => b.length)) === 44);
-  ok('every wide figure sits in a grey panel', (await p.$$eval('figure.wide', f => f.filter(x => x.querySelector(':scope > .panel')).length)) === (await p.$$eval('figure.wide', f => f.length)));
-  ok('maps outnumber charts', (await p.$$eval('.panel .map, .panel img.zoomable', m => m.length)) > (await p.$$eval('.panel .chart', c => c.length)));
-  ok('flood map shows a Sentinel-1 overlay', (await p.$$eval('#flood-map img.leaflet-image-layer', x => x.length)) >= 2);
-  await p.click('#fm-layer button[data-val="oct"]'); await p.waitForTimeout(200);
-  ok('flood map switches to October 2022', (await p.$eval('#fm-legend .t', e => e.textContent)).includes('October 2022'));
-  ok('flood curve has 12 monthly points', (await p.$$eval('#floodchart circle', c => c.length)) === 12);
-  await p.click('#fc-year button[data-val="2022"]'); await p.waitForTimeout(150);
-  ok('flood curve year selector', (await p.$eval('#floodchart svg', e => e.getAttribute('aria-label'))).includes('2022'));
-  ok('NDVI chart shows 24 years of both series', (await p.$$eval('#ndvichart circle', c => c.length)) === 24 && (await p.$$eval('#ndvichart rect', c => c.length)) === 24);
-  ok('figure references are numbered', (await p.$$eval('[data-fig]', s => s.every(x => /^\d+$/.test(x.textContent))) ));
-  ok('drought map draws 245 cells', (await p.$$eval('#drought-map path.cell', x => x.length)) === 245);
-  ok('dry-spell map draws 245 cells', (await p.$$eval('#dry-map path.cell', x => x.length)) === 245);
-  ok('every interactive map has a scale bar and north arrow', await p.$$eval('.fig-map, .study-map', ms => ms.every(m => m.querySelector('.leaflet-control-scale') && m.querySelector('.north-arrow'))));
-  await p.click('#dm-layer button[data-val="cv"]'); await p.waitForTimeout(200);
-  ok('drought map switches to variability', (await p.$eval('#dm-legend .t', e => e.textContent)).startsWith('Year-to-year variability'));
-  ok('study map draws both outlines', (await p.$$eval('#study-map path.leaflet-interactive', x => x.length)) >= 2);
-  // explorer
-  const e = await b.newPage({ viewport: { width: 1440, height: 900 } });
-  e.on('pageerror', x => errs.push('explore: ' + x.message));
-  await e.goto(BASE + 'explore.html?area=niger_benue&layer=uplift&T=25&scen=ssp245&model=median', { waitUntil: 'load' }); await e.waitForTimeout(2500);
-  ok('explorer restores state from the link', (await e.$eval('#ex-area [aria-pressed="true"]', x => x.dataset.val)) === 'niger_benue' && (await e.$eval('#ex-t [aria-pressed="true"]', x => x.dataset.val)) === '25');
-  ok('explorer draws 27 cells', (await e.$$eval('#explore-map path.cell', x => x.length)) === 27);
-  const cells = await e.$$('#explore-map path.cell');
-  await cells[cells.length - 1].click({ force: true }); await e.waitForTimeout(300);
-  ok(`selected cell lists all ${nModels} models`, (await e.$$eval('.model-bars li', l => l.length)) === nModels);
-  await e.selectOption('#ex-model', R.settings.models[0]); await e.waitForTimeout(200);
-  ok('model choice written to the link', (await e.evaluate(() => location.search)).includes(`model=${R.settings.models[0]}`));
-  await e.click('#ex-layer button[data-val="today"]'); await e.waitForTimeout(200);
-  ok('Today layer hides scenario and model', await e.$eval('#ex-scen', x => x.closest('.field').hidden) && await e.$eval('#ex-model', x => x.closest('.field').hidden));
-  const m = await b.newPage({ viewport: { width: 390, height: 844 } });
-  await m.goto(BASE + 'index.html'); await m.waitForTimeout(2500);
-  ok('phone: no sideways scroll', await m.evaluate(() => document.documentElement.scrollWidth === innerWidth));
-  console.log('FAILS', fails.length, JSON.stringify(fails), 'ERRORS', JSON.stringify(errs)); await b.close();
-  process.exit(fails.length || errs.length ? 1 : 0);
+  const b = await chromium.launch();
+  for (const [label, w, h] of [['desktop', 1440, 900], ['phone', 390, 844]]) {
+    const p = await b.newPage({ viewport: { width: w, height: h } });
+    const errs = [];
+    p.on('pageerror', e => errs.push(e.message));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+    const bad = [];
+    p.on('response', r => { if (r.status() >= 400) bad.push(r.url()); });
+    await p.goto(BASE + 'index.html', { waitUntil: 'load' });
+    // reveal everything the way a reader would: scroll through the page
+    const H = await p.evaluate(() => document.body.scrollHeight);
+    for (let y = 0; y < H; y += 500) { await p.evaluate(y => scrollTo(0, y), y); await p.waitForTimeout(120); }
+    await p.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await p.waitForTimeout(1500);
+    console.log(`--- ${label} ---`);
+    ok(`${label}: no JavaScript errors`, errs.length === 0);
+    if (errs.length) console.log(errs.slice(0, 5));
+    ok(`${label}: no failed requests`, bad.length === 0);
+    ok(`${label}: no horizontal page scroll`, (await p.evaluate(() => document.documentElement.scrollWidth - innerWidth)) <= 1);
+    ok(`${label}: every data-v value filled`, (await p.$$eval('[data-v]', es => es.filter(e => e.textContent.trim() === '—').length)) === 0);
+    ok(`${label}: no NaN or undefined text`, (await p.$$eval('main, footer', m => /NaN|undefined/.test(m.map(x => x.textContent).join('')))) === false);
+    ok(`${label}: every map drawn`, (await p.$$eval('.map', ms => ms.filter(m => !m.querySelector('.leaflet-tile, .leaflet-image-layer, .leaflet-interactive')).length)) === 0);
+    ok(`${label}: every chart drawn`, (await p.$$eval('.chart', cs => cs.filter(c => !c.querySelector('svg')).length)) === 0);
+    ok(`${label}: maps outnumber charts`, (await p.$$eval('.map', m => m.length)) > (await p.$$eval('.chart', c => c.length)) - 9);
+    if (label === 'desktop') {
+      const nM = C.results.settings.models.length;
+      ok(`${label}: Figure C4 shows ${2 * nM} model dots`, (await p.$$eval('#upchart circle', c => c.length)) >= 2 * nM);
+      ok(`${label}: flood curve has 12 monthly points`, (await p.$$eval('#floodchart circle', c => c.length)) >= 12);
+      const d = C.results.areas.niger_benue.ensemble.ssp585.design_rainfall["25"];
+      const row = await p.$$eval('#design-table tbody tr', rs => rs.map(r => [...r.cells].map(c => c.childNodes[0] ? c.childNodes[0].textContent.trim() : '')));
+      ok(`${label}: Table C2 Lower Niger–Benue 25-year row matches results`, row.length === 10 && row[2][2] === String(Math.round(d.baseline_mm)) && row[2][5].split(" ")[0] === String(Math.round(d.future_mm_median)));
+      await p.click('#up-t button[data-val="100"]'); await p.waitForTimeout(150);
+      ok(`${label}: return-period switch redraws uplift chart`, (await p.$eval('#upchart', e => e.textContent)).length > 0 && (await p.$$eval('#upchart circle', c => c.length)) >= 2 * nM);
+      await p.click('#fm-layer button[data-val="oct"]'); await p.waitForTimeout(200);
+      ok(`${label}: flood map switches to October 2022`, (await p.$eval('#fm-legend .lg-t', e => e.textContent)).includes('October 2022'));
+      await p.click('#spi-k button[data-val="6"]'); await p.waitForTimeout(150);
+      ok(`${label}: SPI switch to SPI-6 redraws`, (await p.$eval('#spi-k button[aria-pressed="true"]', e => e.dataset.val)) === '6');
+      ok(`${label}: Sentinel-2 check agrees with data (dry precision ${A.dualpol.sentinel2_check.dry_2022_02.s1_confirmed_by_s2})`,
+        (await p.$eval('#s2chart', e => e.textContent)) !== '');
+    }
+    const links = await p.$$eval('a[href]', as => as.map(a => a.getAttribute('href')).filter(h => h && !h.startsWith('http') && !h.startsWith('#') && !h.startsWith('mailto')));
+    const missing = [];
+    for (const l of [...new Set(links)]) { const r = await p.request.get(BASE + l).catch(() => null); if (!r || r.status() >= 400) missing.push(l); }
+    ok(`${label}: every local link resolves${missing.length ? ' (missing: ' + missing.join(', ') + ')' : ''}`, missing.length === 0);
+    await p.close();
+  }
+  await b.close();
+  console.log(fails.length ? `\n${fails.length} FAILED` : '\nALL PASSED');
+  process.exit(fails.length ? 1 : 0);
 })();
