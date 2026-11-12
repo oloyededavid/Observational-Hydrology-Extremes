@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this software or workflow, please cite it using these metadata."
 type: software
-title: "Observational Hydrology Extremes: Flood Inundation Dynamics and Drought Monitoring in West African Catchments"
+title: "Floods, droughts and design rainfall in two data-sparse Nigerian basins: Lower Niger-Benue and Sokoto-Rima"
 authors:
   - family-names: "Oloyede"
     given-names: "David Oluwayinka"
     email: "oloyededavid10@gmail.com"
 repository-code: "https://github.com/oloyededavid/Observational-Hydrology-Extremes"
-url: "https://oloyededavid.github.io/geospatial-rs-portfolio/"
+url: "https://oloyededavid.github.io/Observational-Hydrology-Extremes/"
 license: MIT
-version: "0.1.0"
-date-released: "2026-10-19"
+version: "0.2.0"
+date-released: "2026-11-12"
