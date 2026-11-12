@@ -27,7 +27,10 @@ from scipy import stats
 try:
     ee.Initialize(project=GEE_PROJECT)
 except Exception:
-    ee.Authenticate()
+    # Sign-in by link and code: works even when the browser blocks Colab's pop-up sign-in
+    # ("credential propagation was unsuccessful"). Open the link, choose your account,
+    # copy the code it shows and paste it into the box below this cell.
+    ee.Authenticate(auth_mode="notebook", force=True)
     ee.Initialize(project=GEE_PROJECT)
 
 OUT = "outputs"
