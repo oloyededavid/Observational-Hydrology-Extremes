@@ -71,7 +71,8 @@ def spi(series, k):
             a, _, sc = stats.gamma.fit(nz, floc=0)
             x = acc[rows, c]
             h = q + (1 - q) * np.where(x >= 0.5, stats.gamma.cdf(x, a, loc=0, scale=sc), 0.0)
-            out[rows, c] = stats.norm.ppf(np.clip(h, 1e-6, 1 - 1e-6))
+            z = stats.norm.ppf(np.clip(h, 1e-6, 1 - 1e-6))
+            out[rows, c] = np.where(np.isfinite(x), z, np.nan)  # incomplete windows (the first k-1 months) stay empty
     return out if two else out[:, 0]
 
 

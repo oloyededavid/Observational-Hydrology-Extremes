@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 part_a/cache/
 part_b/cache/
+docs/_sample/
