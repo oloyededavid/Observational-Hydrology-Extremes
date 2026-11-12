@@ -1,7 +1,7 @@
 /* Study page: floods, droughts and design rainfall. Clean editorial layout with grey figure panels. */
 :root {
     --ink: #111; --ink-2: #444; --ink-3: #757575; --rule: #e6e6e3; --rule-2: #d9d9d5; --panel: #f5f5f4; --bg: #fff;
-    --A: #1f56b0; --B: #9a5f12; --C: #5b4b8a; --accent: #1f56b0; --focus: #1f56b0;
+    --A: #1f56b0; --B: #9a5f12; --C: #5b4b8a; --accent: #1f56b0; --focus: #1f56b0; --ui: #1d6b6b; --ui-soft: #e7f2f1;
     --display: 'Zodiak', Georgia, 'Times New Roman', serif; --font: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --wide: 1180px; --main: 720px; --bar-h: 56px;
 }
@@ -118,14 +118,14 @@ td .sub { display: block; font-size: 12.5px; color: var(--ink-3); }
 .tablefig { margin: 34px 0 0; }
 
 /* segmented controls */
-.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--rule-2); background: #fff; border-radius: 8px; padding: 2px; gap: 2px; }
-.seg button { border: 0; background: transparent; font: inherit; font-size: 13.5px; padding: 5px 11px; border-radius: 6px; color: var(--ink-2); cursor: pointer; transition: background .15s ease, color .15s ease; }
-.seg button:hover:not(:disabled) { color: var(--ink); background: var(--panel); }
-.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 0; background: #fff; border-radius: 999px; padding: 4px; gap: 2px; box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 4px 14px rgba(0, 0, 0, .06); }
+.seg button { border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 500; padding: 7px 14px; border-radius: 999px; color: var(--ink-2); cursor: pointer; transition: background .18s ease, color .18s ease; }
+.seg button:hover:not(:disabled) { color: var(--ui); background: var(--ui-soft); }
+.seg button[aria-pressed="true"] { background: var(--ui); color: #fff; box-shadow: 0 2px 8px rgba(29, 107, 107, .25); }
 .seg button:disabled { opacity: .4; cursor: not-allowed; }
-.button { font: inherit; font-size: 14px; border: 1px solid var(--rule-2); background: #fff; color: var(--ink); border-radius: 8px; padding: 6px 13px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: border-color .15s ease, transform .15s ease; }
+.button { font: inherit; font-size: 14px; border: 1px solid var(--rule-2); background: #fff; color: var(--ink); border-radius: 999px; padding: 6px 13px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: border-color .15s ease, transform .15s ease; }
 .button:hover { border-color: var(--ink-3); }
-.button.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+.button.primary { background: var(--ui); color: #fff; border-color: var(--ui); }
 .year-ctl { display: inline-flex; align-items: center; gap: 8px; }
 .year-ctl input[type="range"] { width: min(300px, 46vw); accent-color: var(--ink); }
 .year-ctl output { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 3em; }
