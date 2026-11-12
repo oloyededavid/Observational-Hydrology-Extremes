@@ -58,7 +58,7 @@
             <li><b class="hl"><span data-v="sumDry">—</span></b><span class="f-text" data-v="sumDryText">—</span></li>
             <li><b class="hl"><span data-v="sumTrend">—</span> mm per decade</b><span class="f-text">Sokoto–Rima rainfall has risen since the 1980s droughts (CHIRPS, 1981–2024). Since 2000, only <span data-v="droughtYears">—</span> were drought years on a gamma-fitted index.</span></li>
         </ol>
-        <p class="small">No rain gauge with a usable record after 1980 was found in either basin, so present-day design rainfall here comes from satellite rainfall, which understates the heaviest days. Parts A and B are being corrected after a review; what has and has not changed is set out in each section.</p>
+        <p class="small">No rain gauge with a usable record after 1980 was found in either basin, so present-day design rainfall here comes from satellite rainfall, which understates the heaviest days. Claims in Parts A and B that the code did not support have been withdrawn; each section says which.</p>
     </section>
 
     <section id="introduction" data-reveal aria-labelledby="h-intro">
@@ -108,10 +108,10 @@
     </figure>
     <section aria-labelledby="h-a-status">
         <h3 id="h-a-status"><span class="n">3.1</span>What the review changed</h3>
-        <p>The October 2026 report built on these maps made claims the code does not support. They are withdrawn here until recomputed:</p>
+        <p>The October 2026 report built on these maps made claims the code does not support. They are withdrawn here:</p>
         <ul class="status-list">
-            <li><b>Seasonal flood curve.</b> Its twelve monthly areas were typed into the notebook, not measured. The <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes/blob/main/part_a/niger_benue_flood_v2.ipynb">version 2 notebook</a> computes it from every month of imagery, 2018–2023. <span class="pill" data-v="aCurveStatus">Pending</span></li>
-            <li><b>Agreement with JRC Global Surface Water.</b> The 99.36% recall of an 810.85 km² baseline had no code behind it. Version 2 computes recall and precision against JRC <span class="cite">(Pekel et al., 2016)</span>. <span class="pill" data-v="aJrcStatus">Pending</span></li>
+            <li><b>Seasonal flood curve: withdrawn.</b> Its twelve monthly areas were typed into the notebook, not measured, so the curve and the conclusions drawn from it are not used here. A <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes/blob/main/part_a/niger_benue_flood_v2.ipynb">corrected notebook</a> that measures it from the imagery is in the repository for anyone with Earth Engine access.</li>
+            <li><b>Agreement with JRC Global Surface Water: withdrawn.</b> The 99.36% recall of an 810.85 km² baseline had no code behind it, so no agreement figure is given. The corrected notebook includes the comparison <span class="cite">(Pekel et al., 2016)</span>.</li>
             <li><b>Method wording.</b> The threshold is fixed (−18 dB), not adaptive; only VH is used; flood frequency depends on how many images cover each pixel, and permanent water was not removed. Version 2 removes it and records image counts.</li>
         </ul>
         <p class="small">No river gauge or mapped flood record was available for this reach, so none of Part A is validated against the ground.</p>
@@ -160,7 +160,7 @@
     </figure>
     <section aria-labelledby="h-b-ndvi">
         <h3 id="h-b-ndvi"><span class="n">4.1</span>Vegetation and rainfall</h3>
-        <p>The report found that annual MODIS NDVI follows rainfall (<var>r</var> = 0.594, <var>p</var> = 0.0014) and called this proof of coupling. Both series rise over the period, rainfall with the Sahel recovery and vegetation with the region's re-greening <span class="cite">(Dardel et al., 2014)</span>, and a shared trend alone can produce such a correlation. The <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes/blob/main/part_b/sokoto_rima_drought_v2.ipynb">version 2 notebook</a> repeats the test on detrended and year-to-year differenced series, with quality-screened growing-season NDVI. <span class="pill" data-v="bNdviStatus">Pending</span></p>
+        <p>The report found that annual MODIS NDVI follows rainfall (<var>r</var> = 0.594, <var>p</var> = 0.0014) and called this proof of coupling. Both series rise over the period, rainfall with the Sahel recovery and vegetation with the region's re-greening <span class="cite">(Dardel et al., 2014)</span>, and a shared trend alone can produce such a correlation. The test was not repeated on detrended series, so the correlation is reported only as a correlation: vegetation and rainfall moved together, but how much of that is year-to-year response rather than shared trend is not known. A <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes/blob/main/part_b/sokoto_rima_drought_v2.ipynb">corrected notebook</a> that runs the detrended test is in the repository.</p>
         <div id="b-ndvi" hidden></div>
     </section>
 
@@ -277,7 +277,7 @@
             <li><b>Downscaled, bias-corrected models.</b> NEX-GDDP-CMIP6 is corrected toward an observed dataset over the historical period, so agreement with CHIRPS partly reflects that correction, and its 0.25° cells average out local storms.</li>
             <li><b>Thirty-year samples.</b> 50- and 100-year values extrapolate well beyond 30 years of data. Comparing a model's two historical periods shows that one model's ratio can move by ±30% or more by chance alone, which is why only the median over many models is used.</li>
             <li><b>Changes larger than physics alone suggests.</b> The projected rise in extreme days exceeds the roughly 7% per °C expected from a warmer atmosphere. The cause, model physics or downscaling, was not tested here.</li>
-            <li><b>Parts A and B.</b> The flood curve, the JRC comparison and the detrended NDVI correlation await the version 2 notebooks. Nothing in Part A is validated against ground records.</li>
+            <li><b>Parts A and B.</b> The flood curve and the JRC agreement are withdrawn, and the NDVI correlation was not tested for a shared trend; the corrected notebooks that would settle them need Earth Engine and were not run. Nothing in Part A is validated against ground records.</li>
         </ul>
     </section>
 
