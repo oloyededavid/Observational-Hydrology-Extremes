@@ -115,8 +115,13 @@ def main():
                 "pattern_r": float(np.corrcoef(h["rx"].mean(axis=0), o["rx"].mean(axis=0))[0, 1]) if len(cells[a]) > 2 else None,
                 "total_ratio_vs_chirps": float(np.median(h["tot"].mean(axis=0)) / np.median(o["tot"].mean(axis=0))),
                 "dry_spell_median": float(np.median(np.median(h["dry"], axis=0)))}}
+            g = load("nex", cells, m, "historical", GAUGE)
+            if g is not None:
+                # Null test: the same model's two historical periods, where no forced change is expected.
+                # Its spread shows how much a single model's 30-year ratio moves by chance.
+                rl_e = ex.return_levels(g[a]["rx"], TS)
+                mres["historical"]["null_ratio"] = {str(T): float(np.median(rl_h[i] / rl_e[i])) for i, T in enumerate(TS)}
             if a == "sokoto_rima":
-                g = load("nex", cells, m, "historical", GAUGE)
                 if g is not None:
                     mres["gauge_check"] = {}
                     for sid, gv in gauges.items():
@@ -143,7 +148,9 @@ def main():
                 d50 = float(np.median(np.median(f["dry"], axis=0) - np.median(h["dry"], axis=0)))
                 d90 = float(np.median(np.percentile(f["dry"], 90, axis=0) - np.percentile(h["dry"], 90, axis=0)))
                 tot = float(np.median(f["tot"].mean(axis=0) / h["tot"].mean(axis=0)))
-                mres[s] = {"uplift": {str(T): float(up[i]) for i, T in enumerate(TS)}, "dry_spell_median_change": d50,
+                rxm = float(np.median(f["rx"].mean(axis=0) / h["rx"].mean(axis=0)))  # no curve fitting involved
+                point[s].setdefault("rxm", []).append(rxm)
+                mres[s] = {"uplift": {str(T): float(up[i]) for i, T in enumerate(TS)}, "rx1day_mean_ratio": rxm, "dry_spell_median_change": d50,
                            "dry_spell_p90_change": d90, "total_ratio": tot}
                 point[s]["rl"].append(up); point[s]["dry50"].append(d50); point[s]["dry90"].append(d90); point[s]["tot"].append(tot)
                 bh, bf = ex.boot_indices(len(BASE), NB, rng), ex.boot_indices(len(FUT), NB, rng)
@@ -153,6 +160,10 @@ def main():
                     pooled[s]["dry90"].append(np.median(np.percentile(f["dry"][bf[b]], 90, axis=0) - np.percentile(h["dry"][bh[b]], 90, axis=0)))
                 for i, T in enumerate(TS):
                     cells_out[a]["uplift"][s].setdefault(str(T), {})[m] = [round(float(v), 3) for v in (rl_f[i] / rl_h[i])]
+                if a == "sokoto_rima":  # per-cell dry-spell change, days, for the dry-spell map
+                    dc = cells_out[a].setdefault("dry_change", {s2: {"median": {}, "p90": {}} for s2 in SCENS})
+                    dc[s]["median"][m] = [round(float(v), 1) for v in np.median(f["dry"], axis=0) - np.median(h["dry"], axis=0)]
+                    dc[s]["p90"][m] = [round(float(v), 1) for v in np.percentile(f["dry"], 90, axis=0) - np.percentile(h["dry"], 90, axis=0)]
                 rows.append([a, m, s] + [round(float(up[i]), 3) for i in range(len(TS))] + [round(d50, 1), round(d90, 1), round(tot, 3),
                             round(mres["historical"]["rl_bias_vs_chirps"]["25"], 3)])
             A["models"][m] = mres
@@ -174,9 +185,14 @@ def main():
                 for k in ("dry50", "dry90"):
                     E[k] = {"models_median": float(np.median(point[s][k])), "models_p10": float(np.percentile(point[s][k], 10)),
                             "models_p90": float(np.percentile(point[s][k], 90)), "combined": summarise(pooled[s][k])}
+            E["rx1day_mean_ratio"] = {"models_median": float(np.median(point[s]["rxm"])), "models_p10": float(np.percentile(point[s]["rxm"], 10)),
+                                      "models_p90": float(np.percentile(point[s]["rxm"], 90))}
             E["total_ratio"] = {"models_median": float(np.median(point[s]["tot"])), "models_p10": float(np.percentile(point[s]["tot"], 10)),
                                 "models_p90": float(np.percentile(point[s]["tot"], 90))}
             A["ensemble"][s] = E
+        nul = [M["historical"]["null_ratio"] for M in A["models"].values() if "null_ratio" in M["historical"]]
+        A["null_test"] = {str(T): {"median": float(np.median([n[str(T)] for n in nul])), "min": float(np.min([n[str(T)] for n in nul])),
+                                   "max": float(np.max([n[str(T)] for n in nul])), "n_models": len(nul)} for T in TS}
         res["areas"][a] = A
     os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
     json.dump(res, open(os.path.join(ROOT, "data", "results.json"), "w"), indent=1)
