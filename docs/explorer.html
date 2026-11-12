@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="only light">
+<title>Explorer · Floods, drought and design rainfall</title>
+<meta name="description" content="Explore the study's floods, drought and design rainfall map by map: layers, years, cells and the 23 climate models.">
+<link rel="preconnect" href="https://api.fontshare.com"><link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&amp;display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@500,700&amp;display=swap">
+<link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
+<link rel="stylesheet" href="assets/atlas.css">
+<link rel="stylesheet" href="assets/explorer.css">
+</head>
+<body class="explorer">
+<a class="skip" href="#map">Skip to the map</a>
+
+<header class="appbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c3-4 6 2 9-2s6 2 9-2"/><path d="M3 11c3-4 6 2 9-2s6 2 9-2"/></svg></span>
+    <div class="brand-text">
+      <h1>Floods, drought and design rainfall</h1>
+      <p>Floods 2018–2023 · Drought 1981–2024 · Design rainfall 2041–2070</p>
+    </div>
+  </div>
+  <div class="appbar-actions">
+    <span class="data-chip" id="data-chip"><span class="dot-ok" aria-hidden="true"></span><span id="data-chip-text">Results v0.3</span></span>
+    <a class="btn" href="index.html">← Study</a>
+    <button type="button" class="btn" id="btn-data">Data</button>
+    <button type="button" class="btn" id="btn-share">Share</button>
+    <button type="button" class="btn" id="btn-methods">Methods</button>
+    <button type="button" class="btn" id="btn-about">About</button>
+  </div>
+</header>
+
+<div class="shell">
+  <section class="map-pane" aria-label="Map">
+    <div id="map" class="map-canvas" role="region" aria-label="Interactive map of the selected layer"></div>
+
+    <div class="map-float layers" role="group" aria-label="Layer group">
+      <div class="seg seg-group" id="seg-group"></div>
+      <div class="seg seg-layer" id="seg-layer" role="group" aria-label="Layer"></div>
+    </div>
+
+    <div class="map-float basemap">
+      <label for="basemap-select" class="sr-only">Basemap</label>
+      <select id="basemap-select">
+        <option value="canvas">Canvas</option>
+        <option value="satellite">Satellite</option>
+        <option value="topo">Topographic</option>
+      </select>
+    </div>
+
+    <div class="map-float legend" id="legend" aria-live="polite"></div>
+
+    <div class="map-float timeline" id="controls">
+      <div class="ctl-row" id="ctl-year" hidden>
+        <button type="button" class="btn play" id="year-play" aria-label="Play through the years">▶</button>
+        <input type="range" id="year" aria-label="Year">
+        <output id="year-out" for="year">2024</output>
+      </div>
+      <div class="ctl-row" id="ctl-future" hidden>
+        <div class="seg" id="seg-scen" role="group" aria-label="Scenario"></div>
+        <div class="seg" id="seg-t" role="group" aria-label="Return period"></div>
+      </div>
+      <div class="ctl-row" id="ctl-flood" hidden>
+        <div class="seg" id="seg-flood-year" role="group" aria-label="Year for the flood curve"></div>
+      </div>
+      <p class="ctl-note" id="ctl-note"></p>
+    </div>
+
+    <p class="map-error" id="map-error" role="alert" hidden></p>
+  </section>
+
+  <aside class="panel" aria-label="Analysis">
+    <div class="unit">
+      <p class="eyebrow" id="area-label">Study area</p>
+      <div class="chips" id="area-chips" role="group" aria-label="Study area"></div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Panels">
+      <button type="button" role="tab" id="tab-overview" aria-selected="true" aria-controls="p-overview" data-tab="overview">Overview</button>
+      <button type="button" role="tab" id="tab-cell" aria-selected="false" aria-controls="p-cell" data-tab="cell" tabindex="-1">Cell</button>
+      <button type="button" role="tab" id="tab-series" aria-selected="false" aria-controls="p-series" data-tab="series" tabindex="-1">Time series</button>
+      <button type="button" role="tab" id="tab-stats" aria-selected="false" aria-controls="p-stats" data-tab="stats" tabindex="-1">Statistics</button>
+      <button type="button" role="tab" id="tab-compare" aria-selected="false" aria-controls="p-compare" data-tab="compare" tabindex="-1">Compare models</button>
+    </div>
+    <div class="tab-body">
+      <section role="tabpanel" id="p-overview" aria-labelledby="tab-overview" class="tp" data-tab="overview"><div id="overview"></div></section>
+      <section role="tabpanel" id="p-cell" aria-labelledby="tab-cell" class="tp" data-tab="cell" hidden><div id="cell"></div></section>
+      <section role="tabpanel" id="p-series" aria-labelledby="tab-series" class="tp" data-tab="series" hidden><div id="series"></div></section>
+      <section role="tabpanel" id="p-stats" aria-labelledby="tab-stats" class="tp" data-tab="stats" hidden><div id="stats"></div></section>
+      <section role="tabpanel" id="p-compare" aria-labelledby="tab-compare" class="tp" data-tab="compare" hidden><div id="compare"></div></section>
+    </div>
+  </aside>
+</div>
+
+<dialog id="dlg-data" aria-labelledby="dlg-data-t">
+  <form method="dialog" class="dlg-close"><button class="btn" aria-label="Close">Close</button></form>
+  <h2 id="dlg-data-t">Data</h2>
+  <ul class="downloads">
+    <li><a href="data/a.json" download>a.json</a><span>Part A: monthly areas, thresholds, Sentinel-2 checks</span></li>
+    <li><a href="data/b.json" download>b.json</a><span>Part B: basin rainfall, SPI, events, TerraClimate, NDVI</span></li>
+    <li><a href="data/b_cells.json" download>b_cells.json</a><span>Part B per cell: SPI-12, rainfall, events, NDVI</span></li>
+    <li><a href="data/c.json" download>c.json</a><span>Part C: return levels, uplift, decomposition, models</span></li>
+    <li><a href="data/cells.json" download>cells.json</a><span>Part C per cell: return levels, uplift, dry spells</span></li>
+    <li><a href="data/model_table.csv" download>model_table.csv</a><span>Uplift and dry-spell change, every model</span></li>
+  </ul>
+</dialog>
+
+<dialog id="dlg-methods" aria-labelledby="dlg-methods-t">
+  <form method="dialog" class="dlg-close"><button class="btn" aria-label="Close">Close</button></form>
+  <h2 id="dlg-methods-t">Methods in brief</h2>
+  <p>Floods: Sentinel-1 radar (VH below −18 dB, or both polarisations), checked against Sentinel-2 in 2022. Dry-season radar water is shown only to illustrate its errors.</p>
+  <p>Drought: SPI from CHIRPS v2.0 with gamma fits to 1991–2020, run theory for events, MODIS NDVI and TerraClimate as independent checks.</p>
+  <p>Future rainfall: 23 NEX-GDDP-CMIP6 models; GEV by L-moments per 0.25° cell; uplift is the 2041–2070 value divided by the model's own 1985–2014 value.</p>
+  <p>Full methods, limits and references are on the <a href="index.html#methods">study page</a>.</p>
+</dialog>
+
+<dialog id="dlg-about" aria-labelledby="dlg-about-t">
+  <form method="dialog" class="dlg-close"><button class="btn" aria-label="Close">Close</button></form>
+  <h2 id="dlg-about-t">About this explorer</h2>
+  <p>Every value here is read from the results files, which the study's scripts write. Nothing is typed in. Maps show cells as they were computed; read patterns, not single cells, for the design-rainfall layers, where each cell has a 30-year sample.</p>
+  <p>Built by David Oloyede. Code and data are in the <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes">repository</a>.</p>
+</dialog>
+
+<script src="vendor/leaflet-1.9.4/leaflet.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/explorer.js"></script>
+</body>
+</html>
