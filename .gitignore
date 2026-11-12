@@ -1,3 +1,4 @@
 part_c/cache/
 __pycache__/
 *.pyc
+part_a/cache/
