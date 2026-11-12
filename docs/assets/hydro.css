@@ -155,3 +155,6 @@ path.cell { transition: fill 0.45s ease, stroke 0.2s ease; animation: cell-in 0.
 /* the sticky header stays above Leaflet controls (z-index 1000) */
 .site-header { z-index: 1100; }
 .chart .rowlab, .chart .rowsub { paint-order: stroke; stroke: #f5f5f4; stroke-width: 4px; stroke-linejoin: round; }
+.fig-map.tall { height: 760px; }
+.leaflet-image-layer.overlay { image-rendering: pixelated; }
+@media (max-width: 860px) { .fig-map.tall { height: 560px; } }

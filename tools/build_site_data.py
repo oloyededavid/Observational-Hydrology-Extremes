@@ -1,7 +1,7 @@
 """Collect the computed results into docs/data/ for the website. Every number on the site comes from here.
 
 Inputs: part_b/data/rain_spi.json, part_c/data/{results,cells_results,gauges,cells}.json,
-part_c/data/domains.geojson, and part_a/outputs/ and part_b/outputs/ once the v2 notebooks have been run.
+part_c/data/domains.geojson, and part_a/data/ and part_b/data/ (Parts A and B recomputed from Planetary Computer).
 Run: python tools/build_site_data.py
 """
 import json, os, shutil
@@ -19,8 +19,8 @@ def main():
     os.makedirs(DOCS, exist_ok=True)
     site = {
         "part_b_rain": load("part_b", "data", "rain_spi.json"),
-        "part_b_v2": load("part_b", "outputs", "part_b_results.json"),
-        "part_a_v2": load("part_a", "outputs", "part_a_results.json"),
+        "part_a": load("part_a", "data", "results.json"),
+        "part_b_ndvi": load("part_b", "data", "ndvi.json"),
         "part_c": load("part_c", "data", "results.json"),
         "gauges": load("part_c", "data", "gauges.json"),
     }
@@ -32,6 +32,11 @@ def main():
     spc = load("part_b", "data", "rain_spi_cells.json")
     if spc:
         json.dump(spc, open(os.path.join(DOCS, "spi_cells.json"), "w"), separators=(",", ":"))
+    os.makedirs(os.path.join(DOCS, "part_a"), exist_ok=True)
+    for f in ("frequency.png", "floodplain.png", "water_2022-02.png", "water_2022-10.png", "flood_monthly.csv"):
+        src = os.path.join(ROOT, "part_a", "data", f)
+        if os.path.exists(src):
+            shutil.copy(src, os.path.join(DOCS, "part_a", f))
     for f in ("model_table.csv",):
         src = os.path.join(ROOT, "part_c", "data", f)
         if os.path.exists(src):

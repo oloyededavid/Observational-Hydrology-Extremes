@@ -58,7 +58,7 @@
             <li><b class="hl"><span data-v="sumDry">—</span></b><span class="f-text" data-v="sumDryText">—</span></li>
             <li><b class="hl"><span data-v="sumTrend">—</span> mm per decade</b><span class="f-text">Sokoto–Rima rainfall has risen since the 1980s droughts (CHIRPS, 1981–2024). Since 2000, only <span data-v="droughtYears">—</span> were drought years on a gamma-fitted index.</span></li>
         </ol>
-        <p class="small">No rain gauge with a usable record after 1980 was found in either basin, so present-day design rainfall here comes from satellite rainfall, which understates the heaviest days. Claims in Parts A and B that the code did not support have been withdrawn; each section says which.</p>
+        <p class="small">No rain gauge with a usable record after 1980 was found in either basin, so present-day design rainfall here comes from satellite rainfall, which understates the heaviest days. Claims in Parts A and B that the code did not support have been recomputed from the satellite archives; each section says what changed.</p>
     </section>
 
     <section id="introduction" data-reveal aria-labelledby="h-intro">
@@ -71,7 +71,7 @@
         <h2 id="h-area"><span class="n">2</span>Study areas</h2>
         <p>The <strong>Lower Niger–Benue reach</strong> runs about 240 km from the Niger–Benue confluence at Lokoja south to Ogbaru (<span class="num" data-v="nbArea">—</span> km², 6.50–7.30° E, 5.80–8.00° N). It is a river corridor, not a whole basin: its floods are driven by rain far upstream, but its own drains and road crossings are sized by the rain that falls on it. The <strong>Sokoto–Rima basin</strong> (<span class="num" data-v="srArea">—</span> km²) is the HydroBASINS level-4 unit that contains Sokoto <span class="cite">(Lehner &amp; Grill, 2013)</span>. It spans north-west Nigeria and south-central Niger, from Sudanian savanna in the south to the Sahel, with one rainy season from about May to October.</p>
     </section>
-    <figure class="wide reveal" id="fig-1" data-source="HydroBASINS level 4 (Lehner &amp; Grill, 2013); Part A box from the Part A notebook; basemap © Esri">
+    <figure class="wide reveal" id="fig-areas" data-source="HydroBASINS level 4 (Lehner &amp; Grill, 2013); Part A box from the Part A notebook; basemap © Esri">
         <div class="panel">
         <div class="map study-map" id="study-map" role="group" aria-label="Map of Nigeria and Niger showing the Lower Niger–Benue reach and the Sokoto–Rima basin, with the two rain gauges used"></div>
         </div>
@@ -80,9 +80,9 @@
 
     <section id="floods" data-reveal aria-labelledby="h-floods">
         <h2 id="h-floods"><span class="n">3</span>Part A: floods on the Lower Niger–Benue</h2>
-        <p>Calm water reflects radar away from the satellite, so flooded ground looks dark in Sentinel-1 images whatever the cloud <span class="cite">(Torres et al., 2012)</span>. Each image's VH backscatter was smoothed and every pixel darker than −18 dB on slopes under 5° (MERIT Hydro, <span class="cite">Yamazaki et al., 2019</span>) was called water. Comparing the dry season with the 2022 rainy season shows the floodplain filling (Figure 3); repeating this for every August–November image of 2018–2023 gives how often each pixel was under water (Figure 4).</p>
+        <p>Calm water reflects radar away from the satellite, so flooded ground looks dark in Sentinel-1 images whatever the cloud <span class="cite">(Torres et al., 2012)</span>. Each image's VH backscatter was smoothed and every pixel darker than −18 dB on slopes under 5° (MERIT Hydro, <span class="cite">Yamazaki et al., 2019</span>) was called water. Comparing the dry season with the 2022 rainy season shows the floodplain filling (Figure <span data-fig="fig-radar">3</span>); repeating this for every August–November image of 2018–2023 gives how often each pixel was under water (Figures <span data-fig="fig-flood-map">4</span> and <span data-fig="fig-freq">6</span>).</p>
     </section>
-    <figure class="wide reveal" id="fig-2" data-source="Part A of the October 2026 report (Figure 1.0); MERIT Hydro (Yamazaki et al., 2019) via Google Earth Engine, part_a/waves_niger_benue_hydrodynamics.ipynb">
+    <figure class="wide reveal" id="fig-a-setting" data-source="Part A of the October 2026 report (Figure 1.0); MERIT Hydro (Yamazaki et al., 2019) via Google Earth Engine, part_a/waves_niger_benue_hydrodynamics.ipynb">
         <div class="panel">
         <div class="img-pair">
             <img class="zoomable" src="assets/fig/a-study-area-report.jpg" alt="Map of the Niger and Benue rivers meeting at Lokoja, with a 100 km scale bar, north arrow and an inset of Nigeria" width="948" height="807" loading="lazy">
@@ -91,57 +91,78 @@
         </div>
         <figcaption><b>Figure 2.</b> The Lower Niger–Benue reach. Left: the Niger and Benue meeting at Lokoja, from the October report. Right: MERIT Hydro elevation of the study box, 0–400 m; the low corridor along the river is the ground that floods first.</figcaption>
     </figure>
-    <figure class="wide reveal" id="fig-3" data-source="Sentinel-1 GRD via Google Earth Engine; part_a/waves_niger_benue_hydrodynamics.ipynb">
+    <figure class="wide reveal" id="fig-radar" data-source="Sentinel-1 GRD via Google Earth Engine; part_a/waves_niger_benue_hydrodynamics.ipynb">
         <div class="panel">
         <img class="zoomable" src="assets/fig/a-dual-state-hydrology.jpg" alt="Two Sentinel-1 radar images of the reach: January–March 2022 with a narrow dark river, and September–November 2022 with wide dark flooded areas along the river" width="1600" height="1102" loading="lazy">
         </div>
         <figcaption><b>Figure 3.</b> Sentinel-1 VH backscatter, median of January–March 2022 (left) and September–November 2022 (right). Dark is smooth water. The panel title says γ⁰; Earth Engine serves σ⁰, which is what was used.</figcaption>
     </figure>
-    <figure class="wide reveal" id="fig-4" data-source="Sentinel-1 GRD and MERIT Hydro via Google Earth Engine; part_a/waves_niger_benue_hydrodynamics.ipynb">
+    <figure class="wide reveal" id="fig-flood-map" data-source="Sentinel-1 RTC, JRC Global Surface Water v1.3 and Copernicus DEM via Microsoft Planetary Computer; part_a/scripts/a01_flood_pc.py">
+        <div class="panel">
+        <div class="fig-bar"><div class="seg" id="fm-layer" role="group" aria-label="Map layer"></div></div>
+        <div class="map-wrap">
+            <div class="map fig-map tall" id="flood-map" role="group" aria-label="Map of the Lower Niger–Benue reach showing Sentinel-1 water: how often each place was flooded in August–November 2018–2023, or the water in February and October 2022"></div>
+            <div class="ex-legend" id="fm-legend" aria-live="polite"></div>
+        </div>
+        </div>
+        <figcaption><b>Figure 4.</b> Water on the Lower Niger–Benue reach from Sentinel-1, recomputed: how often each 110 m cell was water in the August–November images of 2018–2023, or the water in February (dry season) and October (flood season) 2022. The dashed outline is the floodplain, ground JRC has seen under water at least once since 1984. The straight line crossing the reach appears in every image and is not a river.</figcaption>
+    </figure>
+    <section aria-labelledby="h-a-curve">
+        <h3 id="h-a-curve"><span class="n">3.1</span>The flood curve, measured</h3>
+        <p data-v="aCurveText">—</p>
+    </section>
+    <figure class="wide reveal" id="fig-flood-curve" data-source="Sentinel-1 RTC via Microsoft Planetary Computer; part_a/data/flood_monthly.csv">
+        <div class="panel">
+        <div class="fig-bar"><div class="seg" id="fc-year" role="group" aria-label="Year"></div></div>
+        <div id="floodchart" class="chart"></div>
+        <ul class="keylist inline" id="fc-key"></ul>
+        </div>
+        <figcaption><b>Figure 5.</b> Monthly water area below −18 dB, 2018–2023, km²: inside the floodplain (blue; band = lowest to highest of the six years) and on dry ground outside it (grey), which the threshold wrongly counts as water. Select a year to see it alone; hover a point for the month's value and image count.</figcaption>
+    </figure>
+    <figure class="wide reveal" id="fig-freq" data-source="Sentinel-1 GRD and MERIT Hydro via Google Earth Engine; part_a/waves_niger_benue_hydrodynamics.ipynb">
         <div class="panel">
         <div class="img-pair">
             <img class="zoomable" src="assets/fig/a-5-year-inundation-frequency-surface.jpg" alt="Map of how often each pixel of the reach was water in August–November 2018–2023, highest along the main channel and in floodplain lakes" width="1134" height="1600" loading="lazy">
             <img class="zoomable" src="assets/fig/a-hydro-geomorphic-catchment-vulnerability-hotspots.jpg" alt="Map of the index that multiplies flood frequency by low elevation, highest along the river corridor" width="1199" height="1600" loading="lazy">
         </div>
         </div>
-        <figcaption><b>Figure 4.</b> Left: share of August–November images, 2018–2023 (six seasons; the panel says five years), in which each pixel was water. Right: that frequency multiplied by a low-elevation term, 1 − elevation/100 m. It uses no population or assets, so it shows where frequent flooding meets low ground, not risk.</figcaption>
+        <figcaption><b>Figure 6.</b> Left: share of August–November images, 2018–2023 (six seasons; the panel says five years), in which each pixel was water. Right: that frequency multiplied by a low-elevation term, 1 − elevation/100 m. It uses no population or assets, so it shows where frequent flooding meets low ground, not risk.</figcaption>
     </figure>
     <section aria-labelledby="h-a-status">
-        <h3 id="h-a-status"><span class="n">3.1</span>What the review changed</h3>
-        <p>The October 2026 report built on these maps made claims the code does not support. They are withdrawn here:</p>
+        <h3 id="h-a-status"><span class="n">3.2</span>What the review changed</h3>
+        <p>The October 2026 report built on these maps made claims the code did not support. Each is now replaced by a measured value:</p>
         <ul class="status-list">
-            <li><b>Seasonal flood curve: withdrawn.</b> Its twelve monthly areas were typed into the notebook, not measured, so the curve and the conclusions drawn from it are not used here. A <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes/blob/main/part_a/niger_benue_flood_v2.ipynb">corrected notebook</a> that measures it from the imagery is in the repository for anyone with Earth Engine access.</li>
-            <li><b>Agreement with JRC Global Surface Water: withdrawn.</b> The 99.36% recall of an 810.85 km² baseline had no code behind it, so no agreement figure is given. The corrected notebook includes the comparison <span class="cite">(Pekel et al., 2016)</span>.</li>
-            <li><b>Method wording.</b> The threshold is fixed (−18 dB), not adaptive; only VH is used; flood frequency depends on how many images cover each pixel, and permanent water was not removed. Version 2 removes it and records image counts.</li>
+            <li><b>Seasonal flood curve.</b> Its twelve monthly areas had been typed into the notebook. Measured from the imagery, the flood rise is real but smaller, and the same threshold also flags dry ground as water (Figure <span data-fig="fig-flood-curve">5</span>).</li>
+            <li><b>Agreement with JRC Global Surface Water.</b> The report's 99.36% recall had no code behind it. <span data-v="aJrcText">—</span></li>
+            <li><b>Method.</b> The threshold is fixed (−18 dB on VH), not adaptive. The recomputation uses Sentinel-1 RTC (terrain-corrected γ⁰) from Microsoft Planetary Computer instead of Earth Engine's σ⁰, which differ by about 1 dB on flat ground, the Copernicus DEM for the slope mask, and JRC v1.3 (to 2020).</li>
         </ul>
-        <p class="small">No river gauge or mapped flood record was available for this reach, so none of Part A is validated against the ground.</p>
+        <p class="small">No river gauge or mapped flood record was available for this reach, so Part A is checked only against another satellite product, not against the ground.</p>
     </section>
-    <div id="a-results" hidden></div>
 
     <section id="droughts" data-reveal aria-labelledby="h-droughts">
         <h2 id="h-droughts"><span class="n">4</span>Part B: drought in the Sokoto–Rima basin</h2>
         <p>Rainfall over the basin averages <span class="num" data-v="srMean">—</span> mm a year (CHIRPS v2.0, 1981–2024; <span class="cite">Funk et al., 2015</span>) and varies by <span class="num" data-v="srCv">—</span>% from year to year. Drought is measured with the Standardized Precipitation Index <span class="cite">(McKee et al., 1993)</span>: a gamma distribution is fitted to the annual totals of 1991–2020 and each year's probability is turned into a standard score. Below −1 is drought.</p>
     </section>
-    <figure class="wide reveal" id="fig-5" data-source="MERIT DEM and WWF HydroSHEDS via Google Earth Engine; part_b/sokoto_rima_drought.ipynb">
+    <figure class="wide reveal" id="fig-b-setting" data-source="MERIT DEM and WWF HydroSHEDS via Google Earth Engine; part_b/sokoto_rima_drought.ipynb">
         <div class="panel">
         <div class="img-pair">
             <img class="zoomable" src="assets/fig/b-study-area-physiography.jpg" alt="Elevation map of the Sokoto–Rima basin, low in the west and rising to over 700 m in the south-east, with a scale bar, north arrow and globe inset" width="1551" height="1600" loading="lazy">
             <img class="zoomable" src="assets/fig/b-sokoto-rima-hydrography-map.jpg" alt="The same elevation map with HydroSHEDS streams drawn in blue" width="1541" height="1600" loading="lazy">
         </div>
         </div>
-        <figcaption><b>Figure 5.</b> The Sokoto–Rima basin: elevation (MERIT DEM, left) and the HydroSHEDS stream network (right), from the original notebook. Ground falls from over 700 m in the south-east to under 250 m in the west. Both maps stop at 14.5° N; the basin continues into Niger to 16.15° N (Figure 1).</figcaption>
+        <figcaption><b>Figure 7.</b> The Sokoto–Rima basin: elevation (MERIT DEM, left) and the HydroSHEDS stream network (right), from the original notebook. Ground falls from over 700 m in the south-east to under 250 m in the west. Both maps stop at 14.5° N; the basin continues into Niger to 16.15° N (Figure <span data-fig="fig-areas">1</span>).</figcaption>
     </figure>
-    <figure class="wide reveal" id="fig-6" data-source="CHIRPS v2.0 daily, 0.25°, basin mean; part_b/scripts/b01_rain_spi.py">
+    <figure class="wide reveal" id="fig-spi" data-source="CHIRPS v2.0 daily, 0.25°, basin mean; part_b/scripts/b01_rain_spi.py">
         <div class="panel">
         <div id="spichart" class="chart"></div>
         <ul class="keylist inline" id="spi-key"></ul>
         </div>
-        <figcaption><b>Figure 6.</b> Standardized Precipitation Index of annual rainfall, Sokoto–Rima basin, 1981–2024, gamma-fitted to 1991–2020. Hover or tap a bar for the year's rainfall.</figcaption>
+        <figcaption><b>Figure 8.</b> Standardized Precipitation Index of annual rainfall, Sokoto–Rima basin, 1981–2024, gamma-fitted to 1991–2020. Hover or tap a bar for the year's rainfall.</figcaption>
     </figure>
     <section aria-labelledby="h-b-findings">
         <p>The 1980s stand out: <span data-v="drought80s">—</span>. Since 2000 rainfall has been higher, and rising by <span class="num" data-v="srTrend">—</span> mm per decade over the whole record (Mann–Kendall τ = <span data-v="srTau">—</span>, <var>p</var> = <span data-v="srTauP">—</span>). The original notebook standardised annual totals as z-scores of 2000–2025 and called them SPI; over 2000–2024 the two indices put the same years in the same drought classes except <span data-v="classDiff">—</span>, so its drought years stand, but its label was wrong.</p>
     </section>
-    <figure class="wide reveal" id="fig-7" data-source="CHIRPS v2.0 daily, 0.25°; SPI fitted per cell to 1991–2020; part_b/scripts/b01_rain_spi.py">
+    <figure class="wide reveal" id="fig-drought-map" data-source="CHIRPS v2.0 daily, 0.25°; SPI fitted per cell to 1991–2020; part_b/scripts/b01_rain_spi.py">
         <div class="panel">
         <div class="fig-bar">
             <div class="seg" id="dm-layer" role="group" aria-label="Map layer"></div>
@@ -156,13 +177,20 @@
             <div class="ex-legend" id="dm-legend" aria-live="polite"></div>
         </div>
         </div>
-        <figcaption><b>Figure 7.</b> Drought across the Sokoto–Rima basin, cell by cell: SPI of each year's rainfall (gamma-fitted per cell to 1991–2020), mean annual rainfall, or its year-to-year variability (coefficient of variation), CHIRPS 1981–2024. Move the slider or press play to step through the years. The whole basin is shown, including its northern part in Niger, which the original figure cut off at 14.5° N.</figcaption>
+        <figcaption><b>Figure 9.</b> Drought across the Sokoto–Rima basin, cell by cell: SPI of each year's rainfall (gamma-fitted per cell to 1991–2020), mean annual rainfall, or its year-to-year variability (coefficient of variation), CHIRPS 1981–2024. Move the slider or press play to step through the years. The whole basin is shown, including its northern part in Niger, which the original figure cut off at 14.5° N.</figcaption>
     </figure>
     <section aria-labelledby="h-b-ndvi">
         <h3 id="h-b-ndvi"><span class="n">4.1</span>Vegetation and rainfall</h3>
-        <p>The report found that annual MODIS NDVI follows rainfall (<var>r</var> = 0.594, <var>p</var> = 0.0014) and called this proof of coupling. Both series rise over the period, rainfall with the Sahel recovery and vegetation with the region's re-greening <span class="cite">(Dardel et al., 2014)</span>, and a shared trend alone can produce such a correlation. The test was not repeated on detrended series, so the correlation is reported only as a correlation: vegetation and rainfall moved together, but how much of that is year-to-year response rather than shared trend is not known. A <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes/blob/main/part_b/sokoto_rima_drought_v2.ipynb">corrected notebook</a> that runs the detrended test is in the repository.</p>
-        <div id="b-ndvi" hidden></div>
+        <p data-v="bNdviText">—</p>
     </section>
+    <figure class="wide reveal" id="fig-ndvi" data-source="MODIS MOD13Q1 v6.1 via Microsoft Planetary Computer; CHIRPS v2.0; part_b/scripts/b02_ndvi_pc.py">
+        <div class="panel">
+        <div class="fig-bar"><div class="seg" id="nd-mode" role="group" aria-label="Series"></div></div>
+        <div id="ndvichart" class="chart"></div>
+        <ul class="keylist inline" id="nd-key"></ul>
+        </div>
+        <figcaption><b>Figure 10.</b> Growing-season greenness (MODIS NDVI, July–October) and annual rainfall in the Sokoto–Rima basin, 2001–2024, each as a standard score so they share one axis. "Trend removed" subtracts each series' straight-line trend: the two still move together year to year. Growing-season composites that were missing or more than half cloud-covered (<span data-v="ndviFilled">—</span> of 168) are filled from that date's average, shifted by the year's anomaly on its other dates.</figcaption>
+    </figure>
 
     <section id="design" data-reveal aria-labelledby="h-design">
         <h2 id="h-design"><span class="n">5</span>Part C: design rainfall under future climate</h2>
@@ -192,19 +220,19 @@
         <h3 id="h-c-check"><span class="n">5.2</span>Do the models reproduce today's extremes?</h3>
         <p data-v="checkText">—</p>
     </section>
-    <figure class="wide reveal" id="fig-8" data-source="NEX-GDDP-CMIP6 (NASA), CHIRPS v2.0, GHCN-Daily; part_c/scripts/c05_analysis.py">
+    <figure class="wide reveal" id="fig-check" data-source="NEX-GDDP-CMIP6 (NASA), CHIRPS v2.0, GHCN-Daily; part_c/scripts/c05_analysis.py">
         <div class="panel">
         <div class="fig-bar"><div class="seg" id="check-area" role="group" aria-label="Study area"></div></div>
         <div id="checkchart" class="chart"></div>
         </div>
-        <figcaption><b>Figure 8.</b> Each model's 25-year daily rainfall for 1985–2014 divided by CHIRPS's, median over the study area's cells. 1 means agreement; above 1, the model is wetter in its extremes. In the Sokoto–Rima basin, open circles compare each model with the two gauges, 1950–1980.</figcaption>
+        <figcaption><b>Figure 11.</b> Each model's 25-year daily rainfall for 1985–2014 divided by CHIRPS's, median over the study area's cells. 1 means agreement; above 1, the model is wetter in its extremes. In the Sokoto–Rima basin, open circles compare each model with the two gauges, 1950–1980.</figcaption>
     </figure>
     <section aria-labelledby="h-c-change">
         <h3 id="h-c-change"><span class="n">5.3</span>How much design rainfall changes</h3>
         <p data-v="changeText">—</p>
         <p data-v="physText">—</p>
     </section>
-    <figure class="wide reveal" id="fig-9" data-source="NEX-GDDP-CMIP6 (NASA); part_c/scripts/c05_analysis.py">
+    <figure class="wide reveal" id="fig-uplift" data-source="NEX-GDDP-CMIP6 (NASA); part_c/scripts/c05_analysis.py">
         <div class="panel">
         <div class="fig-bar">
             <div class="seg" id="up-area" role="group" aria-label="Study area"></div>
@@ -212,9 +240,9 @@
         </div>
         <div id="upchart" class="chart"></div>
         </div>
-        <figcaption><b>Figure 9.</b> Uplift factor (Eq. 1) for the selected return period, 2041–2070 against 1985–2014. Each dot is one model; the bar is the median and the band the 5–95% range including sampling uncertainty.</figcaption>
+        <figcaption><b>Figure 12.</b> Uplift factor (Eq. 1) for the selected return period, 2041–2070 against 1985–2014. Each dot is one model; the bar is the median and the band the 5–95% range including sampling uncertainty.</figcaption>
     </figure>
-    <figure class="wide reveal" id="fig-10" data-source="NEX-GDDP-CMIP6 (NASA), CHIRPS v2.0; part_c/scripts/c05_analysis.py">
+    <figure class="wide reveal" id="fig-uplift-map" data-source="NEX-GDDP-CMIP6 (NASA), CHIRPS v2.0; part_c/scripts/c05_analysis.py">
         <div class="panel">
         <div class="fig-bar">
             <div class="seg" id="um-area" role="group" aria-label="Study area"></div>
@@ -227,7 +255,7 @@
             <div class="ex-legend" id="um-legend" aria-live="polite"></div>
         </div>
         </div>
-        <figcaption><b>Figure 10.</b> Where design rainfall changes: today's daily rainfall for the selected return period (CHIRPS, 1985–2014), the median uplift factor across the 23 models, or how many of them project an increase, cell by cell. Hover a cell for its value; the <a href="explore.html">explorer</a> shows every model.</figcaption>
+        <figcaption><b>Figure 13.</b> Where design rainfall changes: today's daily rainfall for the selected return period (CHIRPS, 1985–2014), the median uplift factor across the 23 models, or how many of them project an increase, cell by cell. Hover a cell for its value; the <a href="explore.html">explorer</a> shows every model.</figcaption>
     </figure>
     <figure class="tablefig">
         <figcaption id="cap-t2"><b>Table 2.</b> Design daily rainfall, mm: today (CHIRPS, 1985–2014) and 2041–2070 (Eq. 2), median and 5–95% range.</figcaption>
@@ -243,7 +271,7 @@
         <h3 id="h-c-dry"><span class="n">5.4</span>Dry spells in the Sokoto–Rima rainy season</h3>
         <p data-v="dryText">—</p>
     </section>
-    <figure class="wide reveal" id="fig-11" data-source="NEX-GDDP-CMIP6 (NASA); part_c/scripts/c05_analysis.py">
+    <figure class="wide reveal" id="fig-dry-map" data-source="NEX-GDDP-CMIP6 (NASA); part_c/scripts/c05_analysis.py">
         <div class="panel">
         <div class="fig-bar">
             <div class="seg" id="ds-kind" role="group" aria-label="Which dry spell"></div>
@@ -254,13 +282,13 @@
             <div class="ex-legend" id="ds-legend" aria-live="polite"></div>
         </div>
         </div>
-        <figcaption><b>Figure 11.</b> Where rainy-season dry spells lengthen or shorten: median change across the 23 models in the longest June–September dry spell, days, 2041–2070 against 1985–2014, for a typical year or a 1-in-10 dry year. Hover a cell for its value and how many models agree on the direction.</figcaption>
+        <figcaption><b>Figure 14.</b> Where rainy-season dry spells lengthen or shorten: median change across the 23 models in the longest June–September dry spell, days, 2041–2070 against 1985–2014, for a typical year or a 1-in-10 dry year. Hover a cell for its value and how many models agree on the direction.</figcaption>
     </figure>
-    <figure class="wide reveal" id="fig-12" data-source="NEX-GDDP-CMIP6 (NASA); part_c/scripts/c05_analysis.py">
+    <figure class="wide reveal" id="fig-dry" data-source="NEX-GDDP-CMIP6 (NASA); part_c/scripts/c05_analysis.py">
         <div class="panel">
         <div id="drychart" class="chart"></div>
         </div>
-        <figcaption><b>Figure 12.</b> Change in the longest June–September dry spell, days, 2041–2070 against 1985–2014, Sokoto–Rima basin: a typical year (median) and a 1-in-10 dry year (90th percentile). Each dot is one model.</figcaption>
+        <figcaption><b>Figure 15.</b> Change in the longest June–September dry spell, days, 2041–2070 against 1985–2014, Sokoto–Rima basin: a typical year (median) and a 1-in-10 dry year (90th percentile). Each dot is one model.</figcaption>
     </figure>
 
     <section id="discussion" data-reveal aria-labelledby="h-disc">
@@ -277,7 +305,7 @@
             <li><b>Downscaled, bias-corrected models.</b> NEX-GDDP-CMIP6 is corrected toward an observed dataset over the historical period, so agreement with CHIRPS partly reflects that correction, and its 0.25° cells average out local storms.</li>
             <li><b>Thirty-year samples.</b> 50- and 100-year values extrapolate well beyond 30 years of data. Comparing a model's two historical periods shows that one model's ratio can move by ±30% or more by chance alone, which is why only the median over many models is used.</li>
             <li><b>Changes larger than physics alone suggests.</b> The projected rise in extreme days exceeds the roughly 7% per °C expected from a warmer atmosphere. The cause, model physics or downscaling, was not tested here.</li>
-            <li><b>Parts A and B.</b> The flood curve and the JRC agreement are withdrawn, and the NDVI correlation was not tested for a shared trend; the corrected notebooks that would settle them need Earth Engine and were not run. Nothing in Part A is validated against ground records.</li>
+            <li><b>Parts A and B.</b> The flood areas depend on a fixed radar threshold that also flags dry ground, so they are reported only inside a floodplain mask; nothing in Part A is validated against ground records. The NDVI–rainfall link is a correlation, not a measured response.</li>
         </ul>
     </section>
 

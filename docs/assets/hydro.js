@@ -56,9 +56,7 @@
         v.sumDry = drAgree ? `${signed(dr.combined.median, 1)} days` : 'No clear change';
         v.sumDryText = `in the longest dry spell of a 1-in-10 dry rainy season in the Sokoto–Rima basin by ${v.futPeriod} (SSP5-8.5): median ${signed(dr.combined.median, 1)} days, 5–95% range ${signed(dr.combined.p05, 1)} to ${signed(dr.combined.p95, 1)} days.${drAgree ? '' : ' The models do not agree on the direction.'}`;
         Object.assign(v, partCText());
-        v.aCurveStatus = D.part_a_v2 ? 'Computed' : 'Pending: version 2 notebook not yet run';
-        v.aJrcStatus = v.aCurveStatus;
-        v.bNdviStatus = D.part_b_v2 ? 'Computed' : 'Pending: version 2 notebook not yet run';
+        Object.assign(v, partABText());
         $$('[data-v]').forEach(el => { if (v[el.dataset.v] !== undefined) el.innerHTML = v[el.dataset.v]; });
         $$('.pill').forEach(p => p.classList.toggle('done', p.textContent === 'Computed'));
     }
@@ -83,7 +81,7 @@
         const up = (a, s, x = '50') => C.areas[a].ensemble[s].uplift[x];
         const u50 = (a, s) => up(a, s, '50'), n = C.areas.sokoto_rima.ensemble.ssp585.n_models;
         const say = a => `the median 50-year uplift is ${pct(u50(a, 'ssp245').combined.median)} under SSP2-4.5 and ${pct(u50(a, 'ssp585').combined.median)} under SSP5-8.5, with ${u50(a, 'ssp245').models_above_1} and ${u50(a, 'ssp585').models_above_1} of ${n} models projecting an increase`;
-        t.changeText = `By ${C.settings.future[0]}–${C.settings.future[1]}, on the <strong>Lower Niger–Benue</strong> ${say('niger_benue')}. In the <strong>Sokoto–Rima basin</strong> ${say('sokoto_rima')}. The ranges are wide: for the 50-year value under SSP5-8.5 the 5–95% range runs from ${pct(u50('niger_benue', 'ssp585').combined.p05)} to ${pct(u50('niger_benue', 'ssp585').combined.p95)} on the Lower Niger–Benue and from ${pct(u50('sokoto_rima', 'ssp585').combined.p05)} to ${pct(u50('sokoto_rima', 'ssp585').combined.p95)} in the Sokoto–Rima basin (Figure 9; every return period in Table 2). ${nullWord()}`;
+        t.changeText = `By ${C.settings.future[0]}–${C.settings.future[1]}, on the <strong>Lower Niger–Benue</strong> ${say('niger_benue')}. In the <strong>Sokoto–Rima basin</strong> ${say('sokoto_rima')}. The ranges are wide: for the 50-year value under SSP5-8.5 the 5–95% range runs from ${pct(u50('niger_benue', 'ssp585').combined.p05)} to ${pct(u50('niger_benue', 'ssp585').combined.p95)} on the Lower Niger–Benue and from ${pct(u50('sokoto_rima', 'ssp585').combined.p05)} to ${pct(u50('sokoto_rima', 'ssp585').combined.p95)} in the Sokoto–Rima basin (Figure ${figNo('fig-uplift')}; every return period in Table 2). ${nullWord()}`;
         const rx = a => C.areas[a].ensemble, tr = (a, s) => pct(rx(a)[s].total_ratio.models_median);
         t.physText = `The rise is in the data, not only in the fitted curves: the plain average of each year's wettest day, which needs no curve fitting, rises by a median ${pct(rx('niger_benue').ssp585.rx1day_mean_ratio.models_median)} on the Lower Niger–Benue and ${pct(rx('sokoto_rima').ssp585.rx1day_mean_ratio.models_median)} in the Sokoto–Rima basin under SSP5-8.5, while annual rainfall changes by ${tr('niger_benue', 'ssp585')} and ${tr('sokoto_rima', 'ssp585')}. The wettest days grow much faster than the yearly total. That is more than the roughly 7% per °C of warming expected because warmer air holds more water <span class="cite">(Trenberth et al., 2003)</span>. Whether the extra comes from the models' physics or from the statistical downscaling cannot be told from these data; if it is the downscaling, these uplift factors overstate the models' own signal. It is the largest unresolved uncertainty in Part C.`;
         const dy = (s, k) => C.areas.sokoto_rima.ensemble[s][k];
@@ -93,7 +91,7 @@
         const lo = Math.min(...all.map(x => x.combined.median)), hi = Math.max(...all.map(x => x.combined.median));
         const p95 = Math.max(...all.map(x => x.combined.p95));
         t.discText = `For a drain or culvert to be built now and still working in ${C.settings.future[0]}–${C.settings.future[1]}, the models point to scaling today's 50-year daily rainfall by ×${fmt(lo, 2)}–${fmt(hi, 2)} at the median, depending on the area and scenario. The spread between models is as large as the median change, so the choice within the range is a question of how costly failure would be: where it is, the upper part of the range (up to ×${fmt(p95, 2)} at the 95th percentile) deserves as much weight as the median. The factor should be applied to a design value from a local gauge record where one exists, not to CHIRPS: it is the ratio that the models inform, not the absolute rainfall. In the Sokoto–Rima basin, the same projections that raise extreme days ${Math.sign(dy('ssp585', 'dry90').combined.p05) === Math.sign(dy('ssp585', 'dry90').combined.p95) ? 'also change' : 'do not agree on'} the length of rainy-season dry spells, which matters for small reservoirs and rain-fed crops.`;
-        t.conclText = `The satellite records show where the Lower Niger–Benue floods and how drought years come and go in the Sokoto–Rima basin, once claims the code did not support are withdrawn. The climate models add a median design uplift for 50-year daily rainfall of ×${fmt(lo, 2)}–${fmt(hi, 2)} by ${C.settings.future[0]}–${C.settings.future[1]}, with a spread between models that a designer must carry, not ignore. The weakest link is the present, not the future: without modern rain-gauge records the absolute design rainfall in both basins is uncertain by tens of percent. Opening Nigeria's station records would do more for design here than any further model run.`;
+        t.conclText = `Measured instead of typed in, the Lower Niger–Benue flood rise is real but modest, and visible only once dry ground is masked out; drought years in the Sokoto–Rima basin are clear, and vegetation follows each year's rain even with the trend removed. The climate models add a median design uplift for 50-year daily rainfall of ×${fmt(lo, 2)}–${fmt(hi, 2)} by ${C.settings.future[0]}–${C.settings.future[1]}, with a spread between models that a designer must carry, not ignore. The weakest link is the present, not the future: without modern rain-gauge records the absolute design rainfall in both basins is uncertain by tens of percent. Opening Nigeria's station records would do more for design here than any further model run.`;
         return t;
     }
     function nullWord() {
@@ -228,19 +226,115 @@
         $('#design-table tbody').innerHTML = rows.join('');
     }
 
-    // ---------- Part A / B version 2 results, once the notebooks have been run ----------
-    function renderV2() {
-        const a = D.part_a_v2, b = D.part_b_v2;
-        if (a && $('#a-results')) {
-            const j = a.jrc.dry_season_vs_occurrence50, w = a.jrc.wet_season_ever_vs_max_extent;
-            $('#a-results').hidden = false;
-            $('#a-results').innerHTML = `<p>Computed by the version 2 notebook: Sentinel-1 dry-season water covers ${fmt(j.recall * 100, 1)}% of JRC's permanent water (recall) and ${fmt(j.precision * 100, 1)}% of it is JRC water (precision); for the wettest months the figures are ${fmt(w.recall * 100, 1)}% and ${fmt(w.precision * 100, 1)}%.</p>`;
+    // ---------- Parts A and B, recomputed ----------
+    const figNo = id => { const b = document.querySelector(`#${id} figcaption b`); return b ? b.textContent.replace(/\D/g, '') : '?'; };
+    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    function partABText() {
+        const A = D.part_a, B = D.part_b_ndvi, t = {};
+        const M = A.monthly, fp = m => M.filter(r => r.month === m).map(r => r.flood_floodplain_km2);
+        const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+        const base = median(M.filter(r => r.month <= 8 || r.month === 12).map(r => r.flood_floodplain_km2));
+        const years = [...new Set(M.map(r => r.year))];
+        const peaks = years.map(y => M.filter(r => r.year === y).reduce((a, b) => b.flood_floodplain_km2 > a.flood_floodplain_km2 ? b : a));
+        const top = peaks.reduce((a, b) => b.flood_floodplain_km2 > a.flood_floodplain_km2 ? b : a);
+        const FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const pm = [...new Set(peaks.map(p => p.month))].sort((a, b) => a - b).map(m => FULL[m - 1]);
+        const out = m => mean(M.filter(r => r.month === m).map(r => r.dark_outside_floodplain_km2));
+        const nimg = M.reduce((a, r) => a + r.n_images, 0);
+        t.aCurveText = `Measured month by month from ${fmtInt(nimg)} Sentinel-1 images, 2018–2023, water inside the floodplain (${fmtInt(A.floodplain_km2)} km², ground JRC has seen flooded at least once since 1984) sits near ${fmtInt(base)} km² from December to August and rises every year to a peak in ${pm.join(' or ')}: ${fmtInt(mean(fp(10)))} km² on average in October, and ${fmtInt(top.flood_floodplain_km2)} km² at most (${MON[top.month - 1]} ${top.year}). The typed-in curve of the report rose to 1,400 km². The same −18 dB threshold also marks ${fmtInt(out(3))} km² of dry ground outside the floodplain as water in March on average, against ${fmtInt(out(10))} km² in October: dry, bare or burnt ground can return as little radar signal as water. Counted everywhere, the "flood" would be largest in the dry season, so areas from this method mean flooding only inside a floodplain mask.`;
+        const j = A.jrc.dry_season_vs_occurrence50, w = A.jrc.wet_season_ever_vs_max_extent;
+        t.aJrcText = `Measured here, Sentinel-1 dry-season water covers ${fmt(j.recall * 100, 0)}% of the water JRC maps at least half the time (recall), but only ${fmt(j.precision * 100, 0)}% of what Sentinel-1 calls water is JRC water (precision); for the wet season the figures are ${fmt(w.recall * 100, 0)}% and ${fmt(w.precision * 100, 0)}%. Sentinel-1 finds almost all of JRC's water and much more besides, largely the dry ground described above, so the report's "2,497 km² of hidden inundation" cannot be read as flooding.`;
+        const p = v => v < 0.001 ? '< 0.001' : fmt(v, 3);
+        t.bNdviText = `The report found that annual MODIS NDVI follows rainfall (<var>r</var> = 0.594) and called it proof of coupling, but both series rise over the period, rainfall with the Sahel recovery and vegetation with the region's re-greening <span class="cite">(Dardel et al., 2014)</span>, and a shared trend alone can produce a correlation. Recomputed with quality-screened MODIS NDVI for the July–October growing season, ${B.years[0]}–${B.years[1]}, greenness and rainfall correlate at <var>r</var> = ${fmt(B.raw.pearson_r, 2)} (<var>p</var> ${p(B.raw.pearson_p)}). With each series' straight-line trend removed, <var>r</var> = ${fmt(B.detrended.pearson_r, 2)} (<var>p</var> ${p(B.detrended.pearson_p)}), and on year-to-year differences <var>r</var> = ${fmt(B.differenced.pearson_r, 2)} (<var>p</var> ${p(B.differenced.pearson_p)}) (Figure ${figNo('fig-ndvi')}). The link is not an artefact of the trend: in wetter years the basin is greener. It is still a correlation, and says nothing by itself about how much greening rainfall causes.`;
+        t.ndviFilled = String(Object.values(B.filled_composites || {}).reduce((a, v) => a + v.length, 0));
+        return t;
+    }
+
+    // Figure: flood map with image overlays
+    function initFloodMap() {
+        const S0 = D.part_a.settings.box, bounds = [[S0[1], S0[0]], [S0[3], S0[2]]];
+        const map = L.map('flood-map', { scrollWheelZoom: false, zoomSnap: 0.25 });
+        map.fitBounds(bounds, { padding: [8, 8] });
+        basemap(map);
+        cartography(map, 0.5);
+        L.rectangle(bounds, { color: '#111', weight: 1.2, fill: false, interactive: false }).addTo(map);
+        const plain = L.imageOverlay('data/part_a/floodplain.png', bounds, { opacity: 1, className: 'overlay' }).addTo(map);
+        const layers = { freq: 'data/part_a/frequency.png', feb: 'data/part_a/water_2022-02.png', oct: 'data/part_a/water_2022-10.png' };
+        let ov = null, cur = 'freq';
+        const FREQ = [[0, 0, '#dfebf7', '1–10% of images'], [0, 0, '#9ecae1', '10–25%'], [0, 0, '#4292c6', '25–50%'], [0, 0, '#08519c', '50–75%'], [0, 0, '#08306b', '75–100%'], [0, 0, 'rgba(120,120,112,0.35)', 'Floodplain (JRC, 1984–2020)']];
+        const WATER = [[0, 0, '#1f56b0', 'Water outside permanent water'], [0, 0, '#111111', 'Permanent water (JRC ≥ 90%)'], [0, 0, 'rgba(120,120,112,0.35)', 'Floodplain (JRC, 1984–2020)']];
+        const draw = () => {
+            if (ov) ov.remove();
+            ov = L.imageOverlay(layers[cur], bounds, { className: 'overlay' }).addTo(map);
+            $('#fm-legend').innerHTML = cur === 'freq'
+                ? legendHtml('How often water, August–November', 'Share of Sentinel-1 images, 2018–2023, VH below −18 dB, slope under 5°', FREQ)
+                : legendHtml(`Water, ${cur === 'feb' ? 'February' : 'October'} 2022`, `Median of the month's Sentinel-1 images, VH below −18 dB, slope under 5°`, WATER);
+        };
+        seg($('#fm-layer'), [['freq', 'Flood frequency 2018–2023'], ['feb', 'February 2022 (dry)'], ['oct', 'October 2022 (flood)']], cur, v => { cur = v; draw(); });
+        draw();
+        new ResizeObserver(() => map.invalidateSize()).observe($('#flood-map'));
+    }
+
+    // Figure: monthly flood curve
+    const FC = { year: 'all' };
+    function renderFloodCurve() {
+        const box = $('#floodchart'), M = D.part_a.monthly, W = width(box), H = 330, m = { l: 52, r: 14, t: 28, b: 34 };
+        const years = [...new Set(M.map(r => r.year))];
+        const x = mo => m.l + (mo - 0.5) / 12 * (W - m.l - m.r);
+        const sel = FC.year === 'all' ? M : M.filter(r => r.year === +FC.year);
+        const by = (mo, k) => M.filter(r => r.month === mo).map(r => r[k]);
+        const hi = Math.max(...M.map(r => Math.max(r.flood_floodplain_km2, r.dark_outside_floodplain_km2)));
+        const top = niceTicks(0, hi, 5).slice(-1)[0] < hi ? niceTicks(0, hi * 1.15, 5).slice(-1)[0] : niceTicks(0, hi, 5).slice(-1)[0];
+        const y = v => m.t + (1 - v / top) * (H - m.t - m.b);
+        const s = el('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `Monthly water area inside and outside the floodplain, ${FC.year === 'all' ? '2018–2023' : FC.year}` });
+        niceTicks(0, top, 5).forEach(v => { s.append(el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), class: 'grid' })); s.append(el('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', class: 'tick' }, fmtInt(v))); });
+        MON.forEach((n, i) => s.append(el('text', { x: x(i + 1), y: H - 12, 'text-anchor': 'middle', class: 'tick' }, W < 560 ? n[0] : n)));
+        s.append(el('text', { x: m.l - 6, y: 12, 'text-anchor': 'end', class: 'tick' }, 'km²'));
+        const line = (pts, col, dash) => s.append(el('path', { d: pts.map((p, i) => `${i ? 'L' : 'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join(''), fill: 'none', stroke: col, 'stroke-width': 2.2, 'stroke-dasharray': dash || '', class: 'ch-line' }));
+        const mos = [...Array(12)].map((_, i) => i + 1);
+        if (FC.year === 'all') {
+            const lo = mos.map(mo => Math.min(...by(mo, 'flood_floodplain_km2'))), up = mos.map(mo => Math.max(...by(mo, 'flood_floodplain_km2')));
+            s.append(el('path', { d: mos.map((mo, i) => `${i ? 'L' : 'M'}${x(mo)},${y(up[i])}`).join('') + mos.slice().reverse().map((mo, i) => `L${x(mo)},${y(lo[11 - i])}`).join('') + 'Z', fill: '#2f6fd6', opacity: 0.14 }));
         }
-        if (b && $('#b-ndvi')) {
-            const r = b.raw, dt = b.detrended, df = b.differenced;
-            $('#b-ndvi').hidden = false;
-            $('#b-ndvi').innerHTML = `<p>Version 2 result, ${b.years[0]}–${b.years[1]} (<var>n</var> = ${r.n}): raw <var>r</var> = ${fmt(r.pearson_r, 2)} (<var>p</var> = ${fmt(r.pearson_p, 3)}), detrended <var>r</var> = ${fmt(dt.pearson_r, 2)} (<var>p</var> = ${fmt(dt.pearson_p, 3)}), year-to-year differences <var>r</var> = ${fmt(df.pearson_r, 2)} (<var>p</var> = ${fmt(df.pearson_p, 3)}).</p>`;
-        }
+        const avg = (mo, k) => { const v = sel.filter(r => r.month === mo).map(r => r[k]); return v.reduce((a, b) => a + b, 0) / v.length; };
+        line(mos.map(mo => [mo, avg(mo, 'dark_outside_floodplain_km2')]), '#9a9a93', '5 4');
+        line(mos.map(mo => [mo, avg(mo, 'flood_floodplain_km2')]), '#1f56b0');
+        mos.forEach(mo => {
+            const r = sel.filter(q => q.month === mo), v = avg(mo, 'flood_floodplain_km2'), n = r.reduce((a, q) => a + q.n_images, 0);
+            const c = el('circle', { cx: x(mo), cy: y(v), r: 4, fill: '#1f56b0', stroke: '#fff', 'stroke-width': 1.2 });
+            c.append(el('title', {}, `${MON[mo - 1]}${FC.year === 'all' ? ' (mean of 2018–2023)' : ' ' + FC.year}: ${fmtInt(v)} km² in the floodplain, ${fmtInt(avg(mo, 'dark_outside_floodplain_km2'))} km² outside; ${n} images`));
+            s.append(c);
+        });
+        box.innerHTML = ''; box.append(s);
+        $('#fc-key').innerHTML = `<li><i style="background:#1f56b0"></i><span>Water inside the floodplain</span></li>${FC.year === 'all' ? '<li><i style="background:rgba(47,111,214,0.25)"></i><span>Range of the six years</span></li>' : ''}<li><i style="background:#9a9a93"></i><span>Dry ground counted as water outside it</span></li>`;
+    }
+
+    // Figure: NDVI and rainfall
+    const ND = { mode: 'raw' };
+    function renderNdvi() {
+        const box = $('#ndvichart'), B = D.part_b_ndvi, R = D.part_b_rain, W = width(box), H = 300, m = { l: 40, r: 14, t: 12, b: 32 };
+        const yrs = Object.keys(B.ndvi_growing_season).map(Number);
+        const rain = yrs.map(y => R.years.find(r => r.year === y).rain_mm), veg = yrs.map(y => B.ndvi_growing_season[y]);
+        const prep = a => {
+            let v = [...a];
+            if (ND.mode === 'detrended') { const n = v.length, xm = (n - 1) / 2, ym = v.reduce((p, q) => p + q, 0) / n; let sxy = 0, sxx = 0; v.forEach((q, i) => { sxy += (i - xm) * (q - ym); sxx += (i - xm) ** 2; }); const b = sxy / sxx; v = v.map((q, i) => q - ym - b * (i - xm)); }
+            const mu = v.reduce((p, q) => p + q, 0) / v.length, sd = Math.sqrt(v.reduce((p, q) => p + (q - mu) ** 2, 0) / (v.length - 1));
+            return v.map(q => (q - mu) / sd);
+        };
+        const zr = prep(rain), zv = prep(veg), lim = Math.ceil(Math.max(2.5, ...zr.map(Math.abs), ...zv.map(Math.abs)));
+        const x = i => m.l + (i + 0.5) / yrs.length * (W - m.l - m.r), y = v => m.t + (lim - v) / (2 * lim) * (H - m.t - m.b);
+        const s = el('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `Standard scores of growing-season NDVI and annual rainfall, ${yrs[0]}–${yrs[yrs.length - 1]}, ${ND.mode === 'raw' ? 'as measured' : 'trend removed'}` });
+        for (let v = -lim; v <= lim; v++) { s.append(el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), class: v === 0 ? 'ax0' : 'grid' })); s.append(el('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', class: 'tick' }, num(v, 0))); }
+        yrs.forEach((yr, i) => { if (yr % (W < 560 ? 10 : 5) === 0) s.append(el('text', { x: x(i), y: H - 10, 'text-anchor': 'middle', class: 'tick' }, yr)); });
+        const path = (z, col) => s.append(el('path', { d: z.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(''), fill: 'none', stroke: col, 'stroke-width': 2.2, class: 'ch-line' }));
+        path(zr, '#2f6fd6'); path(zv, '#2e7d32');
+        yrs.forEach((yr, i) => {
+            const a = el('circle', { cx: x(i), cy: y(zr[i]), r: 3.4, fill: '#2f6fd6' }); a.append(el('title', {}, `${yr}: rainfall ${fmtInt(rain[i])} mm (score ${fmt(zr[i], 1)})`)); s.append(a);
+            const b = el('rect', { x: x(i) - 3.4, y: y(zv[i]) - 3.4, width: 6.8, height: 6.8, fill: '#2e7d32' }); b.append(el('title', {}, `${yr}: NDVI ${fmt(veg[i], 3)} (score ${fmt(zv[i], 1)})`)); s.append(b);
+        });
+        box.innerHTML = ''; box.append(s);
+        const r = ND.mode === 'raw' ? B.raw : B.detrended;
+        $('#nd-key').innerHTML = `<li><i style="background:#2f6fd6;border-radius:50%"></i><span>Annual rainfall (CHIRPS)</span></li><li><i style="background:#2e7d32"></i><span>Growing-season NDVI (MODIS)</span></li><li><span class="small">r = ${fmt(r.pearson_r, 2)}</span></li>`;
     }
 
     // ---------- Figure 1: study map ----------
@@ -641,12 +735,20 @@
             seg($('#up-t'), [['25', '25-year'], ['50', '50-year'], ['100', '100-year']], S.upT, v => { S.upT = v; renderUplift(); });
             renderUplift(); new ResizeObserver(renderUplift).observe($('#upchart'));
         }
+        if (has('#flood-map')) initFloodMap();
+        if (has('#floodchart')) {
+            seg($('#fc-year'), [['all', 'All years'], ...[...new Set(D.part_a.monthly.map(r => r.year))].map(y => [String(y), String(y)])], FC.year, v => { FC.year = v; renderFloodCurve(); });
+            renderFloodCurve(); new ResizeObserver(renderFloodCurve).observe($('#floodchart'));
+        }
+        if (has('#ndvichart')) {
+            seg($('#nd-mode'), [['raw', 'As measured'], ['detrended', 'Trend removed']], ND.mode, v => { ND.mode = v; renderNdvi(); });
+            renderNdvi(); new ResizeObserver(renderNdvi).observe($('#ndvichart'));
+        }
         if (has('#drought-map')) initDroughtMap();
         if (has('#uplift-map')) initUpliftMap();
         if (has('#dry-map')) initDryMap();
         if (has('#drychart')) { renderDry(); new ResizeObserver(renderDry).observe($('#drychart')); }
         if (has('#design-table')) renderDesign();
-        renderV2();
         if (has('#explore-map')) initExplorer();
         initNav();
         initTableWraps();
