@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="only light">
+    <title>Explorer · Floods, droughts and design rainfall</title>
+    <meta name="description" content="Map today's 25-, 50- and 100-year daily rainfall in the Lower Niger–Benue and Sokoto–Rima study areas, and how each of 23 climate models changes it by 2041–2070.">
+    <meta name="author" content="David Oluwayinka Oloyede">
+    <meta name="citation_title" content="Floods, droughts and design rainfall in two data-sparse Nigerian basins: Lower Niger–Benue and Sokoto–Rima">
+    <meta name="citation_author" content="Oloyede, David Oluwayinka">
+    <meta name="citation_publication_date" content="2026/11/12">
+    <meta name="citation_public_url" content="https://oloyededavid.github.io/Observational-Hydrology-Extremes/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Floods, droughts and design rainfall in two data-sparse Nigerian basins">
+    <meta property="og:description" content="Satellite records of floods and droughts, and how much climate models change design rainfall for 2041–2070, with the uncertainty a designer needs.">
+    <meta property="og:url" content="https://oloyededavid.github.io/Observational-Hydrology-Extremes/">
+    <link rel="canonical" href="https://oloyededavid.github.io/Observational-Hydrology-Extremes/explore.html">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111'/%3E%3Cpath d='M16 6c-3.6 4.6-5.6 7.7-5.6 10.2a5.6 5.6 0 0 0 11.2 0C21.6 13.7 19.6 10.6 16 6z' fill='%23fff'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&amp;display=swap">
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@500,700&amp;display=swap">
+    <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/hydro.css">
+</head>
+<body class="explore-page">
+<a class="skip" href="#explore-map">Skip to the map</a>
+
+<header class="site-header">
+    <div class="site-inner">
+        <a class="site-id" href="./">Floods, droughts and design rainfall</a>
+        <nav class="toc" aria-label="Sections">
+            <a href="./#abstract">Summary</a>
+            <a href="./#study-area">Study areas</a>
+            <a href="./#floods">Floods</a>
+            <a href="./#droughts">Droughts</a>
+            <a href="./#design">Design rainfall</a>
+            <a href="./#limitations">Limits</a>
+            <a href="explore.html" class="toc-ex" aria-current="page">Explorer</a>
+        </nav>
+    </div>
+    <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+</header>
+
+<main class="article ex-main" id="top">
+    <section class="ex-intro" aria-labelledby="h-explorer">
+        <p class="back"><a href="./">← Back to the study</a></p>
+        <h1 id="h-explorer">Explore the study, cell by cell</h1>
+        <p>Every 0.25° cell of both study areas. Map today's daily rainfall for a 25-, 50- or 100-year return period (CHIRPS, 1985–2014), how much each climate model changes it by 2041–2070 and how many models agree, or, in the Sokoto–Rima basin, drought year by year since 1981. Select a cell to see all 23 models side by side, or its drought record.</p>
+    </section>
+    <div class="wide">
+        <div class="ex-controls" role="group" aria-label="Explorer controls">
+            <div class="field"><span class="field-label" id="exl-area">Area</span><div class="seg" id="ex-area" role="group" aria-labelledby="exl-area"></div></div>
+            <div class="field"><span class="field-label" id="exl-layer">Show</span><div class="seg" id="ex-layer" role="group" aria-labelledby="exl-layer"></div></div>
+            <div class="field"><span class="field-label" id="exl-t">Return period</span><div class="seg" id="ex-t" role="group" aria-labelledby="exl-t"></div></div>
+            <div class="field"><span class="field-label" id="exl-scen">Scenario</span><div class="seg" id="ex-scen" role="group" aria-labelledby="exl-scen"></div></div>
+            <div class="field"><label class="field-label" for="ex-model">Model</label><select id="ex-model"></select></div>
+            <div class="field"><label class="field-label" for="ex-year">Year</label><input type="range" id="ex-year" step="1"><output id="ex-year-out" for="ex-year">—</output></div>
+        </div>
+        <div class="ex-grid">
+            <div class="ex-map-wrap">
+                <div class="map explorer-map" id="explore-map" role="group" aria-label="Map of the 0.25° cells of the selected study area, coloured by the selected layer; select a cell for its values"></div>
+            </div>
+            <aside aria-labelledby="h-side"><h2 class="sr-only" id="h-side">Legend and selected area or cell</h2><div class="ex-side-legend" id="ex-legend" aria-live="polite"></div><div id="ex-side" aria-live="polite"></div></aside>
+        </div>
+        <p class="small">Uplift factor: a model's 2041–2070 return level divided by its own 1985–2014 value (GEV by L-moments, 30 years each). Today's values come from CHIRPS, which understates heavy daily rain; apply uplift factors to a gauge-based design value where one exists. Method and limits: <a href="./#design">Part C of the study</a>.</p>
+    </div>
+</main>
+
+<footer>
+    <div class="inner">
+        <p class="sig"><span>David Oloyede</span><span><a href="https://github.com/oloyededavid">github.com/oloyededavid</a></span><span>Last updated <time datetime="2026-11-12">12 November 2026</time></span><span>Version 0.2</span><span class="views" id="views" hidden></span></p>
+        <p>Code MIT. Source data keep their own terms: CHIRPS (Climate Hazards Center, UC Santa Barbara), NEX-GDDP-CMIP6 (NASA), GHCN-Daily (NOAA), Sentinel-1 (ESA Copernicus), MERIT Hydro, JRC Global Surface Water, MODIS (NASA), HydroBASINS. Basemap © Esri.</p>
+        <p>Other studies: <a href="https://oloyededavid.github.io/Oueme-Ogun-Groundwater-Recharge/">Ouémé–Ogun Groundwater Recharge</a> · <a href="https://oloyededavid.github.io/Ogun-Catchment-Coast-Observatory/">Ogun Catchment-to-Coast Observatory</a> · <a href="https://oloyededavid.github.io/Lagos-Urban-Heat-Analytics/">Lagos Urban Heat Analytics</a></p>
+    </div>
+</footer>
+
+<script src="vendor/leaflet-1.9.4/leaflet.js"></script>
+<script src="assets/hydro.js"></script>
+</body>
+</html>
