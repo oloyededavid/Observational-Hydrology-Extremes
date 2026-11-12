@@ -16,3 +16,7 @@ This repository reads public satellite datasets directly from Google Earth Engin
 9. **HydroBASINS level 4 (Africa, v1c):** Lehner & Grill (2013), WWF. Sokoto-Rima unit 1040760290; file checked by SHA-256 in `part_c/scripts/c01_domains.py`.
 
 The cut-down files are cached in `part_c/cache/` and not committed; the scripts download them again.
+
+## Parts A and B, recomputed (read outside Earth Engine)
+
+10. **Microsoft Planetary Computer** (public STAC catalogue, no account): Sentinel-1 RTC (`sentinel-1-rtc`, VH, terrain-corrected gamma0), Copernicus DEM GLO-90 (`cop-dem-glo-90`), JRC Global Surface Water v1.3 (`jrc-gsw`, 1984-2020) and MODIS MOD13Q1 v6.1 (`modis-13Q1-061`). Used by `part_a/scripts/a01_flood_pc.py` and `part_b/scripts/b02_ndvi_pc.py`; cut-down files are cached in `part_a/cache/` (not committed).
