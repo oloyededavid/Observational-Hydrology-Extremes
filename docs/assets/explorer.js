@@ -83,12 +83,13 @@
         if (tiles) tiles.remove();
         tiles = H.basemap(map, kind); tiles.bringToBack();
     }
-    function showOverlay(url) {
-        if (overlay && overlay._url === url) return;
+    function showOverlay(url, legend) {
+        if (overlay && overlay._url === url) { $('#legend').innerHTML = legend; return; }
         const next = L.imageOverlay(url, BOX(), { className: 'px', interactive: false, opacity: 0, alt: 'Sentinel-1 water extent on the Lower Niger–Benue reach' }).addTo(map);
         next._url = url;
         const old = overlay; overlay = next;
-        next.on('load', () => { next.setOpacity(1); if (old) old.remove(); });
+        next.on('load', () => { if (overlay !== next) return; next.setOpacity(1); if (old) old.remove(); $('#legend').innerHTML = legend; });
+        next.on('error', () => { next.remove(); if (overlay === next) overlay = null; if (old) old.setOpacity(0); fail('A radar image could not be loaded. Try another layer.'); });
     }
     function hideOverlay() { if (overlay) { overlay.remove(); overlay = null; } }
     function hideCells() { if (cellGroup) { cellGroup.remove(); cellGroup = null; } }
@@ -132,8 +133,9 @@
     function drawMap() {
         const g = layerGroup(S.layer);
         if (g === 'floods') {
-            hideCells(); showOverlay(FLOOD_LAYERS[S.layer].url);
-            $('#legend').innerHTML = H.legendHtml(FLOOD_LAYERS[S.layer].t, FLOOD_LAYERS[S.layer].sub, FLOOD_LAYERS[S.layer].cls);
+            hideCells();
+            const F = FLOOD_LAYERS[S.layer];
+            showOverlay(F.url, H.legendHtml(F.t, F.sub, F.cls));
             return;
         }
         hideOverlay();
@@ -210,7 +212,7 @@
     // only the open tab is drawn, so charts measure a visible element
     function renderPanel() {
         const f = { overview: renderOverview, cell: renderCell, series: renderSeries, stats: renderStats, compare: renderCompare }[S.tab];
-        if (f) f();
+        try { if (f) f(); } catch (e) { console.error(e); }
     }
 
     function renderOverview() {
@@ -393,7 +395,7 @@
         }).sort((a, b) => b.u585 - a.u585);
         $('#compare').innerHTML = `<h2>${S.T}-year uplift by model</h2>
             <div class="seg seg-inline" id="cmp-t"></div>
-            ${table(['Model', 'Family', 'SSP2-4.5', 'SSP5-8.5', 'Dry spell, SSP5-8.5 (days)', '25-yr vs CHIRPS', 'Season r'], rows.map(r => [r.m, r.f, upct(r.u245), upct(r.u585), S.area === BASIN ? signed(r.dry, 1) : '—', num(r.rl, 2), num(r.season, 2)]))}
+            ${table(['Model', 'Family', 'SSP2-4.5', 'SSP5-8.5', 'Dry spell, SSP5-8.5 (days)', '25-yr vs CHIRPS', 'Season r'], rows.map(r => [H.esc(r.m), H.esc(r.f), upct(r.u245), upct(r.u585), S.area === BASIN ? signed(r.dry, 1) : '—', num(r.rl, 2), num(r.season, 2)]))}
             <p class="sec-note">Sorted by SSP5-8.5 uplift. Family is the atmospheric model family; models from one family share much of their physics. ${S.area === BOX_AREA ? 'Dry spells are shown for the basin only.' : ''}</p>`;
         seg($('#cmp-t'), TRC.map(t => [t, `${t}-year`]), S.T, v => { S.T = v; refresh(); });
     }
@@ -417,7 +419,9 @@
         S.kind = v('k', x => x === 'median' || x === 'p90', S.kind);
         S.basemap = v('b', x => x in H.BASEMAPS, S.basemap);
         S.tab = v('tab', x => ['overview', 'cell', 'series', 'stats', 'compare'].includes(x), S.tab);
+        if (S.layer === 'dry') S.area = BASIN;
         const c = p.get('c'); S.cell = c != null && isNum(c) && +c >= 0 ? +c : null;
+        if (S.cell != null && S.cell >= cellsOf().length) S.cell = null;
     }
 
     // ---------- chrome: data, share, dialogs ----------
@@ -448,7 +452,7 @@
     }
 
     // ---------- start ----------
-    function fail(msg) { const n = $('#map-error'); n.hidden = false; n.textContent = msg; }
+    function fail(msg) { const n = $('#map-error'); n.hidden = false; n.textContent = msg; setTimeout(() => { n.hidden = true; }, 4000); }
     Promise.all([H.get('data/a.json'), H.get('data/b.json'), H.get('data/b_cells.json'), H.get('data/c.json'), H.get('data/cells.json')])
         .then(([a, b, bcells, c, cells]) => {
             Object.assign(D, { a, b, bcells, c, cells });
@@ -462,7 +466,7 @@
             setTab(S.tab);
             refresh();
             addEventListener('hashchange', () => { readURL(); fitArea(); setTab(S.tab); refresh(); });
-            addEventListener('resize', () => renderPanel());
+            let rz = null; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(renderPanel, 150); });
         })
         .catch(e => { console.error(e); fail('The data could not be loaded. Please reload the page.'); });
 })();

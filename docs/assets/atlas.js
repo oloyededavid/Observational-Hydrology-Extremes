@@ -197,9 +197,9 @@
             const [u, t, sub, cls, withPlain] = L_[cur];
             const next = L.imageOverlay(u, bounds, { className: 'px', interactive: false, opacity: 0 }).addTo(map);
             const old = ov; ov = next;
-            next.on('load', () => { next.setOpacity(1); if (old) setTimeout(() => old.remove(), 300); });
+            next.on('load', () => { if (ov !== next) return; next.setOpacity(1); if (old) setTimeout(() => old.remove(), 300); $('#fm-legend').innerHTML = H.legendHtml(t, sub, cls); });
+            next.on('error', () => { next.remove(); if (ov === next) ov = null; });
             if (withPlain) plain.addTo(map); else plain.remove();
-            $('#fm-legend').innerHTML = H.legendHtml(t, sub, cls);
         };
         seg($('#fm-layer'), [['dual', 'Flood frequency'], ['feb', 'Feb 2022'], ['oct', 'Oct 2022'], ['ext', 'Flood extension'], ['vh', 'VH only'], ['cov', 'Coverage']], cur, v => { cur = v; draw(); });
         const bm = document.createElement('div'); bm.className = 'seg'; bm.setAttribute('role', 'group'); bm.setAttribute('aria-label', 'Basemap'); $('#fm-layer').after(bm);
@@ -672,12 +672,15 @@
 
     // ---------- small multiples: the same map repeated for several years or return periods ----------
     function multiples(box, tiles) {
+        (box._maps || []).forEach(m => m.remove());
+        box._maps = [];
         box.innerHTML = '';
         tiles.forEach(t => {
             const cell = document.createElement('div'); cell.className = 'mcell';
             cell.innerHTML = `<p class="mtitle">${t.title}</p><div class="map h240" role="img" aria-label="${t.title}"></div>`;
             box.append(cell);
             const m = L.map(cell.querySelector('.map'), { zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, attributionControl: false });
+            box._maps.push(m);
             t.fit(m);
             H.basemap(m, 'canvas');
             t.draw(m);
