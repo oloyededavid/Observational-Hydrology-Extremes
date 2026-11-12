@@ -218,7 +218,7 @@
     function renderOverview() {
         const x = summary(), g = S.group;
         const intro = `<dl>
-            <dt>The place.</dt><dd>${g === 'floods' ? 'The Lower Niger–Benue reach, about 240 km from the Niger–Benue confluence at Lokoja to Ogbaru, in Nigeria.' : g === 'drought' ? 'The Sokoto–Rima basin, about 183,000 km², across north-west Nigeria and south-central Niger.' : 'Both study areas: the Lower Niger–Benue reach and the Sokoto–Rima basin.'}</dd>
+            <dt>The place.</dt><dd>${g === 'floods' ? 'The Lower Niger–Benue reach, about 220 km in a straight line from the Niger–Benue confluence at Lokoja south to 5.8° N, in Nigeria.' : g === 'drought' ? 'The Sokoto–Rima basin, about 183,000 km², across north-west Nigeria and south-central Niger.' : 'Both study areas: the Lower Niger–Benue reach and the Sokoto–Rima basin.'}</dd>
             <dt>The question.</dt><dd>${g === 'floods' ? 'When and how far does the reach flood, and how much of the radar’s water does an independent sensor confirm?' : g === 'drought' ? 'How often, how long and how severe are droughts, do two rainfall records agree, and does vegetation follow?' : 'How much do 23 climate models raise the daily rainfall used in design, by 2041–2070?'}</dd>
             <dt>How.</dt><dd>${g === 'floods' ? 'Sentinel-1 radar, 2018–2023, checked against Sentinel-2 in 2022.' : g === 'drought' ? 'CHIRPS rainfall 1981–2024, SPI at three timescales, TerraClimate and MODIS NDVI as independent checks.' : 'NEX-GDDP-CMIP6 daily rainfall, GEV fitted per cell by L-moments, uplift as the ratio of future to past.'}</dd></dl>`;
         let tiles = '', warn = '';
@@ -357,7 +357,7 @@
             const ev = Dr.events_basin;
             html += `<h2>Rainfall</h2>` + table(['Measure', 'Value'], [
                 ['Mean annual rainfall', `${num(Rn.mean_mm)} mm`], ['Year-to-year variability (CV)', `${num(Rn.cv * 100, 0)}%`],
-                ['Trend (Sen’s slope)', `${signed(Rn.trend_mm_per_decade, 0)} mm per decade`], ['Mann–Kendall τ and p', `${num(Rn.kendall_tau, 2)}, p = ${num(Rn.kendall_p, 3)}`],
+                ['Trend (least-squares slope)', `${signed(Rn.trend_mm_per_decade, 0)} mm per decade`], ['Mann–Kendall τ and p', `${num(Rn.kendall_tau, 2)}, p = ${num(Rn.kendall_p, 3)}`],
                 ['Share of rain, May–October', share(Dr.climatology.wet_season_share)],
             ]);
             html += `<h2>Drought events</h2>` + table(['Timescale', 'Events', 'Longest, months'], ['3', '6', '12'].map(k => [`SPI-${k}`, num(ev[k].length), num(Math.max(...ev[k].map(e => e.months)))]));
