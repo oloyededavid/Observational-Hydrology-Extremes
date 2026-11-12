@@ -1,0 +1,325 @@
+{
+ "source": "CHIRPS v2.0 daily p25, cos-latitude weighted mean of 245 basin cells",
+ "reference": [
+  1991,
+  2020
+ ],
+ "gamma_shape": 70.00896785844535,
+ "gamma_scale": 7.797017496005123,
+ "mean_mm": 530.5909118973495,
+ "cv": 0.14933867324675196,
+ "trend_mm_per_decade": 27.770574594269334,
+ "trend_p": 0.0021674735641107655,
+ "kendall_tau": 0.27695560253699786,
+ "kendall_p": 0.008050684771246328,
+ "years": [
+  {
+   "year": 1981,
+   "rain_mm": 527.2,
+   "spi": -0.25,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1982,
+   "rain_mm": 444.2,
+   "spi": -1.63,
+   "class": "severe drought",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1983,
+   "rain_mm": 414.4,
+   "spi": -2.16,
+   "class": "extreme drought",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1984,
+   "rain_mm": 333.2,
+   "spi": -3.78,
+   "class": "extreme drought",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1985,
+   "rain_mm": 469.3,
+   "spi": -1.19,
+   "class": "moderate drought",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1986,
+   "rain_mm": 502.7,
+   "spi": -0.64,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1987,
+   "rain_mm": 374.9,
+   "spi": -2.92,
+   "class": "extreme drought",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1988,
+   "rain_mm": 562.0,
+   "spi": 0.28,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1989,
+   "rain_mm": 538.8,
+   "spi": -0.07,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1990,
+   "rain_mm": 441.1,
+   "spi": -1.68,
+   "class": "severe drought",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1991,
+   "rain_mm": 570.2,
+   "spi": 0.41,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1992,
+   "rain_mm": 528.1,
+   "spi": -0.24,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1993,
+   "rain_mm": 433.9,
+   "spi": -1.81,
+   "class": "severe drought",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1994,
+   "rain_mm": 633.8,
+   "spi": 1.32,
+   "class": "wet",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1995,
+   "rain_mm": 486.7,
+   "spi": -0.9,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1996,
+   "rain_mm": 498.8,
+   "spi": -0.7,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1997,
+   "rain_mm": 499.9,
+   "spi": -0.69,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1998,
+   "rain_mm": 610.3,
+   "spi": 0.99,
+   "class": "near normal",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 1999,
+   "rain_mm": 660.0,
+   "spi": 1.68,
+   "class": "wet",
+   "z_score_2000_2024": null
+  },
+  {
+   "year": 2000,
+   "rain_mm": 504.4,
+   "spi": -0.61,
+   "class": "near normal",
+   "z_score_2000_2024": -0.71
+  },
+  {
+   "year": 2001,
+   "rain_mm": 591.5,
+   "spi": 0.72,
+   "class": "near normal",
+   "z_score_2000_2024": 0.57
+  },
+  {
+   "year": 2002,
+   "rain_mm": 548.4,
+   "spi": 0.08,
+   "class": "near normal",
+   "z_score_2000_2024": -0.06
+  },
+  {
+   "year": 2003,
+   "rain_mm": 621.0,
+   "spi": 1.14,
+   "class": "wet",
+   "z_score_2000_2024": 1.0
+  },
+  {
+   "year": 2004,
+   "rain_mm": 518.8,
+   "spi": -0.38,
+   "class": "near normal",
+   "z_score_2000_2024": -0.5
+  },
+  {
+   "year": 2005,
+   "rain_mm": 558.2,
+   "spi": 0.23,
+   "class": "near normal",
+   "z_score_2000_2024": 0.08
+  },
+  {
+   "year": 2006,
+   "rain_mm": 592.8,
+   "spi": 0.74,
+   "class": "near normal",
+   "z_score_2000_2024": 0.59
+  },
+  {
+   "year": 2007,
+   "rain_mm": 509.6,
+   "spi": -0.53,
+   "class": "near normal",
+   "z_score_2000_2024": -0.63
+  },
+  {
+   "year": 2008,
+   "rain_mm": 553.1,
+   "spi": 0.15,
+   "class": "near normal",
+   "z_score_2000_2024": 0.01
+  },
+  {
+   "year": 2009,
+   "rain_mm": 425.4,
+   "spi": -1.96,
+   "class": "severe drought",
+   "z_score_2000_2024": -1.87
+  },
+  {
+   "year": 2010,
+   "rain_mm": 623.2,
+   "spi": 1.17,
+   "class": "wet",
+   "z_score_2000_2024": 1.04
+  },
+  {
+   "year": 2011,
+   "rain_mm": 504.8,
+   "spi": -0.61,
+   "class": "near normal",
+   "z_score_2000_2024": -0.7
+  },
+  {
+   "year": 2012,
+   "rain_mm": 549.5,
+   "spi": 0.09,
+   "class": "near normal",
+   "z_score_2000_2024": -0.05
+  },
+  {
+   "year": 2013,
+   "rain_mm": 484.1,
+   "spi": -0.94,
+   "class": "near normal",
+   "z_score_2000_2024": -1.01
+  },
+  {
+   "year": 2014,
+   "rain_mm": 517.4,
+   "spi": -0.4,
+   "class": "near normal",
+   "z_score_2000_2024": -0.52
+  },
+  {
+   "year": 2015,
+   "rain_mm": 499.5,
+   "spi": -0.69,
+   "class": "near normal",
+   "z_score_2000_2024": -0.78
+  },
+  {
+   "year": 2016,
+   "rain_mm": 497.6,
+   "spi": -0.72,
+   "class": "near normal",
+   "z_score_2000_2024": -0.81
+  },
+  {
+   "year": 2017,
+   "rain_mm": 463.4,
+   "spi": -1.29,
+   "class": "moderate drought",
+   "z_score_2000_2024": -1.31
+  },
+  {
+   "year": 2018,
+   "rain_mm": 635.7,
+   "spi": 1.35,
+   "class": "wet",
+   "z_score_2000_2024": 1.22
+  },
+  {
+   "year": 2019,
+   "rain_mm": 558.7,
+   "spi": 0.23,
+   "class": "near normal",
+   "z_score_2000_2024": 0.09
+  },
+  {
+   "year": 2020,
+   "rain_mm": 697.2,
+   "spi": 2.17,
+   "class": "wet",
+   "z_score_2000_2024": 2.12
+  },
+  {
+   "year": 2021,
+   "rain_mm": 515.9,
+   "spi": -0.43,
+   "class": "near normal",
+   "z_score_2000_2024": -0.54
+  },
+  {
+   "year": 2022,
+   "rain_mm": 563.2,
+   "spi": 0.3,
+   "class": "near normal",
+   "z_score_2000_2024": 0.15
+  },
+  {
+   "year": 2023,
+   "rain_mm": 571.1,
+   "spi": 0.42,
+   "class": "near normal",
+   "z_score_2000_2024": 0.27
+  },
+  {
+   "year": 2024,
+   "rain_mm": 712.2,
+   "spi": 2.37,
+   "class": "wet",
+   "z_score_2000_2024": 2.34
+  }
+ ]
+}
