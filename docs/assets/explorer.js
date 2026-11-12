@@ -85,7 +85,7 @@
     }
     function showOverlay(url) {
         if (overlay && overlay._url === url) return;
-        const next = L.imageOverlay(url, BOX(), { className: 'px', interactive: false, opacity: 0 }).addTo(map);
+        const next = L.imageOverlay(url, BOX(), { className: 'px', interactive: false, opacity: 0, alt: 'Sentinel-1 water extent on the Lower Niger–Benue reach' }).addTo(map);
         next._url = url;
         const old = overlay; overlay = next;
         next.on('load', () => { next.setOpacity(1); if (old) old.remove(); });
@@ -423,6 +423,14 @@
     // ---------- chrome: data, share, dialogs ----------
     function wireChrome() {
         $$('[role="tab"]').forEach(b => b.addEventListener('click', () => { setTab(b.dataset.tab); writeURL(); }));
+        // arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern)
+        const tabs = $$('[role="tab"]');
+        tabs.forEach((b, i) => b.addEventListener('keydown', e => {
+            const j = { ArrowRight: (i + 1) % tabs.length, ArrowLeft: (i - 1 + tabs.length) % tabs.length, Home: 0, End: tabs.length - 1 }[e.key];
+            if (j === undefined) return;
+            e.preventDefault(); tabs[j].focus(); setTab(tabs[j].dataset.tab); writeURL();
+        }));
+        $('#seg-group') && $('#seg-group').setAttribute('aria-label', 'Layer group');
         $('#year').addEventListener('input', e => { S.year = +e.target.value + 1981; $('#year-out').textContent = S.year; refresh(); });
         let timer = null; const play = $('#year-play');
         const stop = () => { if (timer) { clearInterval(timer); timer = null; } play.textContent = '▶'; play.setAttribute('aria-label', 'Play through the years'); };

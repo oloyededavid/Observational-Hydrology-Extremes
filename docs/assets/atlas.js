@@ -148,7 +148,7 @@
         const map = newMap('hero-map', { zoomControl: false, dragging: !L.Browser.mobile, doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false });
         map.fitBounds(BOX(), { padding: [6, 6] });
         H.basemap(map, 'satellite');
-        L.imageOverlay('data/part_a/dual_frequency.png', BOX(), { className: 'px', interactive: false }).addTo(map);
+        L.imageOverlay('data/part_a/dual_frequency.png', BOX(), { className: 'px', interactive: false, alt: 'Sentinel-1 water extent on the Lower Niger–Benue reach' }).addTo(map);
         L.control.scale({ imperial: false, position: 'bottomleft', maxWidth: 120 }).addTo(map);
         onResize($('#hero-map'), () => { map.invalidateSize(); map.fitBounds(BOX(), { padding: [6, 6] }); });
     }
@@ -244,33 +244,6 @@
         key($('#fc-key'), S.map(z => [z[1], z[0], z[4] ? 'dash' : 'line']).concat(FC.year === 'all' ? [[C4.vh + '33', 'VH floodplain, range of years']] : []));
         $('#fc-key li:nth-child(4) i').style.color = C4.grey;
         if (!$('#fc-year').childElementCount) seg($('#fc-year'), [['all', 'Mean 2018–2023'], ...years.map(y => [String(y), String(y)])], 'all', v => { FC.year = v; floodCurve(); });
-    }
-
-    function thresholdChart() {
-        const box = $('#thrchart'), R = D.a.robustness, T = R.thresholds_db;
-        const { s, W } = svgFrame(box, 340, 'Water area against the VH threshold'), m = { l: 58, r: 20, t: 26, b: 44 }, Hh = 340;
-        const av = (mo, k) => T.map((_, j) => mean(R.monthly.filter(r => r.month === mo).map(r => r[k][j])));
-        const S = [['October, inside floodplain', COL.A, av(10, 'inside'), ''], ['October, outside', COL.A, av(10, 'outside'), '5 4'], ['March, inside floodplain', COL.B, av(3, 'inside'), ''], ['March, outside', COL.B, av(3, 'outside'), '5 4']];
-        const lo = Math.min(...T), hiT = Math.max(...T);
-        const x = v => m.l + (v - lo) / (hiT - lo) * (W - m.l - m.r);
-        const top = niceTicks(0, Math.min(3000, Math.max(...S.flatMap(z => z[2]))), 5).slice(-1)[0];
-        const y = yAxis(s, m.l, W - m.r, m.t, Hh - m.b, 0, top, v => num(v), 5, 'km²');
-        const os = R.otsu_summary;
-        s.append(el('rect', { x: x(os.min_db), y: m.t, width: x(os.max_db) - x(os.min_db), height: Hh - m.t - m.b, fill: '#111', opacity: .06 }));
-        s.append(el('line', { x1: x(-18), x2: x(-18), y1: m.t, y2: Hh - m.b, class: 'ref' }));
-        s.append(el('text', { x: x(-18) + 5, y: m.t + 10, class: 'note halo' }, '−18 dB (original)'));
-        s.append(el('text', { x: x(os.max_db) + 5, y: m.t + 26, class: 'sub halo' }, 'Otsu range'));
-        T.forEach(v => s.append(el('text', { x: x(v), y: Hh - m.b + 18, 'text-anchor': 'middle', class: 'tick' }, num(v))));
-        s.append(el('text', { x: (m.l + W - m.r) / 2, y: Hh - 6, 'text-anchor': 'middle', class: 'axlab' }, 'VH threshold, dB (more negative = stricter)'));
-        S.forEach(z => lineP(s, z[2].map((v, j) => [x(T[j]), y(Math.min(v, top))]), { stroke: z[1], 'stroke-dasharray': z[3] || null, class: z[3] ? 'fade' : 'draw' }));
-        S.forEach(z => z[2].forEach((v, j) => v <= top && s.append(el('circle', { cx: x(T[j]), cy: y(v), r: 3, fill: z[1], class: 'fade' }))));
-        const clipped = S.filter(z => z[2].some(v => v > top));
-        if (clipped.length) s.append(el('text', { x: W - m.r, y: m.t - 8, 'text-anchor': 'end', class: 'sub' }, `Values above ${num(top)} km² run off the top`));
-        const tp = tip(box), hit = el('rect', { x: m.l, y: m.t, width: W - m.l - m.r, height: Hh - m.t - m.b, fill: 'transparent' }); s.append(hit);
-        hit.addEventListener('mousemove', e => { const bx = s.getBoundingClientRect(), px = (e.clientX - bx.left) * W / bx.width; let j = 0; T.forEach((v, k) => { if (Math.abs(x(v) - px) < Math.abs(x(T[j]) - px)) j = k; }); tp.show(`<b>${num(T[j])} dB</b>${S.map(z => `<div><i style="background:${z[1]}"></i>${z[0]}: ${num(z[2][j], 0)} km²</div>`).join('')}`, x(T[j]), m.t + 40); });
-        hit.addEventListener('mouseleave', () => tp.hide());
-        key($('#thr-key'), [[COL.A, 'October (flood), inside floodplain', 'line'], [COL.A, 'October, outside', 'dash'], [COL.B, 'March (dry), inside floodplain', 'line'], [COL.B, 'March, outside', 'dash'], ['#11111118', 'Monthly Otsu thresholds']]);
-        $$('#thr-key i.dash').forEach((i, k) => { i.style.color = k ? COL.B : COL.A; });
     }
 
     function s2Chart() {
@@ -546,30 +519,6 @@
         if (!$('#rl-area').childElementCount) areaSeg('#rl-area', RL, rlChart);
     }
 
-    const LM = { area: 'sokoto_rima' };
-    function lmChart() {
-        const box = $('#lmchart'), Lr = D.c.reliability.areas[LM.area].lmoment_ratios, Hh = 360;
-        const { s, W } = svgFrame(box, Hh, `L-moment ratio diagram, ${AREA[LM.area]}`), m = { l: 52, r: 18, t: 20, b: 44 };
-        const all3 = [...Lr.chirps.t3, ...Lr.models_sample.t3], all4 = [...Lr.chirps.t4, ...Lr.models_sample.t4];
-        const x0 = Math.min(-0.1, Math.floor(Math.min(...all3) * 10) / 10), x1 = Math.max(0.5, Math.ceil(Math.max(...all3) * 10) / 10);
-        const y0 = Math.min(-0.05, Math.floor(Math.min(...all4) * 10) / 10), y1 = Math.max(0.4, Math.ceil(Math.max(...all4) * 10) / 10);
-        const x = v => m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r);
-        const y = yAxis(s, m.l, W - m.r, m.t, Hh - m.b, y0, y1, v => num(v, 1), 5);
-        niceTicks(x0, x1, 6).forEach(v => { if (v >= x0 && v <= x1) s.append(el('text', { x: x(v), y: Hh - m.b + 16, 'text-anchor': 'middle', class: 'tick' }, num(v, 1))); });
-        s.append(el('text', { x: (m.l + W - m.r) / 2, y: Hh - 6, 'text-anchor': 'middle', class: 'axlab' }, 'L-skewness τ₃'));
-        s.append(el('text', { x: m.l + 6, y: m.t + 6, class: 'axlab halo' }, 'L-kurtosis τ₄'));
-        Lr.models_sample.t3.forEach((v, i) => s.append(el('circle', { cx: x(v), cy: y(Lr.models_sample.t4[i]), r: 2.4, fill: COL.C, 'fill-opacity': .35, class: 'fade' })));
-        Lr.chirps.t3.forEach((v, i) => s.append(el('circle', { cx: x(v), cy: y(Lr.chirps.t4[i]), r: 3, fill: '#111', 'fill-opacity': .8, class: 'fade' })));
-        // GEV curve, polynomial approximation of Hosking & Wallis (1997, Table 2.3)
-        const gev = t => 0.10701 + 0.11090 * t + 0.84838 * t ** 2 - 0.06669 * t ** 3 + 0.00567 * t ** 4 - 0.04208 * t ** 5 + 0.03763 * t ** 6;
-        const pts = []; for (let t = Math.max(x0, -0.6); t <= Math.min(x1, 0.9); t += 0.01) { const q = gev(t); if (q >= y0 && q <= y1) pts.push([x(t), y(q)]); }
-        lineP(s, pts, { stroke: COL.C, 'stroke-width': 2 });
-        s.append(el('circle', { cx: x(0.1699), cy: y(0.1504), r: 6, fill: '#fff', stroke: COL.C, 'stroke-width': 2.2 }));
-        s.append(el('text', { x: x(0.1699) + 10, y: y(0.1504) + 18, class: 'note halo' }, 'Gumbel'));
-        key($('#lm-key'), [['#111', `CHIRPS cells (${Lr.chirps.t3.length})`, 'dot'], [COL.C + '66', `Model cells, sample (${Lr.models_sample.t3.length})`, 'dot'], [COL.C, 'GEV distribution', 'line']]);
-        if (!$('#lm-area').childElementCount) areaSeg('#lm-area', LM, lmChart);
-    }
-
     // strip chart: rows of per-model dots with a band and marks
     function strip(box, rows, opt) {
         const narrow = box.clientWidth < 640, lw = narrow ? 92 : 128, rh = opt.rowH || 64, Hh = 30 + rows.length * rh + 34;
@@ -684,32 +633,6 @@
     }
 
     const DS = { v: 'niger_benue:rx' };
-    function distChart() {
-        const box = $('#distchart'), [area, kind] = DS.v.split(':'), Dd = D.c.reliability.areas[area].distributions;
-        const S = [['historical', '1985–2014', '#8a8a83'], ['ssp245', 'SSP2-4.5, 2041–2070', COL.ssp245], ['ssp585', 'SSP5-8.5, 2041–2070', COL.ssp585]];
-        const q = (a, p) => { const s = a.filter(isNum).slice().sort((x, y) => x - y), i = (s.length - 1) * p, f = Math.floor(i); return s[f] + (s[Math.min(f + 1, s.length - 1)] - s[f]) * (i - f); };
-        const stats = S.map(([k]) => { const a = Dd[k][kind]; return [.05, .25, .5, .75, .95].map(p => q(a, p)); });
-        const Hh = 300, { s, W } = svgFrame(box, Hh, 'Distribution of the area-median annual value, all models'), m = { l: 54, r: 16, t: 22, b: 34 };
-        const lo = Math.min(...stats.map(z => z[0])), hi = Math.max(...stats.map(z => z[4]));
-        const tk = niceTicks(lo * .95, hi * 1.03, 5);
-        const y = yAxis(s, m.l, W - m.r, m.t, Hh - m.b, tk[0], tk[tk.length - 1], v => num(v), 5, kind === 'rx' ? 'mm' : 'days');
-        const x = i => m.l + (i + .5) / S.length * (W - m.l - m.r), bw = Math.min(90, (W - m.l - m.r) / S.length * .42);
-        const tp = tip(box);
-        S.forEach(([k, n, c], i) => {
-            const z = stats[i], g = el('g', { class: 'fade', style: `transition-delay:${i * .12}s` }); s.append(g);
-            g.append(el('line', { x1: x(i), x2: x(i), y1: y(z[0]), y2: y(z[4]), stroke: c, 'stroke-width': 1.5 }));
-            [z[0], z[4]].forEach(v => g.append(el('line', { x1: x(i) - bw / 4, x2: x(i) + bw / 4, y1: y(v), y2: y(v), stroke: c, 'stroke-width': 1.5 })));
-            g.append(el('rect', { x: x(i) - bw / 2, y: y(z[3]), width: bw, height: Math.max(1, y(z[1]) - y(z[3])), rx: 4, fill: c, opacity: .22, stroke: c, 'stroke-width': 1.3 }));
-            g.append(el('line', { x1: x(i) - bw / 2, x2: x(i) + bw / 2, y1: y(z[2]), y2: y(z[2]), stroke: c, 'stroke-width': 2.6 }));
-            s.append(el('text', { x: x(i), y: Hh - 12, 'text-anchor': 'middle', class: 'tick' }, n));
-            const h = el('rect', { x: x(i) - bw, y: m.t, width: bw * 2, height: Hh - m.t - m.b, fill: 'transparent' }); s.append(h);
-            h.addEventListener('mousemove', () => tp.show(`<b>${n}</b><div>Median ${num(z[2], 1)}</div><div>25–75%: ${num(z[1], 1)}–${num(z[3], 1)}</div><div>5–95%: ${num(z[0], 1)}–${num(z[4], 1)}</div>`, x(i), y(z[4])));
-            h.addEventListener('mouseleave', () => tp.hide());
-        });
-        $('#ds-key').innerHTML = `<li>${kind === 'rx' ? `Wettest day of each year, ${AREA[area]}, area median` : 'Longest June–September dry spell, Sokoto–Rima, area median'}; ${num(Dd.historical[kind].length)} model-years per period</li>`;
-        if (!$('#ds-var').childElementCount) seg($('#ds-var'), [['niger_benue:rx', 'Wettest day, Lower Niger–Benue'], ['sokoto_rima:rx', 'Wettest day, Sokoto–Rima'], ['sokoto_rima:dry', 'Dry spell, Sokoto–Rima', !Dd || !D.c.reliability.areas.sokoto_rima.distributions.historical.dry]], DS.v, v => { DS.v = v; distChart(); });
-    }
-
     function designTable() {
         const R = D.c.results.areas, REL = D.c.reliability.areas, tb = $('#design-table tbody');
         const f = (d, s) => `${num(d[s].future_mm_median, 0)} <span class="sub">${num(d[s].future_mm_p05, 0)}–${num(d[s].future_mm_p95, 0)}</span>`;
@@ -746,12 +669,52 @@
         key($('#dry-key'), [[COL.ssp245, 'Model, SSP2-4.5', 'dot'], [COL.ssp585, 'Model, SSP5-8.5', 'dot'], ['#111', 'Median of models', 'line'], ['#11111122', '5–95% incl. sampling']]);
     }
 
+
+    // ---------- small multiples: the same map repeated for several years or return periods ----------
+    function multiples(box, tiles) {
+        box.innerHTML = '';
+        tiles.forEach(t => {
+            const cell = document.createElement('div'); cell.className = 'mcell';
+            cell.innerHTML = `<p class="mtitle">${t.title}</p><div class="map h240" role="img" aria-label="${t.title}"></div>`;
+            box.append(cell);
+            const m = L.map(cell.querySelector('.map'), { zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, attributionControl: false });
+            t.fit(m);
+            H.basemap(m, 'canvas');
+            t.draw(m);
+        });
+    }
+    const basinFit = m => { const c = D.cells.sokoto_rima.cells, la = c.map(q => q[1]), lo = c.map(q => q[0]); m.fitBounds([[Math.min(...la) - .2, Math.min(...lo) - .2], [Math.max(...la) + .2, Math.max(...lo) + .2]]); };
+    function multiA() {
+        const items = [['How often radar saw water, 2018–2023', 'data/part_a/dual_frequency.png', H.RAMP && null],
+                       ['Water, February 2022 (dry season)', 'data/part_a/dual_water_2022-02.png'],
+                       ['Water, October 2022 (flood)', 'data/part_a/dual_water_2022-10.png'],
+                       ['New water, October 2022', 'data/part_a/flood_extension_2022-10.png']];
+        multiples($('#multi-a'), items.map(([title, url]) => ({ title, fit: m => m.fitBounds(BOX(), { padding: [4, 4] }), draw: m => L.imageOverlay(url, BOX(), { className: 'px', interactive: false, alt: title }).addTo(m) })));
+        H.key($('#multi-a-key'), [[COL.A, 'Water (both polarisations)'], ['#08306b', 'Often water (50–100% of images)'], ['#deebf7', 'Seldom water (1–10%)'], ['rgba(120,120,112,0.35)', 'Floodplain (JRC, 1984–2020)']]);
+    }
+    function multiB() {
+        const B = D.bcells;
+        const years = [1983, 1984, 1987, 2009];
+        multiples($('#multi-b'), years.map(y => ({ title: String(y), fit: basinFit, draw: m => H.cellLayer(m, B.cells, B.spi12[B.years.indexOf(y)], H.SPI_CLASSES, () => '', null, -1, null) })));
+        H.key($('#multi-b-key'), [['#965b14', 'Drought (≤ −1)'], ['#e5bf86', 'Drier than normal'], ['#a9c6ec', 'Wetter than normal'], ['#2459ab', 'Wet (≥ 1)']]);
+    }
+    function multiC() {
+        const C = D.cells.sokoto_rima, U = C.uplift.ssp585, models = Object.keys(U['2']);
+        const ts = ['2', '10', '50', '100'];
+        multiples($('#multi-c'), ts.map(t => {
+            const vals = C.cells.map((_, i) => median(models.map(mo => U[t][mo][i])));
+            return { title: `${t}-year rainfall`, fit: basinFit, draw: m => H.cellLayer(m, C.cells, vals, H.UP_CLASSES, () => '', null, -1, null) };
+        }));
+        H.key($('#multi-c-key'), [['#8c510a', '< 0.90 (lower)'], ['#e8e6e1', '1.00–1.10'], ['#9fc5e8', '1.20–1.30'], ['#1f56b0', '≥ 1.50 (higher)']]);
+    }
+
     // ---------- start ----------
-    const RENDER = [['#framework-diagram', framework], ['#floodchart', floodCurve], ['#thrchart', thresholdChart], ['#s2chart', s2Chart], ['#xschart', sections], ['#climchart', climChart], ['#spichart', spiChart], ['#tcchart', tcChart], ['#ndvichart', ndviChart], ['#perfchart', perfChart], ['#rlchart', rlChart], ['#lmchart', lmChart], ['#upchart', upChart], ['#decchart', decChart], ['#distchart', distChart], ['#drychart', dryChart]];
-    const MAPS = [['#hero-map', hero], ['#study-map', studyMap], ['#flood-map', floodMap], ['#drought-map', droughtMap], ['#ndvi-map', ndviMap], ['#uplift-map', upliftMap], ['#dry-map', dryMap]];
+    const RENDER = [['#framework-diagram', framework], ['#floodchart', floodCurve], ['#s2chart', s2Chart], ['#xschart', sections], ['#climchart', climChart], ['#spichart', spiChart], ['#tcchart', tcChart], ['#ndvichart', ndviChart], ['#perfchart', perfChart], ['#rlchart', rlChart], ['#upchart', upChart], ['#decchart', decChart], ['#drychart', dryChart]];
+    const MAPS = [['#hero-map', hero], ['#study-map', studyMap], ['#flood-map', floodMap], ['#drought-map', droughtMap], ['#ndvi-map', ndviMap], ['#uplift-map', upliftMap], ['#dry-map', dryMap], ['#multi-a', multiA], ['#multi-b', multiB], ['#multi-c', multiC]];
     function safe(fn, node) { try { fn(); } catch (e) { console.error(e); if (node) node.innerHTML = '<p class="load-error">This figure could not be drawn.</p>'; } }
 
     H.chrome();
+    addEventListener('hashchange', () => { const x = document.getElementById(location.hash.slice(1)); if (x) { if (!x.hasAttribute('tabindex')) x.setAttribute('tabindex', '-1'); x.focus({ preventScroll: true }); } });
     H.reactions();
     const cb = $('#copy-cite'); if (cb) cb.addEventListener('click', () => H.copy($('#cite-text').textContent, 'Citation copied'));
     Promise.all(['a', 'b', 'c', 'b_cells', 'cells'].map(f => H.get(`data/${f}.json`)).concat([H.get('data/domains.geojson')]))

@@ -34,7 +34,7 @@
   </div>
 </header>
 
-<div class="shell">
+<main class="shell" id="main">
   <section class="map-pane" aria-label="Map">
     <div id="map" class="map-canvas" role="region" aria-label="Interactive map of the selected layer"></div>
 
@@ -85,7 +85,7 @@
       <button type="button" role="tab" id="tab-stats" aria-selected="false" aria-controls="p-stats" data-tab="stats" tabindex="-1">Statistics</button>
       <button type="button" role="tab" id="tab-compare" aria-selected="false" aria-controls="p-compare" data-tab="compare" tabindex="-1">Compare</button>
     </div>
-    <div class="tab-body">
+    <div class="tab-body" tabindex="0" role="region" aria-label="Panel content">
       <section role="tabpanel" id="p-overview" aria-labelledby="tab-overview" class="tp" data-tab="overview"><div id="overview"></div></section>
       <section role="tabpanel" id="p-cell" aria-labelledby="tab-cell" class="tp" data-tab="cell" hidden><div id="cell"></div></section>
       <section role="tabpanel" id="p-series" aria-labelledby="tab-series" class="tp" data-tab="series" hidden><div id="series"></div></section>
@@ -93,7 +93,7 @@
       <section role="tabpanel" id="p-compare" aria-labelledby="tab-compare" class="tp" data-tab="compare" hidden><div id="compare"></div></section>
     </div>
   </aside>
-</div>
+</main>
 
 <dialog id="dlg-data" aria-labelledby="dlg-data-t">
   <form method="dialog" class="dlg-close"><button class="btn" aria-label="Close">Close</button></form>
