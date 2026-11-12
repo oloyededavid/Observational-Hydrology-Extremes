@@ -11,7 +11,8 @@ weights, 1981-2024 (complete years). This needs no Earth Engine; it uses the CHI
 part_c/scripts/c03_chirps.py. The v2 notebook computes the same index from the 0.05-degree data in
 Earth Engine; small differences between the two are expected.
 
-Output: part_b/data/rain_spi.json
+Output: part_b/data/rain_spi.json (basin) and part_b/data/rain_spi_cells.json (each 0.25-degree cell:
+annual rainfall, SPI fitted per cell to 1991-2020, and the coefficient of variation, 1981-2024).
 """
 import json, os
 import numpy as np
@@ -33,12 +34,13 @@ def classify(s):
 
 def main():
     cells = json.load(open(os.path.join(ROOT, "part_c", "data", "cells.json")))["sokoto_rima"]
-    tot = []
+    tot, per_cell = [], []
     for y in YEARS:
         d = np.load(os.path.join(CH, f"{y}.npz"))
         lat, lon, pr = d["sokoto_rima_lat"], d["sokoto_rima_lon"], d["sokoto_rima_pr"]
         idx = [(int(np.argmin(np.abs(lat - c[1]))), int(np.argmin(np.abs(lon - c[0])))) for c in cells]
         annual = np.array([np.nansum(pr[:, j, i]) for j, i in idx])
+        per_cell.append(annual)
         w = np.cos(np.radians([c[1] for c in cells]))
         tot.append(float(np.sum(annual * w) / np.sum(w)))
     tot = np.array(tot)
@@ -64,6 +66,18 @@ def main():
         ],
     }
     os.makedirs(os.path.join(ROOT, "part_b", "data"), exist_ok=True)
+    pc = np.array(per_cell)  # (years, cells)
+    spi_c = np.empty_like(pc)
+    sel = (yrs >= REF[0]) & (yrs <= REF[1])
+    for k in range(pc.shape[1]):
+        ak, _, sk = stats.gamma.fit(pc[sel, k], floc=0)
+        spi_c[:, k] = stats.norm.ppf(stats.gamma.cdf(pc[:, k], ak, loc=0, scale=sk))
+    json.dump({"cells": cells, "years": [int(y) for y in yrs], "reference": list(REF),
+               "rain_mm": [[round(float(v)) for v in row] for row in pc],
+               "spi": [[round(float(v), 2) for v in row] for row in spi_c],
+               "mean_mm": [round(float(v)) for v in pc.mean(axis=0)],
+               "cv_pct": [round(float(v), 1) for v in 100 * pc.std(axis=0, ddof=1) / pc.mean(axis=0)]},
+              open(os.path.join(ROOT, "part_b", "data", "rain_spi_cells.json"), "w"), separators=(",", ":"))
     json.dump(out, open(os.path.join(ROOT, "part_b", "data", "rain_spi.json"), "w"), indent=1)
     dry = [r for r in out["years"] if r["spi"] <= -1]
     print(f"mean {tot.mean():.0f} mm, CV {out['cv']:.2f}, trend {out['trend_mm_per_decade']:+.0f} mm/decade (p={trend.pvalue:.3f})")
