@@ -639,8 +639,8 @@
     function initTableWraps() {
         const check = w => {
             const fig = w.closest('figure'), cap = fig && $('figcaption', fig);
-            if (w.scrollWidth > w.clientWidth + 1 && cap) { w.tabIndex = 0; w.setAttribute('role', 'region'); w.setAttribute('aria-labelledby', cap.id); }
-            else ['tabindex', 'role', 'aria-labelledby'].forEach(a => w.removeAttribute(a));
+            if (w.scrollWidth > w.clientWidth + 1 && cap) { w.tabIndex = 0; w.setAttribute('role', 'region'); const all = [...fig.querySelectorAll('.tablewrap')]; if (all.length > 1) { w.removeAttribute('aria-labelledby'); w.setAttribute('aria-label', cap.textContent.trim().slice(0, 80) + ', table ' + (all.indexOf(w) + 1)); } else w.setAttribute('aria-labelledby', cap.id); }
+            else ['tabindex', 'role', 'aria-labelledby', 'aria-label'].forEach(a => w.removeAttribute(a));
         };
         const ro = new ResizeObserver(es => es.forEach(e => check(e.target)));
         $$('.table-wrap').forEach(w => { check(w); ro.observe(w); });
