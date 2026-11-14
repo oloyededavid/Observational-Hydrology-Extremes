@@ -297,3 +297,5 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
 
 /* consistency with the portfolio: left-aligned text */
 .main p, .main li, figure.plate figcaption { text-align: left; hyphens: manual; -webkit-hyphens: manual; }
+/* header lines up with the other four project sites */
+@media (min-width: 561px) { .site-header .site-inner { max-width: 1220px; padding: 0 20px; } }
