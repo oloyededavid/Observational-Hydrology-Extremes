@@ -703,3 +703,7 @@ figcaption { hyphens: manual; -webkit-hyphens: manual; }
 @media (max-width: 768px) {
   .tool { min-height: 28px; padding: 4px 8px; }
 }
+
+/* consistency with the portfolio: left-aligned text, portfolio blue */
+:root { --accent: #1f5fae; }
+.article section > p, .article section li, .note p, .citation p, figcaption, .eqx-text { text-align: left; hyphens: manual; -webkit-hyphens: manual; }

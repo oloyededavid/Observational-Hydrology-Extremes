@@ -294,3 +294,6 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
 .cta:hover .go { background: #174c8c; }
 .cta:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 @media (max-width: 860px) { .cta { grid-template-columns: 1fr; gap: 20px; padding: 16px; } .cta .h { font-size: 26px; } }
+
+/* consistency with the portfolio: left-aligned text */
+.main p, .main li, figure.plate figcaption { text-align: left; hyphens: manual; -webkit-hyphens: manual; }
