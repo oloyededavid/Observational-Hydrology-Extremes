@@ -1,8 +1,11 @@
 /* Study page: floods, droughts and design rainfall. Clean editorial layout with grey figure panels. */
+/* en dash only, from DejaVu Sans (Bitstream Vera licence): Satoshi's en dash is nearly as wide as an em dash */
+@font-face { font-family: 'Range Dash'; src: url(fonts/range-dash.woff) format('woff'); unicode-range: U+2013; font-weight: 100 599; font-display: swap; }
+@font-face { font-family: 'Range Dash'; src: url(fonts/range-dash-bold.woff) format('woff'); unicode-range: U+2013; font-weight: 600 900; font-display: swap; }
 :root {
     --ink: #111; --ink-2: #444; --ink-3: #6b6b6b; --rule: #e6e6e3; --rule-2: #d9d9d5; --panel: #f5f5f4; --bg: #fff;
     --A: #1f56b0; --B: #9a5f12; --C: #5b4b8a; --accent: #1f56b0; --focus: #1f56b0; --ui: #1f5fae; --ui-soft: #eaf1fb; --line: #b9cde8;
-    --display: 'Zodiak', Georgia, 'Times New Roman', serif; --font: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --display: 'Zodiak', Georgia, 'Times New Roman', serif; --font: 'Range Dash', 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --wide: 1180px; --main: 720px; --bar-h: 56px;
 }
 *, *::before, *::after { box-sizing: border-box; }
