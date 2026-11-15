@@ -302,3 +302,6 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
 .main p, .main li, figure.plate figcaption { text-align: left; hyphens: manual; -webkit-hyphens: manual; }
 /* header lines up with the other four project sites */
 @media (min-width: 561px) { .site-header .site-inner { max-width: 1220px; padding: 0 20px; } }
+/* downloads: long file names wrap, and on phones the description sits under the file name */
+.downloads a { overflow-wrap: anywhere; min-width: 0; }
+@media (max-width: 560px) { .downloads li { grid-template-columns: minmax(0, 1fr); gap: 2px; } .downloads span { text-align: left; } }

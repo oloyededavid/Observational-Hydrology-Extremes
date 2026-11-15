@@ -521,7 +521,7 @@
 
     // strip chart: rows of per-model dots with a band and marks
     function strip(box, rows, opt) {
-        const narrow = box.clientWidth < 640, lw = narrow ? 92 : 128, rh = opt.rowH || 64, Hh = 30 + rows.length * rh + 34;
+        const narrow = box.clientWidth < 640, lw = narrow ? 92 : 128, rh = opt.rowH || 64, Hh = 30 + rows.length * rh + 34 + (narrow ? 18 : 0);
         const { s, W } = svgFrame(box, Hh, opt.label), m = { l: lw, r: 18, t: 20 };
         const vals = rows.flatMap(r => [...r.dots.map(d => d[1]), ...(r.band || [])]).filter(isNum);
         const lo = Math.min(opt.ref, ...vals), hi = Math.max(opt.ref, ...vals), pad = (hi - lo) * .06;
@@ -529,7 +529,14 @@
         const x = v => m.l + (v - a) / (b - a) * (W - m.l - m.r), bottom = m.t + rows.length * rh;
         ticks.forEach(v => { s.append(el('line', { x1: x(v), x2: x(v), y1: m.t, y2: bottom, class: 'grid' })); s.append(el('text', { x: x(v), y: bottom + 16, 'text-anchor': 'middle', class: 'tick' }, opt.fmt(v))); });
         s.append(el('line', { x1: x(opt.ref), x2: x(opt.ref), y1: m.t - 4, y2: bottom, class: 'ax0' }));
-        s.append(el('text', { x: (m.l + W - m.r) / 2, y: Hh - 4, 'text-anchor': 'middle', class: 'axlab' }, opt.axis));
+        const axl = el('text', { x: W / 2, y: Hh - 4, 'text-anchor': 'middle', class: 'axlab' }, opt.axis); s.append(axl);
+        // on a phone a long axis title is split over two lines instead of running off the chart
+        if (narrow && axl.getComputedTextLength() > W - 8) {
+            const words = opt.axis.split(' '); let cut = 1, best = Infinity;
+            for (let k = 1; k < words.length; k++) { const d = Math.abs(words.slice(0, k).join(' ').length - opt.axis.length / 2); if (d < best) { best = d; cut = k; } }
+            axl.textContent = '';
+            [words.slice(0, cut).join(' '), words.slice(cut).join(' ')].forEach((t, k) => axl.append(el('tspan', { x: W / 2, y: Hh - 22 + k * 18 }, t)));
+        }
         const tp = tip(box);
         rows.forEach((r, i) => {
             const yc = m.t + i * rh + rh / 2;
