@@ -521,7 +521,8 @@
 
     // strip chart: rows of per-model dots with a band and marks
     function strip(box, rows, opt) {
-        const narrow = box.clientWidth < 640, lw = narrow ? 92 : 128, rh = opt.rowH || 64, Hh = 30 + rows.length * rh + 34 + (narrow ? 18 : 0);
+        // on a phone each row's name sits above its row, so long names are never cut off and the dots get the full width
+        const narrow = box.clientWidth < 640, lw = narrow ? 8 : 128, top = narrow ? 18 : 0, rh = (opt.rowH || 64) + top, Hh = 30 + rows.length * rh + 34 + (narrow ? 18 : 0);
         const { s, W } = svgFrame(box, Hh, opt.label), m = { l: lw, r: 18, t: 20 };
         const vals = rows.flatMap(r => [...r.dots.map(d => d[1]), ...(r.band || [])]).filter(isNum);
         const lo = Math.min(opt.ref, ...vals), hi = Math.max(opt.ref, ...vals), pad = (hi - lo) * .06;
@@ -541,8 +542,9 @@
         }
         const tp = tip(box);
         rows.forEach((r, i) => {
-            const yc = m.t + i * rh + rh / 2;
-            s.append(el('text', { x: lw - 10, y: yc + 4, 'text-anchor': 'end', class: 'lab', 'font-weight': 700 }, r.name));
+            const yc = m.t + i * rh + top + (rh - top) / 2;
+            s.append(narrow ? el('text', { x: 0, y: m.t + i * rh + 12, class: 'lab', 'font-weight': 700 }, r.name)
+                            : el('text', { x: lw - 10, y: yc + 4, 'text-anchor': 'end', class: 'lab', 'font-weight': 700 }, r.name));
             if (r.band) s.append(el('rect', { x: x(r.band[0]), y: yc - 15, width: Math.max(1, x(r.band[1]) - x(r.band[0])), height: 30, rx: 6, fill: r.color, 'fill-opacity': .1, class: 'grow' }));
             // beeswarm-lite: jitter by rank to avoid overlap
             const ds = r.dots.slice().sort((p, q) => p[1] - q[1]); let lastX = -99, lane = 0;
