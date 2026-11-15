@@ -759,7 +759,7 @@
     }).catch(err => {
         console.error(err);
         const m = document.createElement('p'); m.className = 'small load-error';
-        m.textContent = 'The data did not load. Check the connection and reload the page.'; console.error(err);
+        m.textContent = 'The data did not load. Check the connection and reload the page.';
         $('main').prepend(m);
     });
 })();
