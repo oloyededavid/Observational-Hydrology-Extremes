@@ -127,7 +127,15 @@
         options.forEach(([val, label, disabled]) => {
             const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.dataset.val = val; b.disabled = !!disabled;
             b.setAttribute('aria-pressed', String(val === current));
-            b.addEventListener('click', () => { $$('button', node).forEach(x => x.setAttribute('aria-pressed', String(x === b))); onPick(val); });
+            b.addEventListener('click', () => {
+                const had = document.activeElement === b;
+                $$('button', node).forEach(x => x.setAttribute('aria-pressed', String(x === b))); onPick(val);
+                // the controls may be redrawn: keep keyboard focus on the button that was pressed
+                if (had && !b.isConnected) {
+                    const host = node.isConnected ? node : (node.id && document.getElementById(node.id));
+                    const nb = host && host.querySelector(`button[data-val="${CSS.escape(String(val))}"]`); if (nb) nb.focus();
+                }
+            });
             node.append(b);
         });
     }
