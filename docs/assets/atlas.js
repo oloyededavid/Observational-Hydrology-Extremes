@@ -525,7 +525,8 @@
         const { s, W } = svgFrame(box, Hh, opt.label), m = { l: lw, r: 18, t: 20 };
         const vals = rows.flatMap(r => [...r.dots.map(d => d[1]), ...(r.band || [])]).filter(isNum);
         const lo = Math.min(opt.ref, ...vals), hi = Math.max(opt.ref, ...vals), pad = (hi - lo) * .06;
-        const ticks = niceTicks(lo - pad, hi + pad, narrow ? 4 : 7), a = ticks[0], b = ticks[ticks.length - 1];
+        // the scale covers every value; ticks are only drawn inside it
+        const ticks = niceTicks(lo - pad, hi + pad, narrow ? 4 : 7), a = Math.min(ticks[0], lo - pad), b = Math.max(ticks[ticks.length - 1], hi + pad);
         const x = v => m.l + (v - a) / (b - a) * (W - m.l - m.r), bottom = m.t + rows.length * rh;
         ticks.forEach(v => { s.append(el('line', { x1: x(v), x2: x(v), y1: m.t, y2: bottom, class: 'grid' })); s.append(el('text', { x: x(v), y: bottom + 16, 'text-anchor': 'middle', class: 'tick' }, opt.fmt(v))); });
         s.append(el('line', { x1: x(opt.ref), x2: x(opt.ref), y1: m.t - 4, y2: bottom, class: 'ax0' }));
