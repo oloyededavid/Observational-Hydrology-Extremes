@@ -305,3 +305,6 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
 /* downloads: long file names wrap, and on phones the description sits under the file name */
 .downloads a { overflow-wrap: anywhere; min-width: 0; }
 @media (max-width: 560px) { .downloads li { grid-template-columns: minmax(0, 1fr); gap: 2px; } .downloads span { text-align: left; } }
+
+/* touch: sliders and checkboxes at least 24 px for a finger */
+@media (pointer: coarse), (max-width: 760px) { input[type="range"] { min-height: 32px; } input[type="checkbox"] { width: 24px; height: 24px; } }
