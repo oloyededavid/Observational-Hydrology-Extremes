@@ -308,3 +308,6 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
 
 /* touch: sliders and checkboxes at least 24 px for a finger */
 @media (pointer: coarse), (max-width: 760px) { input[type="range"] { min-height: 32px; } input[type="checkbox"] { width: 24px; height: 24px; } }
+
+/* Leaflet's plus-lighter blend leaves light seams between map tiles at fractional zoom on a light basemap */
+.leaflet-container img.leaflet-tile { mix-blend-mode: normal; }
