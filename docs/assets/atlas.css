@@ -249,7 +249,7 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
 /* ---------- small screens ---------- */
 @media (max-width: 960px) {
     .toc a:not(.toc-ex):not(.keep) { display: none; }
-    .toc a.toc-ex { flex: none; }
+    .site-header .toc { display: none; }  /* the phone row below carries every link, Explorer included */
 }
 /* section links on phones and tablets: one scrollable row under the header, as on the other study sites */
 .toc-phone { display: none; }
@@ -259,6 +259,7 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
     .toc-phone::-webkit-scrollbar { display: none; }
     .toc-phone a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-size: 14px; color: var(--ink-3, #6b6a64); text-decoration: none; white-space: nowrap; border-radius: 6px; }
     .toc-phone a:hover { color: var(--ink, #141412); }
+    .toc-phone a.toc-ex { color: var(--accent); font-weight: 500; }
 }
 @media (max-width: 860px) {
     .site-inner, .wrap { padding: 0 16px; }
