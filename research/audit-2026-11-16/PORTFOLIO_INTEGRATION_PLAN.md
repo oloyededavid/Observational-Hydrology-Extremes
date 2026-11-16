@@ -6,7 +6,7 @@
 
 - One page in English, French and German (`index.html`; `fr/` and `de/` built by `tools/build_i18n.py` from `i18n/*.json`).
 - An index map of five project areas, then five project cards: 01 Hydrology (Lower Niger–Benue and Sokoto–Rima), 02 Ogun surface water, 03 Ouémé–Ogun recharge, 04 Lake Chad water storage, 05 Lagos urban heat (wide card with a map tour).
-- Each card links to a study site on GitHub Pages; `tools/sync_nav.py` writes the "Study 0N of 05" bar and next-study card on each site.
+- Each card links to a study site on GitHub Pages; `tools/sync_nav.py` writes the "Study 0N of 0N" bar (six studies once Lekki–Epe was added as card 06) and next-study card on each site.
 - **Observational Hydrology is already card 01.** Its title, years (1950–2070), tags ("Floods and drought", "Satellite hydrology", "Climate change", "Earth observation") and summary ("tested for how far they can stand in for missing gauges") were corrected on 15 November.
 - **Coastal Hydrogeology is not on the portfolio**, and its repository has no GitHub Pages site (both URL spellings return 404).
 
