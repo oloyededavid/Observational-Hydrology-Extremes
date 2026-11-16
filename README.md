@@ -1,72 +1,52 @@
-# Cloud-Native Observational Hydrology in Data-Sparse Catchments
+# Floods, drought and design rainfall where the gauges are missing (Nigeria)
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
-![Google Earth Engine](https://img.shields.io/badge/Google%20Earth%20Engine-Cloud%20API-4285F4?logo=googleearth&logoColor=white)
-![Geospatial Stack](https://img.shields.io/badge/GIS-Rasterio%20%7C%20GeoPandas%20%7C%20SciPy-success)
-![Platform](https://img.shields.io/badge/Execution-Google%20Colab-F9AB00?logo=googlecolab&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
+**Author:** David Oloyede · **Website:** <https://oloyededavid.github.io/Observational-Hydrology-Extremes/> · **Licence:** MIT (code), CC BY 4.0 (derived data)
 
-**Author:** David Oloyede  
-**Specialization:** Environmental Remote Sensing & Geospatial Information Systems  
+How far can open satellite records and climate models stand in for missing rain and river gauges in two Nigerian river systems? The study has three parts, each with its own question, data and independent check.
 
----
+| Part | Question | Area | Main data | Independent check |
+| :--- | :--- | :--- | :--- | :--- |
+| A · Floods | When and how far does the reach flood? | Lower Niger–Benue reach (6.50–7.30 E, 5.80–8.00 N) | Sentinel-1 RTC radar, 2018–2023 | Sentinel-2 optical water, 2022 |
+| B · Drought | How often and how badly has rainfall failed, and does vegetation follow? | Sokoto–Rima basin | CHIRPS rainfall 1981–2024; MODIS NDVI 2001–2024 | TerraClimate rainfall and soil moisture |
+| C · Design rainfall | How much do climate models change the 25–100-year daily rainfall and the rainy-season dry spells by 2041–2070? | Both areas | NEX-GDDP-CMIP6 (23 models), CHIRPS | Two GHCN gauges, 1950–1980 |
 
+Every number on the website is computed from the files in `docs/data/`, which [`tools/build_site_data.py`](tools/build_site_data.py) builds from the analysis outputs. No Earth Engine account is needed: all data are read from Microsoft Planetary Computer, the Climate Hazards Center, NASA's NEX-GDDP-CMIP6 bucket and NOAA's GHCN-Daily.
 
+## Main results
 
-## Overview
+**Part A.** Inside the floodplain, Sentinel-1 water rises from about 300 km² in the dry season to a September–October peak: 498 km² on average in October 2018–2023, at most 627 km² (October 2022), at a −18 dB VH threshold. A data-driven (Otsu) threshold has a median of −17.8 dB over the 72 months, so the choice of −18 dB is close to what the data support, but the same threshold also flags about 900–1,000 km² of dry ground outside the floodplain in the dry season, so areas are reported inside a floodplain mask only. In October–November 2022, Sentinel-2 optical imagery confirms 62 % of the radar water at −18 dB VH, and 71 % when water is required in both radar polarisations (VH and VV); radar finds 73–77 % of the Sentinel-2 water. Against JRC Global Surface Water, recall is 90–95 % and precision 37–51 %, but JRC also defines the floodplain mask, so that comparison is not independent.
 
-Across West Africa, ground-based weather and river monitoring stations are sparse just as climate extremes are intensifying. This project addresses that data gap in three parts across two Nigerian river systems:
+**Part B.** SPI-3, -6 and -12 from gamma-fitted monthly CHIRPS (reference 1991–2020) place the longest drought in the early 1980s and show no drought of that length since. Growing-season NDVI follows rainfall: r = 0.70 raw, 0.76 after removing a linear trend from both series and 0.73 on year-to-year differences (2001–2024). Rainfall itself has no significant trend over 2001–2024, so a shared trend does not explain the link. These are associations, not a demonstration that rainfall alone controls vegetation.
 
-* **Part A — Flood Hydrodynamics (Lower Niger-Benue Basin):** Uses Sentinel-1 Synthetic Aperture Radar (SAR) and MERIT DEM topography to bypass heavy monsoon cloud cover, mapping inundation frequency over six seasons (2018–2023) with a fixed -18 dB VH threshold, and a floodplain vulnerability index that multiplies that frequency by a low-elevation term; the seasonal flood-pulse curve is typed in, not computed, and nothing is validated against flood records. **Recomputed without Earth Engine** ([`part_a/scripts/a01_flood_pc.py`](part_a/scripts/a01_flood_pc.py), Sentinel-1 RTC from Microsoft Planetary Computer): measured month by month, water inside the floodplain rises from about 300 km² to a September–October peak (498 km² on average in October, at most 627 km²), but the same −18 dB threshold also flags 1,000+ km² of dry ground as water in the dry season, so flood areas are reported only inside a floodplain mask. Against JRC Global Surface Water, recall is 90–95% and precision 37–51%.
+**Part C.** Present-day design rainfall from CHIRPS (GEV by L-moments, 1985–2014) is 68.8 mm for the 50-year day in the Lower Niger–Benue and 52.7 mm in the Sokoto–Rima. Under SSP5-8.5 the models' median 50-year uplift factor is 1.58 (10th–90th percentile of models 1.30–2.04) for the Lower Niger–Benue and 1.21 (1.01–1.46) for the Sokoto–Rima; under SSP2-4.5 it is 1.42 and 1.17. The uplift factors are the more robust output: CHIRPS understates heavy days compared with the two gauges, and a 1995–2024 baseline instead of 1985–2014 raises the present-day 50-year value by 12 % in the Lower Niger–Benue.
 
-* **Part B — Drought & Eco-Hydrological Coupling (Sokoto-Rima Basin):** Integrates 25 years (2000–2025) of CHIRPS precipitation and MODIS NDVI time-series across the semi-arid Sudano-Sahelian zone to quantify rainfall volatility (CV), a z-score of annual rainfall totals (an approximation of the Standardized Precipitation Index), and the correlation between annual NDVI and rainfall ($r = 0.594, p = 0.0014$; both series are undetrended and share the Sahel recovery trend, so the correlation may partly reflect that trend). A gamma-fitted SPI for 1981–2024 is now computed in [`part_b/scripts/b01_rain_spi.py`](part_b/scripts/b01_rain_spi.py), and [`part_b/scripts/b02_ndvi_pc.py`](part_b/scripts/b02_ndvi_pc.py) recomputes the NDVI test with quality-screened MODIS from Planetary Computer: growing-season NDVI and rainfall correlate at r = 0.70 raw, 0.76 detrended and 0.73 on year-to-year differences (2001–2024), so the link is not an artefact of the shared trend.
+## Limits that matter
 
-* **Part C — Design Rainfall under Future Climate (both areas):** How much do 23 downscaled CMIP6 models (NASA NEX-GDDP-CMIP6) change the 25-, 50- and 100-year daily rainfall and the rainy-season dry spells used in drainage and dam design, by 2041–2070 under SSP2-4.5 and SSP5-8.5? The output is a design uplift factor with its uncertainty. No rain gauge with a usable record after 1980 lies in either area, so CHIRPS is the present-day reference and two Niger gauges check the models for 1950–1980. See [`part_c/README.md`](part_c/README.md).
+- **No ground truth for floods.** There is no gauge, discharge or mapped flood record for the reach; flood areas are satellite estimates, checked against another satellite.
+- **Threshold and mask.** Areas depend on the radar threshold (−16 to −22 dB changes the October area from 594 to 138 km²) and on how the 30 m JRC extent is aggregated to the 110 m grid (an independent rebuild in November 2026 gave a floodplain mask 9 % smaller and October 2022 water 6 % lower).
+- **Drought reference period.** Which years count as droughts depends on the SPI reference: against 1991–2020, 1985 and 2017 are drought years; against 1981–2024 they are not. The 1980s event lasts 35–74 months at thresholds from −1.5 to −0.5.
+- **Vegetation coupling is sensitive to cloud handling.** Treating 16-day composites with less than 80 % clear pixels as missing changes the correlation to 0.78–0.84; an independent rebuild with the published definition gave 0.65–0.67. The link is positive and significant in every version; its exact size is not fixed to two decimals.
+- **Design rainfall.** 30-year samples make 100-year values extrapolations; the models are bias-corrected to observations over the historical period, so their agreement with CHIRPS is consistency, not independent skill; daily rainfall says nothing about sub-daily intensity or river discharge.
 
-**Website:** the study is published as a research page with an interactive explorer: <https://oloyededavid.github.io/Observational-Hydrology-Extremes/>. Every number on it is computed from the files in `docs/data/`, which [`tools/build_site_data.py`](tools/build_site_data.py) builds from the analysis outputs.
+The full register of weaknesses and how each was treated is in [`research/audit/D02_scientific_loophole_register.md`](research/audit/D02_scientific_loophole_register.md); the November 2026 audit and independent reproduction are in [`research/audit-2026-11-16/`](research/audit-2026-11-16/).
 
----
+## Repository
 
-## Complete Portfolio Documentation
+- `part_a/scripts/`, `part_b/scripts/`, `part_c/scripts/`: the current analysis, run in numbered order. Each script states its data source and output at the top.
+- `part_*/data/`, `docs/data/`: analysis outputs and the website's data.
+- `docs/`: the website (study page and explorer).
+- `tests/`, `part_c/tests/`: checks on the outputs and the extreme-value code (`python3 -m pytest tests part_c/tests`).
+- `research/audit/`: the November 2026 audit (D01–D03); `research/audit-2026-11-16/`: re-audit, independent reproduction and progress log.
+- Superseded material, kept for the record: the Earth Engine notebooks (`part_a/*.ipynb`, `part_b/*.ipynb`), their figures (`part_a/figures/`, `part_b/figures/`, including a map titled "vulnerability hotspots" and a flood-pulse curve whose values were typed in, not computed) and the October 2026 PDF in `documents/`. Their figures and numbers are replaced by the scripts above.
 
-* **Full Written Report (Part A & Part B Combined, October 2026):** [View Complete PDF](documents/Observational%20Hydrology%20in%20Data-Sparse%20Catchments%20A%20AND%20B.pdf). Superseded on four points: the flood-pulse curve, the JRC recall, the SPI and the NDVI coupling.
+## Reproduce
 
----
+```bash
+python3 -m pytest tests part_c/tests                       # checks on the stored outputs
+python3 part_c/scripts/c03_chirps.py                        # downloads, then c05 and c06 for Part C
+python3 part_a/scripts/a01_flood_pc.py                      # then a02-a04 for Part A
+python3 part_b/scripts/b01_rain_spi.py                      # then b02-b04 for Part B
+python3 tools/build_site_data.py                            # rebuild the website data
+```
 
-## Module-by-Module Code Execution (Google Colab)
-
-The analytical pipelines for this research are hosted in interactive Google Colab environments for browser-based reproduction.
-
-* **Part A (Lower Niger-Benue Basin):** Sentinel-1 SAR flood pulse extraction, inundation frequency, and hydro-geomorphic vulnerability.  
-  [Open Part A Colab Notebook](https://colab.research.google.com/drive/1-j9tGSStRQJyD_uylA_-HPH7nATFKGX8#scrollTo=kYW3s4lnvw7a)
-
-* **Part B (Sokoto-Rima Basin):** Multi-decadal precipitation CV vulnerability, z-score drought classification of annual rainfall, and the correlation of annual NDVI with rainfall ($r = 0.594, p = 0.0014$; undetrended, so it may reflect a shared trend).  
-  [Open Part B Colab Notebook](https://colab.research.google.com/drive/1_Em3EWTjQ9zbgQWf3ppezo_V_6Vpfbyt)
-
----
-
-## Selected Visual Synthesis
-
-Below is a curated preview showing 4 of the 14 cartographic maps and statistical plots produced in this study. The complete figure sets are embedded in the full PDF report and archived in the [Part A Figures (6 outputs)](part_a/figures/) and [Part B Figures (8 outputs)](part_b/figures/) folders.
-
-| Part A: Niger-Benue Flood Hydrodynamics | Part B: Sokoto-Rima Drought Dynamics |
-| :---: | :---: |
-| ![Dual State Hydrology](part_a/figures/Dual%20State%20Hydrology.jpg) <br> *Sentinel-1 SAR Dual-State Inundation* | ![Drought Vulnerability Map](part_b/figures/sokoto_rima_drought_vulnerability_map.png) <br> *Multi-Decadal Precipitation CV Vulnerability* |
-| ![Flood Pulse Curve](part_a/figures/Catchment%20Seasonal%20Flood%20Pulse%20Curve%20%28Empirical%29.png) <br> *Catchment Seasonal Flood Pulse (illustrative: the twelve values are typed into the notebook, not computed from imagery)* | ![Hydro-Climatic Coupling](part_b/figures/sokoto_rima_hydro_climatic_coupling.png) <br> *MODIS NDVI & Rainfall Eco-Hydrological Coupling* |
-
----
-
-## Methodological Architecture & Technical Stack
-
-| Pipeline Stage | Core Analytical Process | Technologies & Sensor Archives |
-| :--- | :--- | :--- |
-| **01 / Cloud Ingestion** | Server-side spatial and temporal reduction, radar speckle filtering, and optical cloud masking. | `Google Earth Engine API` · `Sentinel-1 SAR` · `CHIRPS` · `MODIS MOD13Q1` |
-| **02 / Terrain & Array Modeling** | Backscatter water thresholding, drainage height normalization, and floodplain cross-section profiling. | `Rasterio` · `GeoPandas` · `Shapely` · `MERIT DEM` · `WWF HydroSHEDS` |
-| **03 / Statistical Diagnostics** | Standardized anomaly indexing (z-scores of annual rainfall and annual mean NDVI; this is not a gamma-fitted SPI), spatial `CV` surfaces, and correlation modeling. | `SciPy` · `NumPy` · `Pandas` |
-| **04 / Cartographic Synthesis** | Multi-panel planar projection rendering, seasonal flood-pulse curves, and vulnerability mapping. | `Cartopy` · `Matplotlib` · `QGIS` · `ArcGIS Pro` |
-
----
-
-## Research Reflection
-
-Working on hydrological problems in Nigeria quickly forces you to deal with missing ground data. River gauges are sparse, and during the peak rainy season, heavy cloud cover makes standard optical satellite imagery almost useless for tracking floods. Putting these two workflows together was a practical way to work around those limits. Pairing radar data in the south with long-term rainfall and vegetation records in the north showed me how much insight we can pull from public satellite archives when local monitoring networks fall short. 
+The download scripts write to `part_*/cache/` (not committed) and are resumable.
