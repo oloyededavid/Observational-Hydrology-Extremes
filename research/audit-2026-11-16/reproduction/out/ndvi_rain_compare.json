@@ -1,6 +1,6 @@
 {
  "growing_season_ndvi_vs_published": {
-  "max_abs_diff": 0.0123,
+  "max_abs_diff": 0.0101,
   "filled_composites": 1,
   "published_filled": 15
  },
@@ -29,158 +29,158 @@
  },
  "same_definition_annual_rain": {
   "raw": {
-   "pearson_r": 0.646,
-   "p": 0.000656,
+   "pearson_r": 0.659,
+   "p": 0.00046,
    "spearman_rho": 0.57,
    "lag1_autocorr": [
-    0.39,
+    0.4,
     -0.14
    ],
    "n": 24,
    "n_eff": 24.0,
-   "p_autocorr_adjusted": 0.000656,
+   "p_autocorr_adjusted": 0.00046,
    "leave_one_out_r_min_max": [
-    0.494,
-    0.716
+    0.514,
+    0.726
    ]
   },
   "detrended": {
-   "pearson_r": 0.665,
-   "p": 0.000391,
-   "spearman_rho": 0.717,
+   "pearson_r": 0.686,
+   "p": 0.000218,
+   "spearman_rho": 0.733,
    "lag1_autocorr": [
-    0.2,
+    0.19,
     -0.16
    ],
    "n": 24,
    "n_eff": 24.0,
-   "p_autocorr_adjusted": 0.000391,
+   "p_autocorr_adjusted": 0.000218,
    "leave_one_out_r_min_max": [
-    0.567,
-    0.728
+    0.594,
+    0.744
    ]
   },
   "differenced": {
-   "pearson_r": 0.647,
-   "p": 0.000855,
-   "spearman_rho": 0.636,
+   "pearson_r": 0.668,
+   "p": 0.000489,
+   "spearman_rho": 0.668,
    "lag1_autocorr": [
-    -0.47,
+    -0.49,
     -0.71
    ],
    "n": 23,
-   "n_eff": 11.5,
-   "p_autocorr_adjusted": 0.0271,
+   "n_eff": 11.1,
+   "p_autocorr_adjusted": 0.0234,
    "leave_one_out_r_min_max": [
-    0.599,
-    0.703
+    0.624,
+    0.72
    ]
   }
  },
  "growing_season_rain_jul_oct": {
   "raw": {
-   "pearson_r": 0.611,
-   "p": 0.00153,
-   "spearman_rho": 0.528,
+   "pearson_r": 0.625,
+   "p": 0.00108,
+   "spearman_rho": 0.53,
    "lag1_autocorr": [
-    0.39,
+    0.4,
     -0.04
    ],
    "n": 24,
    "n_eff": 24.0,
-   "p_autocorr_adjusted": 0.00153,
+   "p_autocorr_adjusted": 0.00108,
    "leave_one_out_r_min_max": [
-    0.449,
-    0.672
+    0.47,
+    0.684
    ]
   },
   "detrended": {
-   "pearson_r": 0.582,
-   "p": 0.00284,
-   "spearman_rho": 0.604,
+   "pearson_r": 0.603,
+   "p": 0.00183,
+   "spearman_rho": 0.623,
    "lag1_autocorr": [
-    0.2,
+    0.19,
     -0.1
    ],
    "n": 24,
    "n_eff": 24.0,
-   "p_autocorr_adjusted": 0.00284,
+   "p_autocorr_adjusted": 0.00183,
    "leave_one_out_r_min_max": [
-    0.472,
-    0.637
+    0.498,
+    0.653
    ]
   },
   "differenced": {
-   "pearson_r": 0.548,
-   "p": 0.00679,
-   "spearman_rho": 0.524,
+   "pearson_r": 0.571,
+   "p": 0.00442,
+   "spearman_rho": 0.55,
    "lag1_autocorr": [
-    -0.47,
+    -0.49,
     -0.64
    ],
    "n": 23,
-   "n_eff": 12.5,
-   "p_autocorr_adjusted": 0.059,
+   "n_eff": 12.1,
+   "p_autocorr_adjusted": 0.0509,
    "leave_one_out_r_min_max": [
-    0.489,
-    0.647
+    0.515,
+    0.671
    ]
   }
  },
  "composites_below_80pct_valid_treated_missing": {
-  "filled_composites": 71,
+  "filled_composites": 66,
   "raw": {
-   "pearson_r": 0.783,
-   "p": 6.1e-06,
-   "spearman_rho": 0.727,
+   "pearson_r": 0.789,
+   "p": 4.68e-06,
+   "spearman_rho": 0.744,
    "lag1_autocorr": [
-    0.3,
+    0.28,
     -0.14
    ],
    "n": 24,
    "n_eff": 24.0,
-   "p_autocorr_adjusted": 6.1e-06,
+   "p_autocorr_adjusted": 4.68e-06,
    "leave_one_out_r_min_max": [
-    0.73,
-    0.807
+    0.74,
+    0.81
    ]
   },
   "detrended": {
-   "pearson_r": 0.836,
-   "p": 3.62e-07,
-   "spearman_rho": 0.876,
+   "pearson_r": 0.837,
+   "p": 3.33e-07,
+   "spearman_rho": 0.882,
    "lag1_autocorr": [
     0.01,
     -0.16
    ],
    "n": 24,
    "n_eff": 24.0,
-   "p_autocorr_adjusted": 3.62e-07,
+   "p_autocorr_adjusted": 3.33e-07,
    "leave_one_out_r_min_max": [
-    0.819,
-    0.879
+    0.821,
+    0.882
    ]
   },
   "differenced": {
-   "pearson_r": 0.806,
-   "p": 3.48e-06,
-   "spearman_rho": 0.827,
+   "pearson_r": 0.808,
+   "p": 3.04e-06,
+   "spearman_rho": 0.841,
    "lag1_autocorr": [
-    -0.64,
+    -0.63,
     -0.71
    ],
    "n": 23,
    "n_eff": 8.7,
-   "p_autocorr_adjusted": 0.0107,
+   "p_autocorr_adjusted": 0.00992,
    "leave_one_out_r_min_max": [
-    0.774,
-    0.828
+    0.778,
+    0.83
    ]
   }
  },
  "trends_2001_2024": {
-  "ndvi_per_decade": 0.0174,
-  "ndvi_p": 0.00431,
+  "ndvi_per_decade": 0.0181,
+  "ndvi_p": 0.00344,
   "rain_mm_per_decade": 18.2,
   "rain_p": 0.382
  }
