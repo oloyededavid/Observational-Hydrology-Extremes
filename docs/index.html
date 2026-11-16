@@ -100,12 +100,12 @@
       <h3 class="label" style="margin:34px 0 0">Objectives</h3>
       <ol class="objectives">
         <li>Map when and where the Lower Niger–Benue floods from radar, and measure how much of the radar's water an independent optical sensor confirms.</li>
-        <li>Characterise meteorological drought in the Sokoto–Rima basin at several timescales, test it against an independent rainfall and soil-moisture record, and test whether vegetation follows rainfall once shared trends are removed.</li>
+        <li>Characterise meteorological drought in the Sokoto–Rima basin at several timescales, test it against a second rainfall and soil-moisture record, and test whether vegetation follows rainfall once shared trends are removed.</li>
         <li>Estimate how 23 climate models change the daily rainfall and dry spells used in design by 2041–2070, and break the uncertainty of that change into its sources.</li>
       </ol>
       <div class="answer">
         <div><b>Floods: seasonal, verifiable in the wet season</b><span>Flooding on the floodplain peaks in <span data-v="aPeakMonths">—</span> every year. Sentinel-2 confirms <span data-v="aWetPrec">—</span> of flood-season radar water but only <span data-v="aDryPrec">—</span> in the dry season.</span></div>
-        <div><b>Drought: the 1980s stand out in both records, recent years do not</b><span>Two independent rainfall records agree on the 1980s droughts but not on which recent years were dry; greenness follows rain in <span data-v="bCellsSig">—</span> of the basin.</span></div>
+        <div><b>Drought: the 1980s stand out in both records, recent years do not</b><span>Two rainfall records agree on the 1980s droughts but not on which recent years were dry; greenness follows rain in <span data-v="bCellsSig">—</span> of the basin.</span></div>
         <div><b>Design rainfall rises, with wide limits</b><span>Median 50-year uplift <span data-v="cHeadline">—</span> by 2041–2070 (SSP5-8.5); thirty-year records, not model disagreement, dominate the uncertainty.</span></div>
       </div>
     </section>
@@ -410,7 +410,7 @@
           <tr><td class="l">No ground truth for floods</td><td class="l">Flood areas are satellite estimates</td><td class="l">Checked against Sentinel-2, itself limited by cloud and vegetation</td></tr>
           <tr><td class="l">Dark dry ground in radar</td><td class="l">Large false water in the dry season</td><td class="l">Floodplain mask, dual polarisation, change detection; dry-season water not reported</td></tr>
           <tr><td class="l">JRC used as mask and as reference</td><td class="l">The floodplain curve cannot exceed JRC's mapped extent</td><td class="l">Stated; change detection and Sentinel-2 checks use no JRC data</td></tr>
-          <tr><td class="l">Aggregating the JRC mask to the 110 m grid</td><td class="l">The floodplain area, and the flood area inside it, shift by several per cent with the resampling method</td><td class="l">An independent rebuild (November 2026) gave a slightly smaller mask and October 2022 area; treated as part of the area uncertainty</td></tr>
+          <tr><td class="l">Aggregating the JRC mask to the 110 m grid</td><td class="l">The floodplain area, and the flood area inside it, shift by several per cent with the resampling method</td><td class="l">A re-implementation (November 2026) gave a slightly smaller mask and October 2022 area; treated as part of the area uncertainty</td></tr>
           <tr><td class="l">SPI reference period</td><td class="l">Which years count as droughts</td><td class="l">The 30-year normal 1991–2020 is used; with the whole record as reference, 1985 and 2017 are no longer drought years</td></tr>
           <tr><td class="l">Cloud in 16-day NDVI composites</td><td class="l">The size of the vegetation–rainfall correlation depends on how partly clouded composites are treated</td><td class="l">The link is positive in every version tested and significant in all but one; its exact value is not fixed</td></tr>
           <tr><td class="l">Rainfall dataset choice</td><td class="l">Recent drought years differ between CHIRPS and TerraClimate</td><td class="l">Both shown; single recent years not quoted from one dataset</td></tr>
