@@ -1,0 +1,45 @@
+{
+ "floodplain_km2": 645.2,
+ "permanent_km2": 164.3,
+ "published_floodplain_km2": 707.7,
+ "2022-03": {
+  "images": 15,
+  "published_images": 15,
+  "minus18": {
+   "threshold_db": -18.0,
+   "floodplain_water_km2": 333.1,
+   "outside_floodplain_km2": 1636.8
+  },
+  "otsu": {
+   "threshold_db": -18.2,
+   "floodplain_water_km2": 323.3,
+   "outside_floodplain_km2": 1421.9
+  },
+  "published": {
+   "minus18_floodplain_km2": 337.6,
+   "minus18_outside_km2": 1601.5,
+   "otsu_db": -18.25,
+   "otsu_floodplain_km2": 323.7
+  }
+ },
+ "2022-10": {
+  "images": 16,
+  "published_images": 16,
+  "minus18": {
+   "threshold_db": -18.0,
+   "floodplain_water_km2": 592.0,
+   "outside_floodplain_km2": 991.9
+  },
+  "otsu": {
+   "threshold_db": -18.0,
+   "floodplain_water_km2": 592.0,
+   "outside_floodplain_km2": 991.9
+  },
+  "published": {
+   "minus18_floodplain_km2": 627.0,
+   "minus18_outside_km2": 959.4,
+   "otsu_db": -18.05,
+   "otsu_floodplain_km2": 624.7
+  }
+ }
+}

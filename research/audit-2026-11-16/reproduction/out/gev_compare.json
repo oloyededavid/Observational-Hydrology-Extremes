@@ -1,0 +1,102 @@
+{
+ "niger_benue": {
+  "cells": 27,
+  "T": {
+   "2": {
+    "published_median_mm": 44.65,
+    "lmoment_median_mm": 44.65,
+    "rel_diff": 0.0,
+    "mle_median_mm": 45.56,
+    "gumbel_median_mm": 45.04,
+    "baseline_1995_2024_median_mm": 44.92
+   },
+   "10": {
+    "published_median_mm": 57.16,
+    "lmoment_median_mm": 57.16,
+    "rel_diff": -0.0,
+    "mle_median_mm": 58.01,
+    "gumbel_median_mm": 57.17,
+    "baseline_1995_2024_median_mm": 60.63
+   },
+   "25": {
+    "published_median_mm": 63.9,
+    "lmoment_median_mm": 63.9,
+    "rel_diff": 0.0,
+    "mle_median_mm": 62.54,
+    "gumbel_median_mm": 63.59,
+    "baseline_1995_2024_median_mm": 69.22
+   },
+   "50": {
+    "published_median_mm": 68.77,
+    "lmoment_median_mm": 68.77,
+    "rel_diff": 0.0,
+    "mle_median_mm": 66.78,
+    "gumbel_median_mm": 67.49,
+    "baseline_1995_2024_median_mm": 77.12
+   },
+   "100": {
+    "published_median_mm": 73.49,
+    "lmoment_median_mm": 73.49,
+    "rel_diff": 0.0,
+    "mle_median_mm": 70.8,
+    "gumbel_median_mm": 71.37,
+    "baseline_1995_2024_median_mm": 83.18
+   }
+  },
+  "gev_shape_k_median_and_range": [
+   0.007,
+   -0.266,
+   0.298
+  ]
+ },
+ "sokoto_rima": {
+  "cells": 245,
+  "T": {
+   "2": {
+    "published_median_mm": 30.48,
+    "lmoment_median_mm": 30.48,
+    "rel_diff": -0.0,
+    "mle_median_mm": 31.29,
+    "gumbel_median_mm": 30.49,
+    "baseline_1995_2024_median_mm": 30.91
+   },
+   "10": {
+    "published_median_mm": 42.46,
+    "lmoment_median_mm": 42.46,
+    "rel_diff": 0.0,
+    "mle_median_mm": 42.45,
+    "gumbel_median_mm": 42.49,
+    "baseline_1995_2024_median_mm": 43.23
+   },
+   "25": {
+    "published_median_mm": 47.9,
+    "lmoment_median_mm": 47.9,
+    "rel_diff": 0.0,
+    "mle_median_mm": 47.25,
+    "gumbel_median_mm": 48.22,
+    "baseline_1995_2024_median_mm": 49.98
+   },
+   "50": {
+    "published_median_mm": 52.68,
+    "lmoment_median_mm": 52.68,
+    "rel_diff": 0.0,
+    "mle_median_mm": 51.54,
+    "gumbel_median_mm": 52.09,
+    "baseline_1995_2024_median_mm": 54.77
+   },
+   "100": {
+    "published_median_mm": 58.44,
+    "lmoment_median_mm": 58.44,
+    "rel_diff": -0.0,
+    "mle_median_mm": 56.55,
+    "gumbel_median_mm": 56.17,
+    "baseline_1995_2024_median_mm": 60.44
+   }
+  },
+  "gev_shape_k_median_and_range": [
+   -0.024,
+   -0.373,
+   0.376
+  ]
+ }
+}
