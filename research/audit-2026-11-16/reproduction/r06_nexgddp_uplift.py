@@ -60,7 +60,8 @@ def fetch(model, scen, year, key):
                 lat, lon = h["lat"][:], h["lon"][:]
                 j = np.where((lat >= 5.5) & (lat <= 16.5))[0]
                 i = np.where((lon >= 3.5) & (lon <= 9.75))[0]
-                pr = h["pr"][:, j.min():j.max() + 1, i.min():i.max() + 1].astype("float32") * 86400.0
+                pr = h["pr"][:, j.min():j.max() + 1, i.min():i.max() + 1].astype("float32")
+                pr = np.where(pr > 1e19, np.nan, pr) * 86400.0  # _FillValue 1e20 to NaN, then kg m-2 s-1 to mm/day
             np.savez_compressed(f, pr=pr, lat=lat[j.min():j.max() + 1], lon=lon[i.min():i.max() + 1])
             return
         except Exception as e:

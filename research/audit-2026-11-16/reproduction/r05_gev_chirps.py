@@ -59,29 +59,34 @@ def annual_max(area, years):
     return np.array([np.nanmax(load_year(y, area), axis=0) for y in years])  # (years, cells)
 
 
-pub = json.load(open(f"{REPO}/part_c/data/results.json"))
-out = {}
-for area in ("niger_benue", "sokoto_rima"):
-    rx = annual_max(area, range(1985, 2015))
-    rl = np.array([q_gev(gev_lmom(rx[:, c]), TS) for c in range(rx.shape[1])]).T  # (T, cells)
-    mle = []
-    for c in range(rx.shape[1]):
-        sh, loc, sc = stats.genextreme.fit(rx[:, c])
-        mle.append(stats.genextreme.ppf(1 - 1 / np.array(TS, float), sh, loc, sc))
-    mle = np.array(mle).T
-    gum = np.array([q_gumbel(rx[:, c], TS) for c in range(rx.shape[1])]).T
-    rx2 = annual_max(area, range(1995, 2025))
-    rl2 = np.array([q_gev(gev_lmom(rx2[:, c]), TS) for c in range(rx2.shape[1])]).T
-    P = pub["areas"][area]["chirps"]["return_levels"]
-    out[area] = {"cells": int(rx.shape[1]), "T": {}}
-    for i, T in enumerate(TS):
-        p = P[str(T)]["median_cells"]
-        out[area]["T"][str(T)] = {"published_median_mm": round(p, 2), "lmoment_median_mm": round(float(np.median(rl[i])), 2),
-                                  "rel_diff": round(float(np.median(rl[i]) / p - 1), 4),
-                                  "mle_median_mm": round(float(np.median(mle[i])), 2), "gumbel_median_mm": round(float(np.median(gum[i])), 2),
-                                  "baseline_1995_2024_median_mm": round(float(np.median(rl2[i])), 2)}
-    ks = [gev_lmom(rx[:, c])[2] for c in range(rx.shape[1])]
-    out[area]["gev_shape_k_median_and_range"] = [round(float(np.median(ks)), 3), round(float(np.min(ks)), 3), round(float(np.max(ks)), 3)]
-os.makedirs(f"{HERE}/out", exist_ok=True)
-json.dump(out, open(f"{HERE}/out/gev_compare.json", "w"), indent=1)
-print(json.dumps(out, indent=1))
+def main():
+    pub = json.load(open(f"{REPO}/part_c/data/results.json"))
+    out = {}
+    for area in ("niger_benue", "sokoto_rima"):
+        rx = annual_max(area, range(1985, 2015))
+        rl = np.array([q_gev(gev_lmom(rx[:, c]), TS) for c in range(rx.shape[1])]).T  # (T, cells)
+        mle = []
+        for c in range(rx.shape[1]):
+            sh, loc, sc = stats.genextreme.fit(rx[:, c])
+            mle.append(stats.genextreme.ppf(1 - 1 / np.array(TS, float), sh, loc, sc))
+        mle = np.array(mle).T
+        gum = np.array([q_gumbel(rx[:, c], TS) for c in range(rx.shape[1])]).T
+        rx2 = annual_max(area, range(1995, 2025))
+        rl2 = np.array([q_gev(gev_lmom(rx2[:, c]), TS) for c in range(rx2.shape[1])]).T
+        P = pub["areas"][area]["chirps"]["return_levels"]
+        out[area] = {"cells": int(rx.shape[1]), "T": {}}
+        for i, T in enumerate(TS):
+            p = P[str(T)]["median_cells"]
+            out[area]["T"][str(T)] = {"published_median_mm": round(p, 2), "lmoment_median_mm": round(float(np.median(rl[i])), 2),
+                                      "rel_diff": round(float(np.median(rl[i]) / p - 1), 4),
+                                      "mle_median_mm": round(float(np.median(mle[i])), 2), "gumbel_median_mm": round(float(np.median(gum[i])), 2),
+                                      "baseline_1995_2024_median_mm": round(float(np.median(rl2[i])), 2)}
+        ks = [gev_lmom(rx[:, c])[2] for c in range(rx.shape[1])]
+        out[area]["gev_shape_k_median_and_range"] = [round(float(np.median(ks)), 3), round(float(np.min(ks)), 3), round(float(np.max(ks)), 3)]
+    os.makedirs(f"{HERE}/out", exist_ok=True)
+    json.dump(out, open(f"{HERE}/out/gev_compare.json", "w"), indent=1)
+    print(json.dumps(out, indent=1))
+
+
+if __name__ == "__main__":
+    main()

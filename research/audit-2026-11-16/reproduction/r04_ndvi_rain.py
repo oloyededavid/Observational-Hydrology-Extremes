@@ -23,7 +23,7 @@ from scipy import stats
 from scipy.signal import detrend
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = "/home/user/observational-hydrology-extremes"
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))  # repository root, from this folder
 YEARS = list(range(2001, 2025))
 DOYS = [193, 209, 225, 241, 257, 273, 289]
 comp = json.load(open(f"{HERE}/cache/modis_composites.json"))
@@ -39,6 +39,8 @@ def growing_season(min_valid=0.0):
     gs, nfill = {}, 0
     for y in YEARS:
         have = [d for d in DOYS if d in per[y]]
+        if not have:
+            raise SystemExit(f"{y}: no composite passes min_valid={min_valid}")
         anom = np.mean([per[y][d] - clim[d] for d in have])
         gs[y] = float(np.mean([per[y][d] if d in per[y] else clim[d] + anom for d in DOYS]))
         nfill += len(DOYS) - len(have)

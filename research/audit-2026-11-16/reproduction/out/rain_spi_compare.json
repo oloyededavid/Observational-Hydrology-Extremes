@@ -168,7 +168,18 @@
    "n_months_diff_gt_0.011": 0,
    "n_compared": 352,
    "events_pub": 34,
-   "events_new": [
+   "events_new": 34,
+   "events_identical_start_duration": true,
+   "longest_pub": 7,
+   "longest_new": 7,
+   "mean_duration_pub": 2.176470588235294,
+   "mean_duration_new": 2.176470588235294,
+   "mean_severity_pub": 3.6273529411764707,
+   "mean_severity_new": 3.626950359261564,
+   "max_severity_pub": 15.45,
+   "max_severity_new": 15.450837386363872,
+   "max_abs_severity_diff_matched_events": 0.004906426028989941,
+   "events_new_list": [
     {
      "start": "1981-10",
      "months": 1,
@@ -340,16 +351,6 @@
      "severity": 3.33
     }
    ],
-   "events_identical_start_duration": true,
-   "longest_pub": 7,
-   "longest_new": 7,
-   "mean_duration_pub": 2.176470588235294,
-   "mean_duration_new": 2.176470588235294,
-   "mean_severity_pub": 3.6273529411764707,
-   "mean_severity_new": 3.626950359261564,
-   "max_severity_pub": 15.45,
-   "max_severity_new": 15.450837386363872,
-   "max_abs_severity_diff_matched_events": 0.004906426028989941,
    "ks_per_calendar_month": {
     "1": null,
     "2": null,
@@ -422,7 +423,18 @@
    "n_months_diff_gt_0.011": 0,
    "n_compared": 480,
    "events_pub": 33,
-   "events_new": [
+   "events_new": 33,
+   "events_identical_start_duration": true,
+   "longest_pub": 10,
+   "longest_new": 10,
+   "mean_duration_pub": 3.0303030303030303,
+   "mean_duration_new": 3.0303030303030303,
+   "mean_severity_pub": 5.255151515151515,
+   "mean_severity_new": 5.255257465455434,
+   "max_severity_pub": 26.3,
+   "max_severity_new": 26.304160549006156,
+   "max_abs_severity_diff_matched_events": 0.004978387884026159,
+   "events_new_list": [
     {
      "start": "1982-03",
      "months": 1,
@@ -589,16 +601,6 @@
      "severity": 3.25
     }
    ],
-   "events_identical_start_duration": true,
-   "longest_pub": 10,
-   "longest_new": 10,
-   "mean_duration_pub": 3.0303030303030303,
-   "mean_duration_new": 3.0303030303030303,
-   "mean_severity_pub": 5.255151515151515,
-   "mean_severity_new": 5.255257465455434,
-   "max_severity_pub": 26.3,
-   "max_severity_new": 26.304160549006156,
-   "max_abs_severity_diff_matched_events": 0.004978387884026159,
    "ks_per_calendar_month": {
     "1": {
      "q_zero": 0.0,
@@ -689,7 +691,18 @@
    "n_months_diff_gt_0.011": 0,
    "n_compared": 517,
    "events_pub": 12,
-   "events_new": [
+   "events_new": 12,
+   "events_identical_start_duration": true,
+   "longest_pub": 48,
+   "longest_new": 48,
+   "mean_duration_pub": 9.5,
+   "mean_duration_new": 9.5,
+   "mean_severity_pub": 18.834166666666665,
+   "mean_severity_new": 18.833601909724774,
+   "max_severity_pub": 109.2,
+   "max_severity_new": 109.19946153702018,
+   "max_abs_severity_diff_matched_events": 0.004650863925531823,
+   "events_new_list": [
     {
      "start": "1982-07",
      "months": 48,
@@ -751,16 +764,6 @@
      "severity": 13.41
     }
    ],
-   "events_identical_start_duration": true,
-   "longest_pub": 48,
-   "longest_new": 48,
-   "mean_duration_pub": 9.5,
-   "mean_duration_new": 9.5,
-   "mean_severity_pub": 18.834166666666665,
-   "mean_severity_new": 18.833601909724774,
-   "max_severity_pub": 109.2,
-   "max_severity_new": 109.19946153702018,
-   "max_abs_severity_diff_matched_events": 0.004650863925531823,
    "ks_per_calendar_month": {
     "1": {
      "q_zero": 0.0,
@@ -891,5 +894,5 @@
    "2021_2024": 590.5948374430233
   }
  },
- "note_1982_event": "published SPI-12 event starting 1982-07 lasts 48 months; compare 'events_new' for SPI-12"
+ "note_1982_event": "published SPI-12 event starting 1982-07 lasts 48 months; compare 'events_new_list' for SPI-12"
 }

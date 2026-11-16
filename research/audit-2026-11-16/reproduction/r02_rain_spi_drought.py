@@ -86,7 +86,7 @@ for k in (3, 6, 12):
         "mean_severity_pub": float(np.mean([e[2] for e in pev])), "mean_severity_new": float(np.mean([e[2] for e in ev])),
         "max_severity_pub": max(e[2] for e in pev), "max_severity_new": max(e[2] for e in ev),
         "max_abs_severity_diff_matched_events": float(max([abs(a_[2] - b_[2]) for a_, b_ in zip(ev, pev)] or [0])),
-        "events_new": [{"start": f"{1981 + st // 12}-{st % 12 + 1:02d}", "months": d_, "severity": round(sv, 2)} for st, d_, sv in ev],
+        "events_new_list": [{"start": f"{1981 + st // 12}-{st % 12 + 1:02d}", "months": d_, "severity": round(sv, 2)} for st, d_, sv in ev],
         "ks_per_calendar_month": diag}
     if k == 12:
         # SPI-12 with a threshold sensitivity (not published) and event sensitivity to treating SPI-12 Dec = annual SPI
@@ -98,7 +98,7 @@ a2, _, sc2 = stats.gamma.fit(ann, floc=0); spi_full = stats.norm.ppf(stats.gamma
 res["annual_spi_ref_sensitivity"] = {"years_spi<=-1_ref1991_2020": [int(y) for y, s in zip(yrs, spi_a) if s <= -1], "years_spi<=-1_ref1981_2024": [int(y) for y, s in zip(yrs, spi_full) if s <= -1],
     "reference_period_mean_mm": {"1981_1990": float(ann[yrs < 1991].mean()), "1991_2020": float(ann[sel].mean()), "2021_2024": float(ann[yrs > 2020].mean())}}
 # SPI-12 series in the 1980s: duration of the 1982-85 event is sensitive to the 1991-2020 (wetter) reference
-res["note_1982_event"] = "published SPI-12 event starting 1982-07 lasts 48 months; compare 'events_new' for SPI-12"
+res["note_1982_event"] = "published SPI-12 event starting 1982-07 lasts 48 months; compare 'events_new_list' for SPI-12"
 np.save(f"{HERE}/cache/spi12_new.npy", s12)
 import os; os.makedirs(f"{HERE}/out", exist_ok=True)
 json.dump(res, open(f"{HERE}/out/rain_spi_compare.json", "w"), indent=1, default=float)

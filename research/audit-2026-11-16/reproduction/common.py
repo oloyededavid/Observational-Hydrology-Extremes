@@ -1,7 +1,7 @@
 """Shared helpers for the reproduction (own code). Reads cache/chirps/<year>.npz written by r01_chirps_download.py."""
 import json, os, numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = "/home/user/observational-hydrology-extremes"
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))  # repository root, from this folder
 def cells(area): return json.load(open(f"{REPO}/part_c/data/cells.json"))[area]
 def load_year(y, area):
     """Return daily array (days, ncells) at the repo's cell centres, picked by exact coordinate match."""

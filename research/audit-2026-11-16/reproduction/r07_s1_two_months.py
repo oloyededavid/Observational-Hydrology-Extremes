@@ -35,17 +35,17 @@ os.environ.setdefault("GDAL_DISABLE_READDIR_ON_OPEN", "EMPTY_DIR")
 cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1", modifier=pc.sign_inplace)
 
 
-def warp(href, ovr=None, resampling=Resampling.average):
+def warp(href, ovr=None, resampling=Resampling.average, nodata=None):
     kw = {"overview_level": ovr} if ovr is not None else {}
-    with rasterio.open(href, **kw) as src, WarpedVRT(src, **GRID, resampling=resampling, src_nodata=src.nodata,
+    with rasterio.open(href, **kw) as src, WarpedVRT(src, **GRID, resampling=resampling, src_nodata=src.nodata if src.nodata is not None else nodata,
                                                       nodata=np.nan, dtype="float32") as v:
         return v.read(1)
 
 
-def mosaic(items, asset, ovr=None):
+def mosaic(items, asset, ovr=None, nodata=None):
     out = np.full((H, W), np.nan, "float32")
     for it in items:
-        a = warp(it.assets[asset].href, ovr)
+        a = warp(it.assets[asset].href, ovr, nodata=nodata)
         out = np.where(np.isnan(out), a, out)
     return out
 
@@ -87,7 +87,7 @@ def main():
     gy, gx = np.gradient(np.nan_to_num(dem), axis=(0, 1))
     slope = np.degrees(np.arctan(np.hypot(gx / dx, gy / dy)))
     jitems = list(cat.search(collections=["jrc-gsw"], bbox=[X0, Y0, X1, Y1]).items())
-    occ, ext = mosaic(jitems, "occurrence"), mosaic(jitems, "extent")
+    occ, ext = mosaic(jitems, "occurrence", nodata=255), mosaic(jitems, "extent", nodata=255)  # JRC no-data is 255
     gentle = slope < 5
     perm = np.nan_to_num(occ) >= 90
     plain = (np.nan_to_num(ext) >= 0.5) & ~perm
@@ -104,7 +104,6 @@ def main():
         for name, t in (("minus18", -18.0), ("otsu", t_o)):
             w = (med < t) & gentle
             inside, outside = float(A[w & plain].sum()), float(A[w & ~plain & ~perm].sum())
-            ref = plain  # agreement with the JRC floodplain itself
             r[name] = {"threshold_db": round(t, 2), "floodplain_water_km2": round(inside, 1), "outside_floodplain_km2": round(outside, 1)}
         r["published"] = {"minus18_floodplain_km2": float(pub_rows[(y, m)][6]), "minus18_outside_km2": float(pub_rows[(y, m)][7]),
                           "otsu_db": rob[(y, m)]["otsu_db"], "otsu_floodplain_km2": rob[(y, m)]["otsu_inside"]}
