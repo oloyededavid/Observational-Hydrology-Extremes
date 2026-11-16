@@ -10,7 +10,8 @@ pixels) and cache/monthly_basin.npy (r02, CHIRPS basin-mean monthly totals 1981-
    - composites with less than 80 % valid basin pixels treated as missing (cloud leaves the mean over a biased area)
    - growing-season (July-October) rainfall instead of the calendar year
    - Spearman rank correlation
-   - effective sample size for lag-1 autocorrelation (Bretherton et al., 1999: n_eff = n (1 - r1 r2)/(1 + r1 r2))
+   - effective sample size for lag-1 autocorrelation (Bretherton et al., 1999: n_eff = n (1 - r1 r2)/(1 + r1 r2),
+     capped at n; lag-1 estimates from 23-24 points are themselves uncertain)
    - leave-one-year-out range of r
 Output: out/ndvi_rain_compare.json
 """
@@ -55,7 +56,7 @@ def corr_block(x, v):
         rho, ps = stats.spearmanr(a, b)
         n = len(a)
         ra, rb = r1(a), r1(b)
-        neff = n * (1 - ra * rb) / (1 + ra * rb)
+        neff = min(n, n * (1 - ra * rb) / (1 + ra * rb))  # capped at n: opposite-signed lag-1 terms would otherwise inflate it
         t = r * np.sqrt(max(neff - 2, 1) / (1 - r * r))
         p_adj = 2 * stats.t.sf(abs(t), max(neff - 2, 1))
         loo = [stats.pearsonr(np.delete(a, i), np.delete(b, i))[0] for i in range(n)]
