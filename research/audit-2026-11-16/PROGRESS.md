@@ -41,3 +41,7 @@ Working branch: `research-audit` (local only; nothing is pushed). Original files
     return-level bias against CHIRPS and the annual-maximum mean ratio all match the published values to four
     decimals. The second model (INM-CM5-0) was stopped: the bucket served about 4 minutes per model-year here,
     about 2 hours for one model; one exact match confirms the pipeline.
+- Scientific review (separate agent) received; all findings addressed: positioning narrowed; n_eff capped at n
+  (r04 rerun: all versions significant except differenced Jul-Oct rainfall, p = 0.059); README gives published and
+  rebuilt NDVI r; site row on SPI reference corrected; "1.17" -> 1.16; dry-season false water from flood_monthly.csv
+  (mean 901 km2, months 283-1,602); reproduction described as a re-implementation; reproducibility score 4.

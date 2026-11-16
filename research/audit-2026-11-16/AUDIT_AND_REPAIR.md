@@ -2,7 +2,7 @@
 
 16 November 2026 · working branch `research-audit` (local, not pushed) · progress log: [`PROGRESS.md`](PROGRESS.md) · reproduction code and outputs: [`reproduction/`](reproduction/)
 
-The earlier audit (`research/audit/D01`–`D03`, 12 November 2026) listed 32 weaknesses and an implementation plan. This re-audit checks what was actually done, reproduces the headline results with independently written code, and looks for problems the first audit missed.
+The earlier audit (`research/audit/D01`–`D03`, 12 November 2026) listed 32 weaknesses and an implementation plan. This re-audit checks what was actually done, re-implements the headline calculations in separately written code (an independent re-implementation of the same method and cell lists, not an independent analysis), and looks for problems the first audit missed.
 
 ## 1. Status of the earlier audit
 
@@ -23,7 +23,7 @@ Own code in `reproduction/` (scripts `r01`–`r07`): fresh downloads and new imp
 | :--- | :--- | :--- | :--- |
 | Sokoto–Rima CHIRPS annual totals 1981–2024 | `part_b/data/rain_spi.json` | max difference 0.05 mm | Reproduced |
 | Annual SPI, SPI-3/6/12 | same, `drought.json` | max difference 0.005 (rounding); drought events identical | Reproduced |
-| Growing-season NDVI vs rainfall, r raw / detrended / differenced | 0.70 / 0.76 / 0.73 | 0.65 / 0.67 / 0.65 | Direction and significance reproduced; size differs (composite handling, see 2.2) |
+| Growing-season NDVI vs rainfall, r raw / detrended / differenced | 0.70 / 0.76 / 0.73 | 0.65 / 0.67 / 0.65 | Direction and significance reproduced; size differs, cause not identified (composite selection, see N-4) |
 | CHIRPS 2–100-year return levels, both areas | `part_c/data/results.json` | identical to 0.01 mm | Reproduced |
 | Baseline 1995–2024 sensitivity | 77.1 mm (Lower Niger–Benue, 50-year) | 77.1 mm | Reproduced |
 | MRI-ESM2-0: SSP5-8.5 uplift factors, historical bias vs CHIRPS, annual-maximum ratio | `results.json` | identical to four decimals, both areas | Reproduced |
@@ -37,10 +37,10 @@ Not reproduced, with reason: the remaining 22 climate models (about 4 minutes pe
 
 | # | Problem | Evidence | Severity | Treatment |
 | :-- | :--- | :--- | :-- | :--- |
-| N-1 | Flood areas depend on how the 30 m JRC extent is aggregated to 110 m | Floodplain mask 707.7 km² published vs 645.2 km² when aggregated from full resolution; October 2022 water 627.0 vs 592.0 km² | Medium | Added to the limits table on the site and to the README |
+| N-1 | Flood areas depend on how the 30 m JRC extent is aggregated to 110 m | Floodplain mask 707.7 km² published vs 645.2 km² when aggregated from full resolution; October 2022 water 627.0 vs 592.0 km² | Medium | Added to the limits table on the site and to the README. The 9 % mask difference is from aggregation; the 6 % water difference also reflects the 1/8 radar overview and GLO-90 DEM used in the rebuild |
 | N-2 | Which years count as droughts depends on the SPI reference period | 1985 and 2017 are drought years against 1991–2020 (the reference used), not against 1981–2024; the 1980s are much drier than the reference (461 vs 546 mm) | Medium | Added to the limits table and README |
 | N-3 | The 1980s drought's length depends on the threshold | 35, 48 and 74 months at SPI ≤ −1.5, −1.0, −0.5 | Low | README |
-| N-4 | The NDVI–rainfall r depends on cloud handling in 16-day composites | 0.65–0.67 with the published definition on a fresh download (1 composite filled vs 15 published); 0.78–0.84 when composites under 80 % clear are treated as missing | Medium | Added to the limits table; README gives the range |
+| N-4 | The NDVI–rainfall r depends on cloud handling in 16-day composites | 0.65–0.67 with the published definition on a fresh download (1 composite filled vs 15 published; the reader `r03` was written by a helper agent and the cause of the difference is not identified); 0.78–0.84 when composites under 80 % clear are treated as missing. With the effective sample size capped at n, every version is significant except year-to-year differences against July–October rainfall (p = 0.059) | Medium | Added to the limits table; README gives both the published and rebuilt values |
 | N-5 | The shared-trend concern raised in the old README does not apply over 2001–2024 | Rainfall trend p = 0.38 (not significant); NDVI trend p = 0.004 | Positive finding | README states it |
 
 All other published numbers checked here hold.
@@ -67,15 +67,15 @@ No flood ground truth; JRC used as both mask and reference; areas depend on thre
 
 ## 6. Scientific positioning
 
-**One contribution, not three.** The study tests three substitutes for missing gauges, each against something independent:
+**One contribution, not three.** The study tests three substitutes for missing gauges, each against something else:
 
-| Substitute | Stands in for | What it gets right | What it does not |
+| Substitute | Stands in for | What the evidence supports | What it does not |
 | :--- | :--- | :--- | :--- |
-| Sentinel-1 radar (Part A) | River-level and flood records | When the reach floods, and roughly where | Absolute areas (threshold and mask) and dry-season water |
-| CHIRPS satellite rainfall (Part B) | Rain-gauge records for drought | Drought timing and the 1980s drought; vegetation response | Which marginal years count as droughts (reference period) |
-| Downscaled climate models (Part C) | Long gauge records for design rainfall | The relative change (uplift factors, reproduced exactly) | Absolute design values (CHIRPS too low against gauges) |
+| Sentinel-1 radar (Part A) | River-level and flood records | A September–October flood season every year, agreeing in part with Sentinel-2 | Absolute areas (threshold and mask); flood timing has no gauge reference here |
+| CHIRPS satellite rainfall (Part B) | Rain-gauge records for drought | The prolonged early-1980s drought; vegetation following rainfall | Which marginal years count as droughts (reference period); CHIRPS and the gauges do not overlap in time |
+| Downscaled climate models (Part C) | Long gauge records for design rainfall | A projected increase in the Lower Niger–Benue across nearly all models | Absolute design values (CHIRPS too low against gauges); in the Sokoto–Rima the combined range includes no change |
 
-The coherent finding is that these substitutes are reliable for **timing, direction and relative change**, and much less so for **absolute magnitudes**. That framing is supported by every part, does not overstate any of them, and gives a clear rule for practice: use the substitutes for when and how much more, and anchor absolute values to gauges where any exist.
+The defensible common finding is narrower than "reliable for timing and relative change": each substitute gives a usable answer about **whether and roughly when** something happens, and the relative outputs (uplift factors) are **less sensitive to the absolute bias** of the reference data than the absolute values are. Whether the projected changes are right cannot be tested here; reproducing the calculation (exactly, for one model) shows only that the code does what it says.
 
 **Assessment** (1–5; before = 11 November state, after = this re-audit):
 
@@ -85,9 +85,13 @@ The coherent finding is that these substitutes are reliable for **timing, direct
 | Methodological validity | 4 | 4 | Unchanged; new sensitivities documented |
 | Technical implementation | 4 | 4 | Scripts and tests in place |
 | Data quality | 3 | 3 | No ground truth for floods; CHIRPS bias |
-| Reproducibility | 4 | 5 | Independent code reproduces Parts B and C exactly and Part A closely |
+| Reproducibility | 4 | 4 | Re-implemented code reproduces Parts B and C exactly (C for 1 of 23 models) and Part A closely (2 of 72 months); NDVI not exactly |
 | Research value | 4 | 4 | Clear, transferable conclusion |
 | Academic relevance | 4 | 4 | Fits data-sparse hydrology and climate-adaptation programmes |
 | Visual communication | 4 | 4 | Site already strong; README now matches it |
 
 **Remaining work for an excellent standard.** A flood reference that is not JRC (e.g. date-matched Sentinel-2 or high-resolution optical flood maps for 2022, or any gauge-height record from NIHSA for the Lokoja–Onitsha reach); an SPI with a stated reference-period sensitivity in the results, not only the limits; the NDVI coupling reported as a range with the composite rule fixed in advance; the remaining climate models re-run independently when bandwidth allows; a short written report replacing the October 2026 PDF.
+
+## 7. Independent review and changes made after it
+
+A scientific review (separate agent, read-only, 16 November) found: the positioning claimed reliability for direction and relative change that computational reproduction cannot show (narrowed in section 6); the effective sample size could exceed n when the two lag-1 autocorrelations have opposite signs (capped in `reproduction/r04_ndvi_rain.py`; one result is then not significant, now stated); the README led with r values the rebuild did not reproduce (both now given); the site row on the SPI reference period also claimed a drought-length effect that was only computed for the threshold (row corrected); N-1 mixed causes (wording corrected); "1.17" should be 1.16 and "900–1,000 km²" matched no stored value (both corrected from `part_c/data/results.json` and `part_a/data/flood_monthly.csv`); "independent" and the reproducibility score overstated what was done (both corrected). The Sokoto–Rima combined uncertainty range (0.92–1.69 under SSP5-8.5) is now in the README.
