@@ -45,3 +45,4 @@ Working branch: `research-audit` (local only; nothing is pushed). Original files
   (r04 rerun: all versions significant except differenced Jul-Oct rainfall, p = 0.059); README gives published and
   rebuilt NDVI r; site row on SPI reference corrected; "1.17" -> 1.16; dry-season false water from flood_monthly.csv
   (mean 901 km2, months 283-1,602); reproduction described as a re-implementation; reproducibility score 4.
+- Second review round: MODIS reader fixed, reproduction code fixes, wording and score corrections, site numbering and phone navigation, Erasmus scorecard. See AUDIT_AND_REPAIR.md sections 8-9.

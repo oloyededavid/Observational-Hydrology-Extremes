@@ -29,13 +29,13 @@ Nothing essential. Optional, in all three languages:
 
 ### 3.2 Coastal Hydrogeology, if added as card 06
 
-1. **Publish its site first.** Merge `research-audit` in the Coastal repository and enable GitHub Pages from `docs/`. The page has no study bar yet; `sync_nav.py` would add it.
+1. **Publish its site first.** Merge `research-audit` in the Coastal repository and enable GitHub Pages from `docs/`. The page carries a draft study bar (previous: Lagos, next: Hydrology) and a draft label; `sync_nav.py` replaces them.
 2. **Card content (English):**
    - Title: *Urban Sealing and Groundwater on the Lekki–Epe Barrier, Lagos, 1986–2024*
    - Tags: Groundwater · Urban change · Coastal aquifer · Scenario modelling
-   - Summary: *Satellite evidence of surface sealing since the late 1980s, checked against an independent built-up map, and a MODFLOW 6 scenario model of what it could do to a shallow coastal water table. Uncalibrated: no groundwater observations were available.*
-   - Image: the water-table map with flow arrows (`docs/fig/heads.png`, upper panel), cropped to 4:3 at 720, 1200 and 1600 px wide, as for the other cards.
-   - Caption: *Lekki–Epe barrier: modelled water table and flow, central scenario*
+   - Summary: *Satellite evidence of surface sealing since the late 1980s, checked against a separate built-up map (not independent of Landsat), and a MODFLOW 6 scenario model of what it could do to a shallow coastal water table. Uncalibrated: no groundwater observations were available.*
+   - Image: the water-table map with flow arrows (`figures/audit-2026-11/heads.png`, upper panel), cropped to 4:3 at 720, 1200 and 1600 px wide, as for the other cards.
+   - Caption: *Lekki–Epe barrier: modelled water table and flow, reference scenario*
    - Alt text: *Map of the Lekki–Epe barrier between the Lagos and Lekki lagoons and the Atlantic, showing a modelled water table highest in the middle of the barrier, with arrows of groundwater flow outwards to the lagoons and the sea.*
 3. **Index map.** Add the barrier outline (from `outputs/index_arrays.npz` land mask, simplified) as area 06 with a sixth legend row. It overlaps the Lagos area (05) on the coast; draw it on top with a distinct hatch.
 4. **Study bar.** Add the sixth study to `S` in `tools/sync_nav.py`; every study bar then reads "Study 0N of 06", and the Lagos site's next-study card points to Coastal, Coastal's to Hydrology.
@@ -51,20 +51,9 @@ One sentence under the project cards, no card, no map entry: *In progress: how f
 - A short "Method notes" link on card 01 to the reproduction record.
 - Once Coastal has groundwater observations and a calibrated model, promote it to a full card with the map entry.
 
-## 5. Recommended page structure for the Coastal study site
+## 5. Page structure for the Coastal study site
 
-Already built as the preview (`docs/index.html` in the Coastal repository):
-
-1. Title, author, status note (uncalibrated)
-2. Question and setting, with the study-area map
-3. Data and method table
-4. The satellite evidence for sealing: index maps, sensitivity chart, GHSL check
-5. What sealing could do to the water table: head and change maps, scenario chart
-6. What changed from the original version
-7. Limits
-8. What would make it a hydrogeology study
-
-Every number on the page is read from `docs/data/site.json`, built from the analysis outputs by `code/pipeline/p05_site_data.py`.
+Built in the same pattern as the Lake Chad and Lagos sites (`docs/index.html` in the Coastal repository): `paper/template.md` with placeholders, filled from the outputs by `code/pipeline/p06_build_paper.py` (which stops if a statement no longer holds), converted by pandoc to `paper/paper.docx` and, through `code/pipeline/p07_build_page.py` and `page_template.html`, to the page. Sections follow the paper: Abstract; 1 Introduction; 2 Data and methods; 3 Results; 4 Discussion; 5 Conclusions; 6 Data and code; References. Figures are WebP, with a phone version of each.
 
 ## 6. How the two projects fit the portfolio
 
