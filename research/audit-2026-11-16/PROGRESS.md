@@ -36,3 +36,8 @@ Working branch: `research-audit` (local only; nothing is pushed). Original files
     0.90-0.95, precision 0.37-0.51; NDVI r 0.70/0.76/0.73), but the text still leads with the superseded Earth
     Engine work (MERIT DEM, "vulnerability index", typed-in flood-pulse curve, r = 0.594, Colab links) and shows
     the legacy figures.
+  - Part C climate models (r06, r06b; own HTTP-range reader of NEX-GDDP-CMIP6 and own L-moment GEV):
+    MRI-ESM2-0, historical 1985-2014 and SSP5-8.5 2041-2070, both areas. Uplift factors (2-100 years), historical
+    return-level bias against CHIRPS and the annual-maximum mean ratio all match the published values to four
+    decimals. The second model (INM-CM5-0) was stopped: the bucket served about 4 minutes per model-year here,
+    about 2 hours for one model; one exact match confirms the pipeline.
