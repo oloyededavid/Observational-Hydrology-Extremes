@@ -322,3 +322,6 @@ path.cell { transition: fill .45s ease, stroke .2s ease, fill-opacity .45s ease;
 
 /* Leaflet's plus-lighter blend leaves light seams between map tiles at fractional zoom on a light basemap */
 .leaflet-container img.leaflet-tile { mix-blend-mode: normal; }
+
+/* the line under the reaction buttons, as on the other study sites */
+.react-note { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-3); }
