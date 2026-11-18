@@ -220,7 +220,7 @@
         const intro = `<dl>
             <dt>The place.</dt><dd>${g === 'floods' ? 'The Lower Niger–Benue reach, about 220 km in a straight line from the Niger–Benue confluence at Lokoja south to 5.8° N, in Nigeria.' : g === 'drought' ? 'The Sokoto–Rima basin, about 183,000 km², across north-west Nigeria and south-central Niger.' : 'Both study areas: the Lower Niger–Benue reach and the Sokoto–Rima basin.'}</dd>
             <dt>The question.</dt><dd>${g === 'floods' ? 'When and how far does the reach flood, and how much of the radar’s water does an independent sensor confirm?' : g === 'drought' ? 'How often, how long and how severe are droughts, do two rainfall records agree, and does vegetation follow?' : 'How much do 23 climate models raise the daily rainfall used in design, by 2041–2070?'}</dd>
-            <dt>How.</dt><dd>${g === 'floods' ? 'Sentinel-1 radar, 2018–2023, checked against Sentinel-2 in 2022.' : g === 'drought' ? 'CHIRPS rainfall 1981–2024, SPI at three timescales, TerraClimate and MODIS NDVI as independent checks.' : 'NEX-GDDP-CMIP6 daily rainfall, GEV fitted per cell by L-moments, uplift as the ratio of future to past.'}</dd></dl>`;
+            <dt>How.</dt><dd>${g === 'floods' ? 'Sentinel-1 radar, 2018–2023, checked against Sentinel-2 in 2022.' : g === 'drought' ? 'CHIRPS rainfall 1981–2024, SPI at three timescales, TerraClimate and MODIS NDVI as second-source checks.' : 'NEX-GDDP-CMIP6 daily rainfall, GEV fitted per cell by L-moments, uplift as the ratio of future to past.'}</dd></dl>`;
         let tiles = '', warn = '';
         if (g === 'floods') {
             tiles = tile('Peak flood months', x.peakShort, 'Floodplain water, every year 2018–2023') +

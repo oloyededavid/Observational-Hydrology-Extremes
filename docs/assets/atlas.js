@@ -133,7 +133,7 @@
             ['B', 'var(--B)', 'Drought', 'CHIRPS rainfall 1981–2024; MODIS NDVI', 'SPI-3/6/12, run theory, detrended correlation', 'TerraClimate rainfall and soil moisture', 'Drought history and vegetation response'],
             ['C', 'var(--C)', 'Future rainfall', 'NEX-GDDP-CMIP6, 23 models; CHIRPS', 'GEV by L-moments, uplift factors, bootstrap', 'Two GHCN gauges; null test; Gumbel; model families', 'Design rainfall for 2041–2070, with its uncertainty'],
         ];
-        const head = ['<span class="sr-only">Part</span>', 'Record', 'Method', 'Independent check', 'Use'];
+        const head = ['<span class="sr-only">Part</span>', 'Record', 'Method', 'Check', 'Use'];
         box.innerHTML = `<div class="fw" role="table" aria-label="Research framework">
             <div class="fw-row fw-head" role="row">${head.map(h => `<div role="columnheader">${h}</div>`).join('')}</div>
             ${rows.map((r, i) => `<div class="fw-row" role="row" style="--accent:${r[1]};--d:${i * 0.12}s">
