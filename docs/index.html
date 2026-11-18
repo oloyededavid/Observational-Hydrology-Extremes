@@ -95,7 +95,7 @@
   <div class="main">
     <aside class="note-box in-short" aria-labelledby="h-short" data-reveal>
       <h2 id="h-short">In short</h2>
-      <p>Much of Nigeria has few usable river or rain gauges, so there is little record to size drains, culverts and small dams. This study asks whether free satellite data and climate models can fill part of that gap. It tests them in two river systems and checks each result against a second, independent source.</p>
+      <p>Much of Nigeria has few usable river or rain gauges, so there is little record to size drains, culverts and small dams. This study asks whether free satellite data and climate models can fill part of that gap. It tests them in two river systems and checks each result against a second source.</p>
       <p>Floods on the Lower Niger–Benue are timed consistently by every method, but their size depends on the method. The 1980s droughts in the Sokoto–Rima basin appear in both rainfall records; single recent dry years do not. Design rainfall is projected to rise by 2041–2070, and most of the uncertainty comes from the short 30-year records.</p>
     </aside>
     <section id="overview" class="q" data-reveal aria-labelledby="h-q">
@@ -122,12 +122,12 @@
 
     <section id="framework" class="sec" data-reveal aria-labelledby="h-fw">
       <h2 id="h-fw"><span class="n">1</span>One question, three tests</h2>
-      <p>The three parts are separate studies with a shared method: use the open record that best observes each extreme, check it against a second, independent source, and report what the check allows. They do not form one connected water balance; the Lower Niger–Benue reach and the Sokoto–Rima basin are about 360 km apart at the nearest point and share no water. What connects them is the question of how far satellite and model evidence can stand in for missing gauges, and the engineering use of the answer.</p>
+      <p>The three parts are separate studies with a shared method: use the open record that best observes each extreme, check it against a second source, independent of the first where one exists, and report what the check allows. They do not form one connected water balance; the Lower Niger–Benue reach and the Sokoto–Rima basin are about 360 km apart at the nearest point and share no water. What connects them is the question of how far satellite and model evidence can stand in for missing gauges, and the engineering use of the answer.</p>
     </section>
   </div>
   <figure class="plate" id="fig-framework" data-reveal>
     <div class="panel"><div id="framework-diagram" class="diagram"></div></div>
-    <figcaption><b>Plate 1.</b> Research framework and workflow. Each row is one part: the record used, the method, the independent check, and what the result can be used for. The checks are what turn a satellite product into evidence.</figcaption>
+    <figcaption><b>Plate 1.</b> Research framework and workflow. Each row is one part: the record used, the method, the check, and what the result can be used for. The checks are what turn a satellite product into evidence.</figcaption>
   </figure>
 
   <div class="main">
@@ -208,7 +208,7 @@
       <div class="part-tag">Part B · Sokoto–Rima basin</div>
       <h2 id="h-b"><span class="n">4</span>Rain deficits and greenness</h2>
       <p>Drought here means meteorological drought: a shortfall of rain against the 1991–2020 normal, measured with the Standardized Precipitation Index <span class="cite">(McKee et al., 1993)</span> from CHIRPS <span class="cite">(Funk et al., 2015)</span>. Soil-moisture (agricultural) drought is looked at through TerraClimate <span class="cite">(Abatzoglou et al., 2018)</span>, and vegetation through MODIS NDVI. Hydrological drought, in rivers and aquifers, would need flow records that are not available.</p>
-      <p class="rq">How often, how long and how severe are droughts, do two independent records agree on them, and does vegetation follow?</p>
+      <p class="rq">How often, how long and how severe are droughts, do two rainfall records agree on them, and does vegetation follow?</p>
       <div class="find"><div><b data-v="b80s">—</b><span>Longest drought on SPI-12, from <span data-v="b80sStart">—</span>: the 1980s Sahel drought</span></div><div><b data-v="bTcR">—</b><span>correlation of CHIRPS and TerraClimate SPI-12, 1981–2021</span></div><div><b data-v="bNdviDet">—</b><span>NDVI–rainfall correlation with both trends removed, 2001–2024</span></div></div>
     </section>
   </div>
@@ -401,7 +401,7 @@
       <p>All results come from scripts in the <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes">repository</a> that read open data and write the files this page reads; none is typed in, and re-running the scripts should reproduce them. A separate re-implementation (research/audit-2026-11-16) matched the drought results and, for the climate model it checked, the design-rainfall results exactly, matched the flood areas closely, and did not match the vegetation correlations. Data were read from Microsoft Planetary Computer, the Climate Hazards Center, NASA's NEX-GDDP-CMIP6 bucket and NOAA's GHCN-Daily, without Earth Engine.</p>
     </section>
     <figure class="tablefig" id="tab-methods" data-reveal>
-      <div class="tablewrap" tabindex="0" role="region" aria-label="Table 8·1, scroll sideways if needed"><table><caption><b>Table 8·1.</b> Data, method, independent check and output of each part.</caption>
+      <div class="tablewrap" tabindex="0" role="region" aria-label="Table 8·1, scroll sideways if needed"><table><caption><b>Table 8·1.</b> Data, method, check and output of each part.</caption>
         <thead><tr><th class="l">Part</th><th class="l">Data</th><th class="l">Method</th><th class="l">Check</th></tr></thead>
         <tbody>
           <tr><td class="l">A</td><td class="l">Sentinel-1 RTC VH and VV, 2018–2023, 110 m; Copernicus DEM; JRC GSW v1.3</td><td class="l">Threshold (−18 dB; Otsu), dual polarisation, floodplain mask, change detection</td><td class="l">Sentinel-2 MNDWI, 2022; threshold sensitivity</td></tr>
@@ -433,7 +433,7 @@
 
     <section id="conclusion" class="sec" data-reveal aria-labelledby="h-concl">
       <h2 id="h-concl"><span class="n">10</span>Conclusion</h2>
-      <p>Open satellite records and climate models can say a good deal about hydrological extremes where gauges are missing, provided each is checked against something independent. Radar shows when the Lower Niger–Benue floods and how far in the flood season, but not in the dry season. Two rainfall records agree on the great droughts of the 1980s and disagree on recent single years, and vegetation in the Sokoto–Rima basin tracks each year's rain. Climate models raise design rainfall in both areas, by a median <span data-v="cConcl">—</span> for the 50-year day under SSP5-8.5, with a range set mainly by how short the records are. The weakest link is the present, not the future.</p>
+      <p>Open satellite records and climate models can say a good deal about hydrological extremes where gauges are missing, provided each is checked against a second source. Radar shows when the Lower Niger–Benue floods and how far in the flood season, but not in the dry season. Two rainfall records agree on the great droughts of the 1980s and disagree on recent single years, and vegetation in the Sokoto–Rima basin tracks each year's rain. Climate models raise design rainfall in both areas, by a median <span data-v="cConcl">—</span> for the 50-year day under SSP5-8.5, with a range set mainly by how short the records are. The weakest link is the present, not the future.</p>
     </section>
   </div>
 
@@ -465,7 +465,7 @@
     <section class="note" data-reveal aria-labelledby="h-note">
       <h2 id="h-note" class="sec" style="padding:0;font-family:var(--display);font-size:26px">A note from me</h2>
       <p>Thank you for reading. This project began as two satellite exercises, floods in the south and drought in the north. A review then showed where I had claimed more than my code did: a flood curve I had typed in, a comparison I had never run, and an index with the wrong name. Fixing those in public was uncomfortable, and it taught me the most.</p>
-      <p>The second lesson came from the checks themselves. Each time I compared a result with an independent source, the answer changed: the radar's dry-season floods were bare ground, recent drought years depended on the dataset, and the uncertainty in future rainfall came mostly from how short the records are. I have tried to report those answers as they came.</p>
+      <p>The second lesson came from the checks themselves. Each time I compared a result with a second source, the answer changed: the radar's dry-season floods were bare ground, recent drought years depended on the dataset, and the uncertainty in future rainfall came mostly from how short the records are. I have tried to report those answers as they came.</p>
       <p>If you work with Nigerian rainfall or river records, or see something I missed, I would like to hear it: <a href="https://github.com/oloyededavid/Observational-Hydrology-Extremes/issues">open an issue on the repository</a>.</p>
       <p class="sign">David</p>
     </section>
