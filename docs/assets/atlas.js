@@ -97,6 +97,10 @@
         fill('cNbAgree', `${U('niger_benue', 'ssp585', '50').models_above_1} of ${nM}`); fill('cSrAgree', `${U('sokoto_rima', 'ssp585', '50').models_above_1} of ${nM}`);
         fill('cNb245', upct(U('niger_benue', 'ssp245', '50').models_median)); fill('cNb585', upct(U('niger_benue', 'ssp585', '50').models_median));
         fill('cSr245', upct(U('sokoto_rima', 'ssp245', '50').models_median)); fill('cSr585', upct(U('sokoto_rima', 'ssp585', '50').models_median));
+        // null test: each model against itself, 1950-1980 vs 1985-2014, 50-year return level (median and range over models)
+        const N = a => R[a].null_test['50'];
+        fill('cNullNb', `${upct(N('niger_benue').median)} (${upct(N('niger_benue').min)} to ${upct(N('niger_benue').max)})`);
+        fill('cNullSr', `${upct(N('sokoto_rima').median)} (${upct(N('sokoto_rima').min)} to ${upct(N('sokoto_rima').max)})`);
         const i50 = TS.indexOf(50), fam = a => REL[a].ensemble.ssp585.gev_family_weighted[i50];
         fill('cFam', `${upct(fam('niger_benue'))} and ${upct(fam('sokoto_rima'))}`);
         const E = (a, s) => R[a].ensemble[s];
