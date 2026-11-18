@@ -11,6 +11,13 @@
     // ---------- small helpers ----------
     const setLen = p => { try { p.style.setProperty('--len', Math.ceil(p.getTotalLength()) + 1); } catch (e) { /* not rendered */ } return p; };
     const lineP = (s, pts, attrs) => setLen(s.appendChild(el('path', Object.assign({ d: path(pts), fill: 'none', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', class: 'draw' }, attrs))));
+    // text colour for a label drawn on a coloured cell: white or near-black, whichever contrasts more with the cell
+    const ink = c => {
+        const v = c.startsWith('#') ? (c.length === 4 ? [...c.slice(1)].map(h => parseInt(h + h, 16)) : [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16))) : c.match(/\d+/g).slice(0, 3).map(Number);
+        const L = .2126 * lin(v[0]) + .7152 * lin(v[1]) + .0722 * lin(v[2]);
+        return 1.05 / (L + .05) >= (L + .05) / .05 ? '#fff' : '#000';   // black, not near-black: one of the two always reaches 4.5:1
+    };
+    const lin = x => { x /= 255; return x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4); };
     const fill = (k, v) => $$(`[data-v="${k}"]`).forEach(e => { e.innerHTML = v; });
     const share = v => pct(v, 0);
     const r10 = v => num(Math.round(v / 10) * 10);
@@ -477,12 +484,12 @@
         const tp = tip(box);
         models.forEach((mo, i) => {
             const y0 = 40 + i * rh;
-            s.append(el('text', { x: lw - 8, y: y0 + 14, 'text-anchor': 'end', class: 'tick', fill: '#111' }, mo));
+            s.append(el('text', { x: lw - 8, y: y0 + 14, 'text-anchor': 'end', class: 'tick', style: 'fill:var(--ink)' }, mo));
             cols.forEach(([k, t, ty], j) => {
                 const v = P[mo][k]; if (!isNum(v)) return;
                 const d = dep(v, ty), c = colr(d);
                 const r = el('rect', { x: lw + j * cw + 1, y: y0, width: cw - 2, height: rh - 2, rx: 3, fill: c, class: 'fade', style: `transition-delay:${(i * 0.012).toFixed(3)}s` }); s.append(r);
-                s.append(el('text', { x: lw + j * cw + cw / 2, y: y0 + 13.5, 'text-anchor': 'middle', class: 'tick', fill: Math.abs(d) > .55 ? '#fff' : '#333' }, ty === 'd' ? signed(v, 1) : num(v, 2)));
+                s.append(el('text', { x: lw + j * cw + cw / 2, y: y0 + 13.5, 'text-anchor': 'middle', class: 'tick', style: `fill:${ink(c)}` }, ty === 'd' ? signed(v, 1) : num(v, 2)));
                 r.addEventListener('mousemove', () => tp.show(`<b>${mo}</b><div>${t}: ${ty === 'd' ? signed(v, 1) + ' days vs CHIRPS' : num(v, 2)}</div>`, lw + j * cw + cw / 2, y0));
                 r.addEventListener('mouseleave', () => tp.hide());
             });
@@ -636,7 +643,7 @@
             src.forEach(([k, n, c], j) => {
                 const v = d[k], r = el('rect', { x: x(acc) + (acc ? 1 : 0), y: y0 + 2, width: Math.max(0, x(acc + v) - x(acc) - (acc ? 1 : 0)), height: rh - 12, fill: c, class: 'grow', style: `transition-delay:${(j * .1).toFixed(2)}s` });
                 s.append(r);
-                if (v > .09) s.append(el('text', { x: x(acc + v / 2), y: y0 + 19, 'text-anchor': 'middle', class: 'tick', fill: j < 1 || j === 2 ? '#fff' : '#222' }, pct(v)));
+                if (v > .09) s.append(el('text', { x: x(acc + v / 2), y: y0 + 19, 'text-anchor': 'middle', class: 'tick', style: `fill:${ink(c)}` }, pct(v)));
                 r.addEventListener('mousemove', () => tp.show(`<b>${t}-year</b><div>${n}: ${pct(v, 1)}</div>`, x(acc + v / 2), y0));
                 r.addEventListener('mouseleave', () => tp.hide());
                 acc += v;
